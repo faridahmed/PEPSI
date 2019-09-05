@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Hire Truck Challan Acknowledgement</h2>
+<br />
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Invoice Number:</label>
+            <input type="text" id="textautocomplete" class="form-control" /><br />
+            <input type="button" id="SearchData" value="Search" class="btn-primary form-control" />
+            <label>Agency Correction</label>
+            @Html.DropDownList("SelectAgency", null, "Select one ", new { @class = "form-control" })
+            <label>Transport Agency:</label>
+            @Html.TextBox("TrAgency", null, new { @class = "form-control" })
+            <label>Customer Name:</label>
+            @Html.TextBox("custName", null, new { @class = "form-control", @readonly = "readonly" })
+            <label>Carried Cases:</label>
+            @Html.TextBox("carrCases", null, new { @class = "form-control", @readonly = "readonly" })  
+            <label>Adjusted Amount:</label>
+            @Html.TextBox("adjAmount", null, new { @class = "form-control", @readonly = "readonly" }) <br />
+            <input id="btnReset" type="button" class="btn-primary form-control" value="Reset" onClick="PageReLoad();" />   
+        </div>
+    </div>
+    <div>
+
+            <label>Acknowledgement Date:</label>
+        <input type="text" id="AckDate" class="date-picker form-control" />
+        <br />
+         <label>Vehcle Description:</label>
+        @Html.TextBox("vehicle", null, new { @class = "form-control" })
+        <input type="checkbox" id="chk2">Empty Return?? </>
+        <br />
+        <label>Invoice Date:</label>
+        @Html.TextBox("invDate", null, new { @class = "form-control",@readonly = "readonly" })
+        <label>Fare rate:</label>
+        @Html.TextBox("fRate", null, new { @class = "form-control", @readonly = "readonly" })
+        <label>Total Fare:</label>
+        @Html.TextBox("totalFare", null, new { @class = "form-control", @readonly = "readonly" })
+        <input type="checkbox" id="chk1">Acknowledged?? </>         
+        <input type="button" id="btnSave" value="Save" class="btn-primary form-control" />
+        </div>
+</div>
+
+<script src="~/Scripts/date.format.js"></script>
+
+<script>
+    $("#AckDate").prop('disabled', true);
+    $("#btnSave").prop('disabled', true);
+        $("#textautocomplete").autocomplete({
+
+        source: function (request, response) {
+            var text = $("#textAutocomplete").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/HireTruckAcknowledgementForBill/GetinvoiceHT",
+                data: { sItem: request.term },
+                success: function (data) {
+
+                    response($.map(data, function (item) {
+
+                        return { lable: item.ChallanNumber, value: item.ChallanNumber }
+
+                    }))
+                }
+
+            })
+
+        }
+    });
+
+
+    $("#SearchData").click(function () {
+        $.ajax({
+            url: "@Url.Action("GetChallanInfo", "HireTruckAcknowledgementForBill")",
+            data: { challanNumber: $("#textautocomplete").val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#TrAgency").val(data[0].TAName)
+            $("#vehicle").val(data[0].VechileNo);
+            $("#custName").val(data[0].CustomerName);
+            $("#invDate").val(new Date(parseInt(data[0].ChallanDate.substr(6))).format("dd-mm-yyyy"));
+            $("#carrCases").val(data[0].TotalCases);
+            $("#fRate").val(data[0].FareAmnt);
+            $("#adjAmount").val(data[0].ExtraAmount);
+            $("#totalFare").val((data[0].FareAmnt) + (data[0].ExtraAmount));
+            $("#btnSave").prop('disabled', true);
+            $("#textautocomplete").prop('disabled', true);
+            //window.location.reload();
+        },
+        error: function () {
+            alert("Error!");
+        }
+    });
+    })
+
+
+    $("#chk1").change(function () {
+
+        if (($("#chk1").is(':checked'))) {
+            $("#btnSave").prop('disabled', false);
+        }
+        else {
+            $("#btnSave").prop('disabled', true);
+        }
+
+    });
+
+    $("#SelectAgency").change(function () {
+
+        var c = $("#SelectAgency").val();
+        $("#TrAgency").val(c);
+
+    });
+    //$('.date-picker').datepicker();
+  //  $(document).ready(function () {
+
+    // $(function () {
+
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-20:+10"
+    }).datepicker("setDate", 'now');
+
+
+    //Edit Delivery Control
+    @*$("#InvoicePrTransaction").change(function () {
+        $.ajax({
+            url: "@Url.Action("GetChallanInfo", "HireTruckAcknowledgementForBill")",
+            data: { challanNumber:$("#InvoicePrTransaction option:selected").text() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#TrAgency").val(data[0].TAName)
+            $("#vehicle").val(data[0].VechileNo);
+            $("#custName").val(data[0].CustomerName);
+            $("#invDate").val(new Date(parseInt(data[0].ChallanDate.substr(6))).format("dd-mm-yyyy"));
+            $("#carrCases").val(data[0].TotalCases);
+            $("#fRate").val(data[0].FareAmnt);
+            $("#adjAmount").val(data[0].ExtraAmount);
+            $("#totalFare").val((data[0].FareAmnt) + (data[0].ExtraAmount));
+            //window.location.reload();
+        },
+        error: function () {
+            alert("Error!");
+        }
+    });
+    })*@
+
+    //Save And Update
+    $("#btnSave").click(function () {
+        var empt="No"
+        if (($("#chk2").is(':checked'))) {
+            empt="Yes"
+        }
+        else {
+            empt="No"
+        }
+        var data = {
+            challanNumber: $("#textautocomplete").val(),
+            VechileNo: $("#vehicle").val(),
+            AcknowledgementDate: $("#AckDate").val(),
+            EmptyReturn:empt
+        }
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            $.ajax({
+                url: '/HireTruckAcknowledgementForBill/AcknoledgementData',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Save Successfully...');
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+</script>
+
+

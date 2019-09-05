@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h1>Delivery related reports</h1>
+<input type="radio" name="nm" id="r1" value="1" class="radio radio-inline"> Customer Delivery Detail</>
+
+<h2>Please choose report parameter from Below:</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            @*<input required="" type="text" class="form-control" placeholder="dd-MMM-yy" onfocus="(this.type='date')" />*@
+            <label>Enter Begining Date:</label>
+            @*@Html.TextBox("BeginingDate", DateTime.Now.ToShortDateString(), new { @class = "form-control" })*@
+            <input class="form-control" type="date" id="BeginingDate" />
+            <label>Enter Ending Date:</label>
+            @*@Html.TextBox("EndingDate", DateTime.Now.ToShortDateString(), new { @class = "form-control" })*@
+            <input class="form-control" type="date" id="EndingDate" />
+            <br />
+            <input type="button" id="showReport" value="Preview" class="form-control btn-primary" />
+        </div>
+    </div>
+    <div>
+        <label>Select Warehouse:</label>
+        @Html.DropDownList("Warehouse", null, "All", new { @class = "form-control" })
+    </div>
+</div>
+<br />
+<div id="tabledata"></div>
+<script>
+    //$("#BeginingDate").prop('disabled', true);
+    //$("#EndingDate").prop('disabled', true);
+    $(document).ready(function () {
+
+        $('#showReport').click(function () {
+            var wValue = $("#Warehouse").val();
+            if (wValue == "") {
+                wValue = 0;
+            } else {
+                wValue;
+            }
+            var radioValue = $('input:radio[name=nm]:checked').val();
+            if (radioValue == 1) {
+                $.ajax({
+                    url: "@Url.Action("DBDeliveryDetails", "DeliveryReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue, wName: $("#Warehouse option:selected").text() },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            } @*else {
+                $.ajax({
+                    url: "@Url.Action("ProductTransferNote", "StockReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { trNo: 100009,trId:2 },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }*@
+        })
+    })
+</script>

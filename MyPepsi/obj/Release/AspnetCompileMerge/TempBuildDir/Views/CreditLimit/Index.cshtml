@@ -1,0 +1,140 @@
+﻿@model MyPepsi.ViewModel.CustomerCreditLimitVM
+@{
+    ViewBag.Title = "Credit Limit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Credit Limit</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <Label style="color:blue">Warehouse ID & Name</Label>
+                @*@Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })*@
+                @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+                <label>Customer ID</label>
+                @Html.DropDownList("CustomerID", null, "Select One", new { @class = "form-control" })
+                <label style="color:red">Credit Ref. No</label>
+                @Html.TextBox("CLNo", null, new { @class = "form-control" })
+                <label>Approve By</label>
+                @Html.TextBox("ApproveBy", null, new { @class = "form-control" })
+                <label style="color:red">Approve Date</label>
+                @Html.TextBox("ApproveDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+
+                <label>Issue Date</label>
+                @Html.TextBox("IssueDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+                <label>Active Date Date</label>
+                @Html.TextBox("ActivateDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+                <label>Expiry Date</label>
+                @Html.TextBox("ExpiryDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+                <label>Amount</label>
+                @Html.TextBox("CLAmount", null, new { @class = "form-control" })
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <input id="btnReset" type="button" class="btn btn-primary" value="Clear" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" onClick="savedata();" />
+
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Scripts/date.format.js"></script>
+<script>
+    //Date Picker
+    $('.date-picker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true
+    });
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+    $('.date-picker').attr("value", today);
+    $('#ApproveDate').datepicker();
+    $('#IssueDate').datepicker();
+    $('#ExpiryDate').datepicker();
+    $('#ActivateDate').datepicker();
+
+   var status = true;
+    function savedata() {
+    var data = {
+        CustomerID: $('#CustomerID').val().trim(),
+        CLNo: $('#CLNo').val().trim(),
+        ApproveBy: $('#ApproveBy').val().trim(),
+        ApproveDate: $('#ApproveDate').val().trim(),
+        IssueDate: $('#IssueDate').val().trim(),
+        ExpiryDate: $('#ExpiryDate').val().trim(),
+        CLAmount: $('#CLAmount').val().trim(),
+        ActivateDate: $('#ActivateDate').val().trim()
+    }
+   // console.log(status);
+    //console.log(data);
+
+        var answer = confirm('Are you sure, you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+       // debugger;
+       // console.log(data);
+        $.ajax({
+            url: '/CreditLimit/SaveCLData',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done...');
+                    alert('CL No : ' + a.v);
+                    window.location.reload();
+
+
+                }
+                else {
+                    alert('Failed, Please Check...');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+              //  $('#create').val('Create');
+            }
+        });
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+
+</script>
+

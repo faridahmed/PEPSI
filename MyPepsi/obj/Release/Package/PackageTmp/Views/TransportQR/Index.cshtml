@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>QR generate</h2>
+
+<input type="radio" name="nm" id="r1" value="1" class="radio radio-inline"> QR Token generate</>
+<input type="radio" name="nm" id="r2" value="2" class="radio radio-inline"> Checkout Time </>
+<input type="text" id="forCheckOut" size="40" placeholder="QR-Data" />
+<input type="hidden" id="qrSL" sze="5" readonly />
+<input type="button" id="btnSaveQR" value="Save Checkout" />
+
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Select Agency Name:</label>
+            @Html.DropDownList("TrAgency", null, "Select Agency", new { @class = "form-control" })<br />
+            <label>Driver Mobile No:</label>
+            @Html.TextBox("txtDrMNo", "", new { @class = "form-control" })<br />
+            <label>Driver Name:</label>
+            @Html.TextBox("txtDrName", "", new { @class = "form-control" })<br />
+            <label>Select Truck Capacity:</label>
+            @Html.DropDownList("TrCapacity", null, "Select Capacity", new { @class = "form-control" })<br />
+            <label>Vehicle No:</label>
+            @Html.TextBox("txtVchNo", "", new { @class = "form-control" })<br />
+            @Html.TextBox("txtQRSL", (string)ViewBag.QRSL, new { @class = "form-control", @readonly = "readonly" })<br />
+            <input type="button" id="btnChkData" value="Check Data" />
+        </div>
+    </div>
+    <div>
+        <label>All Data:</label>
+        <textarea class="span6 form-control style=font-wieght:bold" rows="5" placeholder="TP Description" id="txtAll" readonly="readonly"></textarea>
+        <br />
+        <input type="text" id="txtQRFile" class="form-control" size="50" value="C:\QRCodeData\" readonly="readonly" /><br />
+        <input type="text" id="txtQRtext" class="form-control" size="50" readonly="readonly" /><br />
+        @Html.TextBox("txtPKSerial", (int)ViewBag.PKID, new { @class = "form-control", @readonly = "readonly" })<br />
+        @Html.TextBox("txtSLCount", (string)ViewBag.QRSLCount, new { @class = "form-control", @readonly = "readonly" })<br />
+
+        <input type="button" id="btnGenerateQR" value="Generate QR" />
+        <input type="button" id="btnPrintQR" value="Print QR" />
+        <input id="btnReset" type="button" class="btn-default" value="Reset" onClick="PageReLoad();" />
+    </div>
+</div>
+<div id="tabledata"></div>
+<script>
+    //$("#forCheckOut").prop('disabled', true);
+    $("#TrAgency").prop('disabled', true);
+    $("#txtDrMNo").prop('disabled', true);
+    $("#txtDrName").prop('disabled', true);
+    $("#TrCapacity").prop('disabled', true);
+    $("#txtVchNo").prop('disabled', true);
+    $("#btnChkData").prop('disabled', true);
+    $("#btnGenerateQR").prop('disabled', true);
+    $("#btnPrintQR").prop('disabled', true);
+    $("#btnSaveQR").prop('disabled', true);
+
+    $(document).ready(function () {
+        $("#r1").change(function () {
+            $("#TrAgency").prop('disabled', false);
+            $("#txtDrMNo").prop('disabled', false);
+            $("#txtDrName").prop('disabled', false);
+            $("#TrCapacity").prop('disabled', false);
+            $("#txtVchNo").prop('disabled', false);
+            $("#btnChkData").prop('disabled', false);
+        });
+        $("#r2").change(function () {
+            //$("#forCheckOut").prop('disabled', false);
+            $("#TrAgency").prop('disabled', true);
+            $("#txtDrMNo").prop('disabled', true);
+            $("#txtDrName").prop('disabled', true);
+            $("#TrCapacity").prop('disabled', true);
+            $("#txtVchNo").prop('disabled', true);
+            $("#btnChkData").prop('disabled', true);
+            $("#btnGenerateQR").prop('disabled', true);
+            $("#btnPrintQR").prop('disabled', true);
+            $("#forCheckOut").focus();
+            $("#btnSaveQR").prop('disabled', false);
+        });
+        $('#forCheckOut').blur(function () {
+            var data = $('#forCheckOut').val();
+            var arr = data.split('#');
+            //$("#scanToken").html("<span>" + arr[0] + "</span></br>" + arr[1] + "/" + arr[2]);
+            $("#qrSL").val(arr[5]);
+
+        });
+        $("#btnChkData").click(function () {
+            // $("#tbl td").remove();
+            //var rowcount = $("#tbl").find("tr").length;
+            var tblRow = $("#TrAgency option:selected").text() + "\n" + $("#txtDrMNo").val() + "\n" + $("#txtDrName").val() + "\n" + $("#TrCapacity option:selected").text() + "\n" + $("#txtVchNo").val()
+            $("#txtAll").append(tblRow);
+            var QRtxt = $("#TrAgency option:selected").text() + "#" + $("#txtVchNo").val() + "#" + $("#TrCapacity option:selected").text() + "#" + $("#txtDrName").val() + "#" + $("#txtDrMNo").val() + "#" + $("#txtPKSerial").val()
+            $("#txtQRtext").val(QRtxt)
+            $("#btnGenerateQR").prop('disabled', false);
+            $("#btnPrintQR").prop('disabled', false);
+        })
+        //ImageLocation With Name
+        $("#TrAgency").change(function () {
+            var qrImgData = $("#txtQRFile").val() + $("#TrAgency").val() + Date.now() + ".jpg"
+
+           $("#txtQRFile").val(qrImgData.replace(" ", ""));
+        });
+
+        //Save And Update
+        $("#btnGenerateQR").click(function () {
+
+            var data = {
+                Type: "Finished Goods",
+                VehicleType: "Hired Vehicle",
+                QRSLNo: $("#txtSLCount").val(),
+                SLCount: $("#txtQRSL").val(),
+                //QRGeneratingDate
+                AgencyID:$("#TrAgency").val(),
+                VehicleNumber:$("#txtVchNo").val(),
+                DriverName: $("#txtDrName").val(),
+                DriverMobileNumber:$("#txtDrMNo").val(),
+                TruckCapacity: $("#TrCapacity option:selected").text(),
+                //EntryDateTime
+                //QRImageIn:,
+                WareHouseID:61,
+
+                t1: $('#txtQRtext').val(), t2: $('#txtQRFile').val()
+            }
+            var answer = confirm('Are you sure you want to generate this?');
+            if (answer) {
+                $.ajax({
+                    url: '/TransportQR/generateQR',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (a) {
+
+                        if (a.status == true) {
+
+                            alert('Successfully done...');
+                           // window.location.reload();
+                        }
+                        else {
+                            alert('Failed');
+                        }
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+        $('#btnPrintQR').click(function () {
+            //alert($("#txtQRSL").val());
+            var radioValue = $('input:radio[name=nm]:checked').val();
+                $.ajax({
+                    url: "@Url.Action("TransportQRReport", "TransportQR")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { slNumber: $("#txtPKSerial").val() },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#tabledata").html(data);
+                        //window.location.reload();
+                    }
+                });
+        });
+
+
+        $('#btnReset').click(function () {
+            window.location.reload();
+    });
+        //btnSaveQR
+        $('#btnSaveQR').click(function () {
+            //alert($("#txtQRSL").val());
+            var qrValue = $("#qrSL").val();
+            $.ajax({
+                url: "@Url.Action("saveQRCheckout", "TransportQR")",
+                dataType: "HTML",
+                type: "POST",
+                data: { slNumber: qrValue },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    alert("Checkout Data save successfully...");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("Failed! First Scan the QR proper way, then save!!");
+                }
+        });
+    });
+
+    })
+</script>
+
+

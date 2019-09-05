@@ -1,0 +1,22 @@
+﻿@using ReportViewerForMvc
+
+<div class="panel panel-primary">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Panel heading</div>
+    <div class="panel-body" style="overflow:scroll; height:600px;">
+
+
+        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "yes", width = "120%", height = "150%" })
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#ajax_load").hide();
+    })  
+</script>
+<style>
+    iframe {
+        border: 0px;
+    }
+</style>

@@ -1,0 +1,224 @@
+﻿@model MyPepsi.ViewModel.ProductRateVM
+@{
+    ViewBag.Title = "Product Rate Detail ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Product Rate Detail</h2>
+@Html.DropDownList("PRate", null, "Select Product Rate", new { @class = "form-control" })
+<p>
+    <input type="button" id="updateButton" value="Update" class="btn-primary" />
+</p>
+<div id="d11"></div>
+<table class="table table-striped table-bordered" id="tbl">
+    <tr>
+        <th>SL</th>
+        <th>PID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Case Price</th>
+        <th>Ag. Commission</th>
+        <th>Case Ag.Commission</th>
+        <th>Security Deposit</th>
+        <th>Case Sec Deposit</th>
+        <th>Box Security</th>
+        <th>MRP Rate</th>
+    </tr>
+</table>
+@*<input type="text" id="allMRP" value="0" />*@
+@*<table id="tbl1">
+        <tbody>
+            <tr>
+                <td>hi</td>
+                <td>Hello</td>
+            </tr>
+            <tr>
+                <td>hi2</td>
+                <td>Hello2</td>
+            </tr>
+        </tbody>
+    </table>*@
+<script>
+    $(document).ready(function () {
+        @*function init() {
+            var body = $('#tbl tbody');
+            body.children().each(function (row) { // iterate over <tr>s
+                $(this).children().each(function (col) { // iterate over <td>s
+                    $(this).data('row', row);
+                    $(this).data('col', col);
+                });
+            });
+
+            body.find('td').keyup(function () {
+                var row = $(this).data('row');
+                var col = $(this).data('col');
+                var id = $(this).find("input[type='text']").val();
+                pID=$("table").find("tr").eq(row).find("td:eq(1) input[type='text']").val()
+                alert("You clicked on row " + row + ", col " + col + ", Value:" + id);
+                $.ajax({
+                    url: "@Url.Action("changeAmount", "ProductRate")",
+                    data: { idPRate: $("#PRate").val(),PrID:pID },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    alert(data);
+                    alert($("table").find("tr").eq(row).find("td:eq(10) input[type='text']").val());
+                    $("table").find("tr").eq(row).find("td:eq(10) input[type='text']").val(data);
+                },
+                error: function () {
+                    alert("Failed! can't load PMX Cutomer");
+                }
+                //alert($(this).find("input[type='text']").val());
+                //alert($("table").find("tr").eq(row).find("td:eq(10) input[type='text']").val());
+                //$("table").find("tr").eq(row).find("td:eq(10) input[type='text']").val("1000");
+                });
+            });
+        }*@
+        $("#PRate").change(function () {
+            $.ajax({
+                url: "@Url.Action("ShowRateDetails", "ProductRate")",
+                data: { idPRate: $("#PRate").val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $("#tbl td").remove();
+                    //for (var i = 0; i < data.ID.length; i++) {
+                    //    var opt = new Option(data[i].SchemeDescription, data[i].SchemeID);
+                    //    $('#op1').append(opt);
+
+                    //}
+
+                    //var tt=[]
+                    //$.each(data.ID, function (i, prDetails1) {
+                    //    tt.push = { SchemeDes: prDetails1.SchemeDescription }
+                    //});
+
+                    //var ddlCustomers = $("<select />");
+                    //var allschmdata = data.ID;
+
+                    //                  $(allschmdata).each(function () {
+
+                    //    option = $("<option />");
+                    //    //Set Customer Name in Text part.
+                    //    option.html(this.SchemeDescription);
+
+                    //    //Set CustomerId in Value part.
+                    //    option.val(this.SchemeID);
+
+                    //    //Add the Option element to DropDownList.
+                    //    ddlCustomers.append(option);
+                    //});
+                    //$("#d11").append(ddlCustomers);
+                    //'<td> <select id="csID" class="form-control"><option>' + allschmdata.SchemeDescription + '</option></select>' +
+
+                    $.each(data.Result, function (i, prDetails) {
+
+                        var table = document.getElementById("tbl"); //get the table
+                        var rowcount = i + 1;//table.rows.length; //get no. of rows in the table
+                        //append the controls in the row
+                        var tblRow = '<tr id="row' + rowcount + '">' +
+                            '<td>' +
+                                '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+                        '</td>' +
+                        '<td> <input type="text"  id="txtpID' + rowcount + '" value="' + prDetails.ProductID + '" size="2" readonly /></td>' +
+                        '<td><input type="text"   id="txtProductDescription' + rowcount + '" value="' + prDetails.ProductDescription + '" /></td>' +
+                        '<td><input type="text"   id="txtUnitPrice' + rowcount + '" value="' + prDetails.UnitPrice + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtAlternateUnitPrice' + rowcount + '" value="' + prDetails.AlternateUnitPrice + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtAgencyCommission' + rowcount + '" value="' + prDetails.AgencyCommission + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtAlternateAgencyCommission' + rowcount + '" value="' + prDetails.AlternateAgencyCommission + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtSecurityDeposit' + rowcount + '" value="' + prDetails.SecurityDeposit + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtAlternateSecurityDeposit' + rowcount + '" value="' + prDetails.AlternateSecurityDeposit + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtPlasticBoxSecurity' + rowcount + '" value="' + prDetails.PlasticBoxSecurity + '" size="3" /></td>' +
+                        '<td><input type="text"   id="txtMRPRate' + rowcount + '" value="' + prDetails.MRPRate + '" size="3" /></td>' +
+                    // '<td> <select id="csID' + rowcount + '" class="form-control"><option>"Select Scheme"'+'' + ddlCustomers.html() + '</option></select></td>' +
+'</tr>'
+
+                        //append the row to the table.
+                        $("#tbl").append(tblRow);
+                        //Change Particullar cell
+//                        $('tr').each(
+//function () {
+//    $(this).find('td:gt(10)').append(option);
+//});
+                       // $("#tbl ").append(tblRow);
+                       // $("#csID").append(prDetails.ProductDescription);
+                    })
+                    //$("#csID").append(data.ID.SchemeDescription);
+                    $("#updateButton").prop('disabled', false);
+                    //find exact position of mouse click
+                    // $(init);
+                    //var nth = $("table").find("tr").length;
+
+                    //var amnt = parseInt("0");
+
+                    //for(j=1;j<nth-1;j++)
+                    //{
+                    //    amnt += parseInt($("table").find("tr").eq(j).find("td:eq(10) input[type='text']").val());
+                    //}
+                    //alert(amnt);
+                    //$("#allMRP").val(amnt);
+
+                },
+                error: function () {
+                    alert("Failed! can't load PMX Cutomer");
+                }
+            });
+        });
+        //update RateDetail
+        $("#updateButton").click(function () {
+            //var id = $('#tbl tr:last').index()
+            var n = $("table").find("tr").length;
+            DtlItems = [];
+            //alert(n);
+            // $('#tbl tr').each(function (row, tr) {
+            for (var i = 1; i < n; i++) {
+                //if ((row > 0) && (row <= id)) {
+                DtlItems.push({
+                    ProductID: $("table").find("tr").eq(i).find("td:eq(1) input[type='text']").val(),
+                    UnitPrice: $("table").find("tr").eq(i).find("td:eq(3) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(3).text(),
+                    AlternateUnitPrice: $("table").find("tr").eq(i).find("td:eq(4) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(4).text(),
+                    AgencyCommission: $("table").find("tr").eq(i).find("td:eq(5) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(5).text(),
+                    AlternateAgencyCommission: $("table").find("tr").eq(i).find("td:eq(6) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(6).text(),
+                    SecurityDeposit: $("table").find("tr").eq(i).find("td:eq(7) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(7).text(),
+                    AlternateSecurityDeposit: $("table").find("tr").eq(i).find("td:eq(8) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(8).text(),
+                    PlasticBoxSecurity: $("table").find("tr").eq(i).find("td:eq(9) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(9).text(),
+                    MRPRate: $("table").find("tr").eq(i).find("td:eq(10) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(10).text(),
+                   // SchemeDescription: $("table").find("tr").eq(i).find("td:eq(11) select").val(), //$("table").find("tr").eq(i).find("td").eq(10).text(),
+                    //AlternateSecurityDeposit: +$(tr).find('td:eq(2)').text(),
+                });
+            }
+            var data = {
+                ProductRateID:$("#PRate").val(),
+                PRDVM: DtlItems
+            }
+            var answer = confirm('Are you sure you want to save this?');
+            if (answer) {
+                $.ajax({
+                    //url: "//@*@Url.Action("UpdateDetail", "ProductRate")*@",
+                    url: 'UpdateDetail',
+                    type: "POST",
+                    data:JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (a) {
+
+                        if (a.status == true) {
+
+                            alert('Successfully done...');
+                            window.location.reload();
+                        }
+                        else {
+                            alert('Failed');
+                        }
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        })
+    });
+
+</script>

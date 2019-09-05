@@ -1,0 +1,118 @@
+﻿@model MyPepsi.ViewModel.POSMVM
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Create new POSM Item:</h2><br />
+@Html.DropDownList("PosmItemLists", null, "Select Item for Editing", new { @class = "form-control" })
+<label>Item ID:</label>
+<input type="text" id="posmID" class="form-control" readonly />
+<label>Item Name:</label>
+<input type="text" id="posmName" class="form-control" /><br />
+<input type="button" id="addButton" value="Add New" class="btn-primary" />
+<input type="button" id="saveButton" value="Save" class="btn-primary" />
+<input type="button" id="updateButton" value="Update" class="btn-primary" />
+
+
+<script>
+    $(document).ready(function () {
+        //To get Posm Next ID
+        $("#addButton").click(function () {
+            $.ajax({
+                url: "@Url.Action("GetPOSMItemID", "POSMItem")",
+                //data: { csID: $("#csID").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#posmID").val(data);
+            },
+            error: function () {
+                alert("Failed!");
+            }
+        });
+        })
+        //Edit Option
+        $("#PosmItemLists").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetPOSMItemIDName", "POSMItem")",
+                data: { pID: $("#PosmItemLists").val() },
+                type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#posmID").val($("#PosmItemLists").val());
+                $("#posmName").val(data);
+            },
+            error: function () {
+                alert("Failed!");
+            }
+        });
+    })
+
+        //To Save New Item
+        $("#saveButton").click(function () {
+            var data = {
+                PosmID: $("#posmID").val(),
+                PosmName: $("#posmName").val()
+            }
+            $.ajax({
+                url: '/POSMItem/SavePOSMItem',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully Added...');
+                        window.location.reload();
+                        $("#posmID").val('');
+                        $("#posmName").val('');
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+
+        //To Update Item Name
+        $("#updateButton").click(function () {
+            var data = {
+                PosmID: $("#posmID").val(),
+                PosmName: $("#posmName").val()
+            }
+            $.ajax({
+                url: '/POSMItem/UpdatePOSMItem',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully Updated...');
+                        window.location.reload();
+                        $("#posmID").val('');
+                        $("#posmName").val('');
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+    })
+
+
+</script>
+

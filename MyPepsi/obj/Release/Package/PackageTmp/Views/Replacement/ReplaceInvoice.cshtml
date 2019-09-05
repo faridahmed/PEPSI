@@ -1,0 +1,552 @@
+﻿@model MyPepsi.ViewModel.ReplaceDisburseVM
+@{
+    ViewBag.Title = "ReplaceInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ReplaceInvoice</h2>
+
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <label style="color:red">
+                    Warehouse ID & Name *</label>
+                    @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+                    @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+                    @*<label style="color:red">Select Process No</label>
+                        @Html.DropDownList("ReplaceRefNo", null, "Select one ", new { @class = "form-control" })*@
+                    <label>Disburse Date</label>
+                    @Html.TextBox("TransactionDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control", @readonly = "readonly" })
+                    <label>Replace Transaction No</label>
+                    <input class="form-control" type="text" id="ReplaceDisburseID" value="@ViewBag.ReplaceDisburseID" readonly />
+                    <label style="color:red">Customer ID</label>
+                    @Html.DropDownList("CustomerID", null, "Select One", new { @class = "form-control" })
+                    @*<label>Customer Name</label>
+                        <input class="form-control" type="text" id="CustName" readonly />*@
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label style="color:red">Select Process No</label>
+            <select id="tReplaceRefNo" class="form-control" ,style="width:150px"><option>Select One</option></select>
+            @Html.TextBox("ReplaceRefNo", null, new { @class = "form-control", @Value = 0, @readonly = "readonly" })
+            @*<label>Customer Address</label>
+                @Html.TextBox("CustAdd", null, new { @class = "form-control", @readonly = "readonly" })*@
+            <label>Reference LoadSheet No </label>
+            @Html.TextBox("LoadSheetNo", null, new { @class = "form-control" })
+            <label>Remarks/Note</label>
+            @Html.TextBox("Remarks", null, new { @class = "form-control", @readonly = "readonly" })
+            <label>Scan QR Token</label>
+            @Html.TextBox("scanToken", null, new { @class = "form-control" })
+            <input type="hidden" id="qrSL" value="0" />
+
+        </div>
+        <div class="col-md-4">
+            <label style="color:blue">Replacement Payable Amt.</label>
+            <input type="text" class="form-control" id="RemainingAmt" style="text-align:right;color:blue;font:bold" value="0.0" readonly />
+            <label style="color:blue">Total Disburse Amt.</label>
+            <input class="form-control" type="text" id="TotDisburseAmt" style="text-align:right;color:blue;font:bold" , readonly="readonly" value="0.0" />
+            <label style="color:blue">Total Cases</label>
+            <input class="form-control" type="text" id="TotCase" readonly value="0" style="text-align:center" />
+            <label style="color:blue">Total Boxes</label>
+            <input class="form-control" type="text" id="TotBox" readonly value="0" style="text-align:center" />
+            @*<select id="btnBatch" class="form-control" ,style="width:150px" ,onchange="fTrBatchNo()"><option>Select One</option></select>*@
+            @*<button type="button" class="btn btn-primary" style="width:25%" data-toggle="modal" data-target="#myModal">
+                    Add Product for Replacement
+                </button>*@
+            <input id="btnProduct" type="button" class="btn btn-primary btn-sm btn-block" value="Add Product for Replacement" data-toggle="modal" data-target="#myModal" />
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:800px">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none" class="col-md-12">
+                        <tr style="border:none">
+                            <td style="color:red;text-align:right">
+                                Product Id:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductID", "", new { @Class = "form-control", @style = "text-align: center;", })
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Payable Amt. :
+                            </td>
+                            <td>
+                                @Html.TextBox("tOutstanding", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none;text-align:right">
+                            <td>
+                                Product Name:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductDescription", "", new { @Class = "form-control", @readonly = "readonly" })
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Replaced Value :
+                            </td>
+                            <td>
+                                @Html.TextBox("tOrderValue", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="color:red;text-align:right">
+                                Batch No:
+                            </td>
+                            <td>
+                                @*@Html.TextBox("BatchNo", "0", new { @Class = "form-control", @style = "float: left;text-align: center;" })*@
+                                <select id="BatchNo" class="form-control"><option>Select One</option></select>
+                                @*<span id="dr" class="error">Required</span>*@
+                            </td>
+                            <td style="color:red;text-align:right">
+                                Quantity(Case):
+                            </td>
+                            <td>
+                                @Html.TextBox("OrderCase", "0", new { @Class = "form-control", @style = "float: left;text-align: center;" })
+                                @*<span id="dr" class="error">Required</span>*@
+                            </td>
+
+                        </tr>
+                        <tr style="border:none">
+                            <td style="text-align:right">
+                                PlasticBox:
+                            </td>
+
+                            <td>
+                                @Html.TextBox("PlasticBox", "0", new { @Class = "form-control", @style = "float: left;text-align: center;", @readonly = "readonly" })
+                                @*<span class="error">Required</span>*@
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Rem. Balance :
+                            </td>
+                            <td>
+                                @Html.TextBox("tRemBalnace", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="text-align:right">
+                                Value(Taka):
+                            </td>
+
+                            <td>
+                                @Html.TextBox("modalOrderAmount", "0.00", htmlAttributes: new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+                                @*<span class="error">Required</span>*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="AddBtn"
+                                        class="btn btn-primary"
+                                        onclick="ReplaceProductInfo();">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <div>
+        <h3>Replace Product Information </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <table id="tblProduct" class="table table-striped">
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Description</th>
+                    <th>Quantity(Case)</th>
+                    <th>Box Qty.</th>
+                    <th>Batch No</th>
+                    <th>Amount</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <h3>Calculation Part:</h3>
+    <div>
+        <input type="text" id="tpayble" value="0" size="8" readonly style="text-align:right" />
+        <input type="text" id="tRepAmt" value="0" size="8" readonly style="text-align:right" />
+        @*<input type="text" id="tRemaing" value="0" size="8" readonly />*@
+        <input type="text" id="tRemaing" value="0" size="8" readonly style="text-align:right" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-4 col-md-5">
+        <input type="button" id="btnready" value="Ready for Replement" class="btn btn-primary" style="background-color:orangered" onclick="readyforreplace()" ; />
+        <input type="button" id="btnReset" value="Reset" class="btn btn-primary" style="background-color:yellowgreen" onclick="PageReLoad()" ; />
+        <input type="button" id="create" value="Create Replacement Invoice" class="btn btn-primary" style="background-color:orangered" onclick="saveReplaceData();" />
+    </div>
+</div>
+<script>
+    $("#create").prop('disabled', true);
+    $("#btnready").prop('disabled', true);
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+    function getReplaceNo(id) {
+        $.ajax({
+            url: "@Url.Action("mgetReplaceRefNo", "Replacement")",
+            data: {inCustomer: $("#CustomerID").val() },
+        type: "GET",
+        dataType: "json",
+        success: function (j) {
+            $("#tReplaceRefNo").html('0');
+            var options = '0-0';
+            for (var i = 0; i < j.length; i++) {
+                options += '<option value="' + j[i].id + '">' + j[i].name + '</option>';
+            }
+            $("#tReplaceRefNo").html(options);
+        }
+    });
+  }
+    $("#CustomerID").change(function () {
+        var id = $('#CustomerID').val()
+        getReplaceNo(id);
+    });
+    $("#tReplaceRefNo").change(function () {
+        var c = $("#tReplaceRefNo").val();
+        $("#ReplaceRefNo").val(c);
+
+    });
+    $('#CustomerID').change(function () {
+        $.ajax({
+            url: "@Url.Action("getPayableAmt", "Replacement")",
+            data: { inCustomer: $("#CustomerID").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#RemainingAmt").val(data);
+                $("#tOutstanding").val(data);
+                console.log(data);
+            },
+            error: function () {
+                alert("Failed! to found payable Amount for this customner.Please Check....");
+            }
+        });
+        var id = $('#CustomerID').val()
+        getReplaceNo(id);
+    });
+    $('#tReplaceRefNo').change(function () {
+        $.ajax({
+            url: "@Url.Action("getReplaceRefNoRemaks", "Replacement")",
+            data: {
+                inCustomer: $("#CustomerID").val(),
+                inReplace: $("#tReplaceRefNo").val()
+            },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#Remarks").val(data);
+            var c = $("#tReplaceRefNo").val();
+            $("#ReplaceRefNo").val(c);
+            //console.log(data);
+        },
+        error: function () {
+            alert("Failed! to foundremarks for this replace ID.Please Check....");
+        }
+        });
+
+    //var id = $('#CustomerID').val()
+    //getReplaceNo(id);
+    });
+    $('#tReplaceRefNo').blur(function () {
+        $.ajax({
+            url: "@Url.Action("getReplaceRefNoRemaks", "Replacement")",
+            data: {
+            inCustomer: $("#CustomerID").val(),
+            inReplace: $("#tReplaceRefNo").val()
+            },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#Remarks").val(data);
+            var c = $("#tReplaceRefNo").val();
+            $("#ReplaceRefNo").val(c);
+            //console.log(data);
+        },
+        error: function () {
+            alert("Failed! to foundremarks for this replace ID.Please Check....");
+        }
+    });
+
+    //var id = $('#CustomerID').val()
+    //getReplaceNo(id);
+    });
+    $('#ProductID').blur(function () {
+        $.ajax({
+            url: "@Url.Action("getProductDesc", "Replacement")",
+            data: { inProduct: $('#ProductID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+             $('#ProductDescription').val(data);
+             $('#ProductDescription').css('border-color', '');
+        },
+        error: function () {
+            alert("Failed! Product ID Invalid.");
+            $('#ProductDescription').val('!!!!')
+            $('#ProductDescription').css('border-color', 'red');
+            $('#myModal').modal('hide');
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+
+        }
+    });
+        //$("#AddBtn").prop('disabled', false);
+        var id = $('#ProductID').val()
+        getBatch(id)
+    });
+    $('#OrderCase').keydown(function () {
+        $.ajax({
+            url: "@Url.Action("getPlasticData", "Replacement")",
+            data: { inProduct: $('#ProductID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data == true) {
+                $('#PlasticBox').val($('#OrderCase').val());
+            }
+            else {
+                $('#PlasticBox').val("0");
+            }
+            int();
+        },
+        error: function () {
+            alert("Failed! Product ID Invalid.");
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+
+
+        }
+    })
+    });
+    function int() {
+        $('#OrderCase').keyup(function () {
+
+            var c = $('#OrderCase').val();
+            $.ajax({
+                url: "@Url.Action("getOrderValue", "Replacement")",
+                data: { custID: $('#CustomerID').val(), idProduct: $('#ProductID').val(), tOrder: $('#OrderCase').val(), totalPB: $('#PlasticBox').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                if (c <= 0) {
+                    alert('You Can not enter 0 or Negetive Pcs');
+                    $("#AddBtn").prop('disabled', true);
+                }
+                else {
+                    $("#AddBtn").prop('disabled', false);
+                    $('#modalOrderAmount').val(data);
+                    $("#btnready").prop('disabled', false);
+                   }
+
+
+            },
+            error: function () {
+                alert("Failed-OrderAmount");
+                $('#myModal').modal('hide');
+                $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+
+
+            }
+        })
+
+    });
+    }
+    function ReplaceProductInfo() {
+        var d = document.getElementById("ProductID");
+        var s = document.getElementById("ProductDescription");
+        var x = document.getElementById("OrderCase");
+        var u = document.getElementById("BatchNo");
+        var y = document.getElementById("PlasticBox");
+        var z = document.getElementById("modalOrderAmount");
+        var vorder = document.getElementById("tblProduct");
+        var tbr = vorder.rows.length;// - 1;
+        var n = vorder.insertRow(tbr);
+        var c1 = n.insertCell(0);
+        var c2 = n.insertCell(1);
+        var c3 = n.insertCell(2);
+        var c4 = n.insertCell(3);
+        var c5 = n.insertCell(4);
+        var c6 = n.insertCell(5);
+        c1.innerHTML = d.value;
+        c2.innerHTML = s.value;
+        c3.innerHTML = x.value;
+        c4.innerHTML = y.value;
+        c5.innerHTML = u.value;
+        c6.innerHTML = z.value;
+    }
+    $('#AddBtn').click(function (a) {
+        var totCase = 0;
+        var totBox = 0;
+        if (a.OrderCase != 0) {
+            totCase = parseFloat($('#TotCase').val()) + parseFloat($('#OrderCase').val())
+        };
+        $('#TotCase').val(totCase);
+        if (a.PlasticBox != 0) {
+            totBox = parseInt($('#TotBox').val()) + parseInt($('#PlasticBox').val())
+        };
+        $('#TotBox').val(totBox);
+
+        var allOrders = 0.00;
+        allOrders = parseFloat($('#TotDisburseAmt').val()) + parseFloat($('#modalOrderAmount').val());
+        $('#TotDisburseAmt').val(allOrders);
+        var ordamt = 0.00;
+        var remamt = 0.00;
+        ordamt = parseFloat($('#tOrderValue').val()) + parseFloat($('#modalOrderAmount').val());
+        $('#tOrderValue').val(ordamt);
+        remamt = Math.abs(parseFloat($('#tOutstanding').val())) - parseFloat($('#tOrderValue').val());
+        $('#tRemBalnace').val(remamt);
+        $("#AddBtn").prop('disabled', true);
+        $('#myModal').find('input[id=ProductDescription],input[id=ProductID],input[id=OrderCase],input[id=BatchNo],input[id=PlasticBox]').val('');
+        // $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+
+    });
+    function readyforreplace() {
+        var answer = confirm('Are you sure! you want to ready for Replacement??');
+        if (answer) {
+
+        }
+        else {
+            return false;
+        }
+        //var nth = $('#tblProduct tr').length;
+        //var amnt = parseFloat("0");
+        //for (j = 1; j < nth; j++) {
+        //    amnt += parseFloat($("table").find("tr").eq(j).find("td:eq(4) input[type='text']").val());
+
+        //}
+        //console.log(amnt);
+        //$("#tRepAmt").val(amnt);
+        var d = parseInt($("#TotDisburseAmt").val());
+        var c = parseInt($("#RemainingAmt").val());
+        $("#tpayble").val(c);
+        $("#tRepAmt").val(d);
+        var g = c - d;
+        $("#tRemaing").val(g);
+       // consule.log(d);
+       // consule.log(c);
+        if (d > c) {
+            alert('You can not disburse this re[lacement.. Your payble amount is less than disburse amount')
+            $("#create").prop('disabled', true);
+        }
+        else {
+
+            $("#create").prop('disabled', false);
+        }
+
+    }
+    function getBatch(id) {
+
+        $.ajax({
+            url: "@Url.Action("getProductBatch", "Replacement")",
+            data: { inProduct: id, inWarehouse: $("#WarehouseID").val() },
+        type: "GET",
+        dataType: "json",
+        success: function (j) {
+            $("#BatchNo").html('');
+            var options = '';
+            for (var i = 0; i < j.length; i++) {
+                options += '<option value="' + j[i].id + '">' + j[i].name + '</option>';
+            }
+            $("#BatchNo").html(options);
+        }
+    });
+
+    }
+    function saveReplaceData() {
+
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        var isAllValid = true;
+        var status = true;
+        DisburseData = [];
+        debugger;
+        var id = $('#tblProduct tr:last').index()
+        $('#tblProduct tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {
+                DisburseData.push({
+                    ProductID:$(tr).find('td:eq(0)').text(),
+                    CaseQty: $(tr).find('td:eq(2)').text(),
+                    BoxQty: $(tr).find('td:eq(3)').text(),
+                    BatchNo: $(tr).find('td:eq(4)').text(),
+                    TotAmount: $(tr).find('td:eq(5)').text(),
+                });
+            }
+        });
+        if (isAllValid) {
+            var data = {
+                CustomerID: $('#CustomerID').val(),
+                WarehouseID: $('#WarehouseID').val(),
+                TransactionDate: $('#TransactionDate').val(),
+                ReplaceRefNo: $('#ReplaceRefNo').val(),
+                LoadSheetNo: $('#LoadSheetNo').val(),
+                TotCase: $('#TotCase').val(),
+                TotBox: $('#TotBox').val(),
+                TotDisburseAmt: $('#TotDisburseAmt').val(),
+                RemainingAmt: $('#RemainingAmt').val(),
+                Remarks: $('#Remarks').val(),
+                disbursedetail: DisburseData
+            }
+        }
+        console.log(data);
+        //debugger;
+
+        $.ajax({
+            url: '/Replacement/DisburseSave',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done... Replacement No:' + a.v);
+                    window.location.reload();
+                    DisburseData = [];
+
+                }
+                else {
+                    alert('Replace Process is Failed!! Please Contact to IT dept.. ');
+                }
+
+            },
+            error: function () {
+                alert('Error. Please try again.');
+
+            }
+        });
+
+    }
+
+</script>

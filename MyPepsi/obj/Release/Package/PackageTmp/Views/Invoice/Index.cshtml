@@ -1,0 +1,613 @@
+﻿
+@{
+    ViewBag.Title = "Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<p>
+        <a id="clk" class="btn btn-success" href="@Url.Action("GetMRData")">See Inputted Data</a>
+    </p>*@
+<h2 class="text-center">Invoice Creation</h2>
+<div>
+
+    @*@Html.DropDownList("WarehouseIDList", null, "Select Warehouse", new { @class = "form-control" })*@
+
+    @*<input type="checkbox" id="chkStock" readonly>Stock Short?? </>*@
+    <input type="hidden" id="CustomerID" />
+    <input type="hidden" id="PhoneNo" />
+    <input type="hidden" id="chNo" />
+    <input type="hidden" id="HWarehouseID" />
+    <input type="hidden" id="VID" />
+    <input type="hidden" id="AdvanceOrder" />
+</div>
+@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>*@
+<div class="panel-body">
+    <div class="col-md-4">
+        <div>
+            <label>Warehouse ID:</label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <input type="radio" name="rdo" id="typeid">Advance Invoice</>
+            <label style="color:red">Select Order Number:</label>
+            @Html.DropDownList("forDeliveryChallan", null, "Select Challan", new { @class = "form-control" })
+            <label>LoadSheet No:</label>
+            <input type="text" id="orderID" placeholder="Order ID" class="form-control" size="5" readonly />
+            @*<label>Sales Order No:</label>
+                <input type="text" id="SOrderNo" placeholder="Order ID" class="form-control" size="5" readonly />*@
+            <label>Order Date:</label>
+            <input type="text" id="orderDate" placeholder="Order Date" class="form-control" readonly />
+            <label>Customer:</label>
+            <input type="text" id="txtCustomer" placeholder="Customer" class="form-control" readonly />
+            <label>Vehicle:</label>
+            <input type="text" id="txtVehicle" placeholder="Vehicle" class="form-control" readonly />
+
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label>Driver:</label>
+            <input type="text" id="txtDriver" placeholder="Driver" class="form-control" readonly />
+            <label style="color:red">Driver Cell Number:</label>
+            <input type="text" id="driverPhone" value="0" placeholder="Driver Phone Number" class="form-control" />
+            <label>Select Helper1:</label>
+            @Html.DropDownList("HelperLists1", null, "Select Helper", new { @class = "form-control" })
+            <label>Select Helper2</label>
+            @Html.DropDownList("HelperLists2", null, "Select Helper", new { @class = "form-control" })
+            <label>Select Helper3:</label>
+            @Html.DropDownList("HelperLists3", null, "Select Helper", new { @class = "form-control" })
+            <input type="checkbox" id="unlChargeCheckBox">Unload Charge?</> <input type="checkbox" id="outDhakaChk">Outside Dhaka</> <input type="checkbox" id="nightShiftChk">Night Shift</><br />
+            <input type="text" id="unloadCharge" value="0" class="form-control" />
+            <label style="color:blue">Special Note</label>
+            <textarea class="span6 form-control" id="spnote" rows="2" placeholder="Special Notes"></textarea>
+
+        </div>
+    </div>
+    <div id="d3">
+        <label>Hire Truck Informations</label>
+        @Html.DropDownList("TransportAgencyList", null, "Select Transport Agency", new { @class = "form-control" })
+        <br />
+        <input type="text" id="VechileNo" value="N/A" class="form-control">
+        <input type="radio" name="rdo" id="r1">Rate1 </>
+        <input type="text" id="Rate1" value="0.0" class="form-control" readonly>
+        <input type="radio" name="rdo" id="r2">Rate2 </>
+        <input type="text" id="Rate2" value="0.0" class="form-control" readonly>
+        <input type="radio" name="rdo" id="r3">Rate3 </>
+        <input type="text" id="Rate3" value="0.0" class="form-control" readonly>
+        <label>Selected Rate:</label>
+        <input type="text" id="FareAmnt" value="0.0" class="form-control" readonly><br /><br />
+        <input type="button" id="btnCheckData" value="Check Data Validation" class="form-control btn btn-primary" />
+        <input id="btnReset" type="button" class="form-control btn btn-primary" value="Reset" onClick="PageReLoad();" />
+        <input id="btnDelivery" type="button" class="form-control btn btn-primary" value="Create Invoice" onClick="InvoiceAdd();" />
+    </div>
+    <div class="col-xs-4">
+
+
+    </div>
+</div>
+<div>
+    <input type="hidden" id="InvNo" name="InvNo" value="0" />
+    <input type="button" id="btnDeliveryPrint" value="Print Invoice" class="form-control btn btn-primary" />
+    @*<form id="SubFrom" method="post" action="/ReprintReport/Invoice" target="_blank">
+            <input id="btnReset" type="button" class="form-control btn btn-primary" value="Reset" onClick="PageReLoad();" />
+            <input type="submit" id="btnDelivery" value="Create Invoice" class="form-control btn btn-primary" />
+            <input type="hidden" id="InvNo" name="InvNo" value="0" />
+
+        </form>*@
+</div>
+<div>
+    <input type="text" id="totalCases" value="0" size="3" readonly />
+    <input type="text" id="totalBottles" value="0" size="3" readonly />
+    <input type="text" id="totalBoxes" value="0" size="3" readonly />
+    <input type="text" id="totalPcinCase" value="0" size="3" readonly />
+    <input type="text" id="allChallanPcs" value="0" size="3" readonly />
+</div>
+<table class="table table-striped table-bordered table-responsive" id="tbl">
+    <tr id="tr1">
+        <th>SL</th>
+        <th>PID</th>
+        <th>Name</th>
+        <th>Scheme</th>
+        <th>CaseQty</th>
+        <th>BottleQty</th>
+        <th>RbtCase</th>
+        <th>RbtBottle</th>
+        <th>Box</th>
+        <th>PriceBottle</th>
+        <th>PriceCase</th>
+        <th>SecurityAmount</th>
+        <th>TotalAmount</th>
+        <th>TotalRebate</th>
+        <th>TotalAgency</th>
+    </tr>
+</table>
+<h3>Calculation Part:</h3>
+<div>
+    <input type="text" id="txtSalesAmount" value="0" size="8" readonly />
+    <input type="text" id="txtRebateAmount" value="0" size="8" readonly />
+    <input type="text" id="txtSecurityAmount" value="0" size="8" readonly />
+    <input type="text" id="txtAgencyAmount" value="0" size="8" readonly />
+    <input type="text" id="txtTotalGross" value="0" size="8" readonly />
+
+
+</div>
+<div id="tabledata"></div>
+
+@*<script src="~/Scripts/date.format.js"></script>*@
+
+<script>
+    $("#btnDelivery").prop('disabled', true);
+    $("#btnCheckData").prop('disabled', true);
+    $("#btnDeliveryPrint").prop('disabled', true);
+
+    $(document).ready(function () {
+        $("#btnDeliveryPrint").click(function () {
+            $.ajax({
+                url: '/ReprintReport/Invoice',
+                                dataType: "HTML",
+                type: "POST",
+                data: { InvNo: $("#InvNo").val(), typeInv: "Invoice" },
+                cache: false,
+                async: true,
+                success: function (data) {
+                    $("#tabledata").html(data);
+                    //location.reload();
+                }
+            });
+        });
+
+
+        $('#chkStock').prop("disabled", "disabled");
+       // $("#d3").children().attr('disabled', true)
+
+
+        $("#forDeliveryChallan").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetOrderData", "Invoice")",
+                data: { orderID: $("#forDeliveryChallan").val(), warehouseID: $("#WarehouseID").val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //$("#firstname").val($(this).find("option:selected").text());
+                    //alert(data[0].CustomerID);
+                    $("#CustomerID").val(data[0].CustomerID);
+                    //$("#WarehouseID").val(data[0].WarehouseID);
+                    $("#txtCustomer").val(data[0].CustomerName);
+                    $("#orderID").val(data[0].OrderID);
+                    $("#VID").val(data[0].VehicleID);
+                    $("#PhoneNo").val(data[0].CustomerPhone);
+                                        //$("#orderDate").val(data[0].OrderDate);
+
+                    //$("#orderDate").val(new Date(parseInt(data[0].OrderDate.substr(6))).format("dd-mon-yyyy"));
+                    $("#txtVehicle").val(data[0].VehicleRegistrationNo);
+                 //   if ($("#txtVehicle").val()=='Hired Truck') {
+                 //     $("#d3").children().attr('disabled', false)
+                 //   }
+                 //   else {
+                 //       $("#d3").children().attr('disabled', true)
+                  //  }
+                    $("#txtDriver").val(data[0].DriverName);
+                    $("#forDeliveryChallan").prop('disabled', true);
+                    $('#SOrderNo').val(data[0].SalesOrderNo);
+                    $(hiretruck);
+                    $("#btnCheckData").prop('disabled', false);
+
+                },
+                error: function () {
+                    alert("Failed! can't load PMX Cutomer");
+                }
+            });
+
+           // console.log(CustomerID + WarehouseID);
+            //Details Order Data
+           // debugger;
+        $.ajax({
+            url: "@Url.Action("GetOrderDataDetail", "Invoice")",
+            data: { orderID: $("#forDeliveryChallan").val(), warehouseID: $("#WarehouseID").val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+           // $('#tbl').ajax.reload();
+            $("#tbl td").remove();
+            //$("#tbl tr").append('<tr><th>SL</th><th>PID</th><th>Name</th><th>Scheme</th><th>CaseQty</th><th>BottleQty</th><th>RbtCase</th><th>RbtBottle</th><th>Box</th><th>PriceCase</th><th>PriceBottle</th><th>SecurityAmount</th><th>TotalAmount</th><th>TotalRebate</th><th>TotalAgency</th></tr>');
+
+            $.each(data, function (i, orderDetail) {
+                var table = document.getElementById("tbl"); //get the table
+                var rowcount = i + 1;//table.rows.length; //get no. of rows in the table
+                //append the controls in the row
+                var tblRow = '<tr id="row' + rowcount + '">' +
+                    '<td>' +
+                        '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+                '</td>' +
+                '<td> <input type="text"  id="txtpID' + rowcount + '" value="' + orderDetail.ProductID + '" size="2" readonly /></td>' +
+                '<td><input type="text"   id="txtProductDescription' + rowcount + '" value="' + orderDetail.ProductDescription + '" size="14" readonly /></td>' +
+                '<td><input type="text"   id="txtScheme' + rowcount + '" value="' + orderDetail.SchemeDescription + '" size="12" readonly /></td>' +
+                '<td><input type="text"   id="txtCaseQty' + rowcount + '" value="' + orderDetail.AlternateQuantity + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtBottleQty' + rowcount + '" value="' + orderDetail.Quantity + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtRbtCase' + rowcount + '" value="' + orderDetail.AlternateRebateQuantity + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtRbtBottle' + rowcount + '" value="' + orderDetail.RebateQuantity + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtBox' + rowcount + '" value="' + orderDetail.PlasticBoxQuantity + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtPriceCase' + rowcount + '" value="' + orderDetail.UnitPrice + '" size="3" readonly /></td>' +
+                 '<td><input type="text"   id="txtPriceBottle' + rowcount + '" value="' + orderDetail.AlternateUnitPrice + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtSecurityAmount' + rowcount + '" value="' + orderDetail.SecurityAmount + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtTotal' + rowcount + '" value="' + orderDetail.Total + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtTotalRebate' + rowcount + '" value="' + orderDetail.TotalRebate + '" size="3" readonly /></td>' +
+                '<td><input type="text"   id="txtTotalAgency' + rowcount + '" value="' + orderDetail.TotalAgencyCommission + '" size="3" readonly /></td>' +
+                '<td><input type="hidden"   id="txtPCINCASE' + rowcount + '" value="' + orderDetail.ConversionFactor + '" size="3" readonly /></td>' +
+
+            '</tr>'
+                //append the row to the table.
+                $("#tbl").append(tblRow);
+            })
+            //$("#updateButton").prop('disabled', false);
+
+            var nth = $("table").find("tr").length;
+            var Cases = parseInt("0");
+            var Bottles = parseInt("0");
+            var Boxes = parseInt("0");
+            var PcInCs = parseInt("0");
+            var ChallanPcs = parseInt("0");
+
+            var SalesAmount = parseInt("0");
+            var RebateAmount = parseInt("0");
+            var SecurityAmount = parseInt("0");
+            var AgencyComm = parseInt("0");
+
+            for (j = 1; j < nth; j++) {
+                Cases += parseInt($("table").find("tr").eq(j).find("td:eq(4) input[type='text']").val()) + parseInt($("table").find("tr").eq(j).find("td:eq(6) input[type='text']").val());
+                Bottles += parseInt($("table").find("tr").eq(j).find("td:eq(5) input[type='text']").val()) + parseInt($("table").find("tr").eq(j).find("td:eq(7) input[type='text']").val());
+                Boxes += parseInt($("table").find("tr").eq(j).find("td:eq(8) input[type='text']").val());
+                PcInCs += (parseInt($("table").find("tr").eq(j).find("td:eq(5) input[type='text']").val()) + parseInt($("table").find("tr").eq(j).find("td:eq(7) input[type='text']").val())) / parseInt($("table").find("tr").eq(j).find("td:eq(15) input[type='hidden']").val());
+                ChallanPcs += (parseInt($("table").find("tr").eq(j).find("td:eq(4) input[type='text']").val()) + parseInt($("table").find("tr").eq(j).find("td:eq(6) input[type='text']").val()))*parseInt($("table").find("tr").eq(j).find("td:eq(15) input[type='hidden']").val());
+                //alert(parseInt($("table").find("tr").eq(j).find("td:eq(15) input[type='hidden']").val()));
+                SalesAmount += parseFloat($("table").find("tr").eq(j).find("td:eq(12) input[type='text']").val());
+                RebateAmount += parseFloat($("table").find("tr").eq(j).find("td:eq(13) input[type='text']").val());
+                SecurityAmount += parseFloat($("table").find("tr").eq(j).find("td:eq(11) input[type='text']").val());
+                AgencyComm += parseFloat($("table").find("tr").eq(j).find("td:eq(14) input[type='text']").val());
+            }
+            //alert(amnt);
+            $("#totalCases").val(Cases);
+            $("#totalBottles").val(Bottles);
+            $("#totalBoxes").val(Boxes);
+            $("#totalPcinCase").val(PcInCs);
+            $("#allChallanPcs").val(ChallanPcs + Bottles);
+
+            $("#txtSalesAmount").val(SalesAmount.toFixed(2));
+            $("#txtRebateAmount").val(RebateAmount.toFixed(2));
+            $("#txtSecurityAmount").val(SecurityAmount.toFixed(2));
+            $("#txtAgencyAmount").val(AgencyComm.toFixed(2));
+            $("#txtTotalGross").val((SalesAmount + RebateAmount).toFixed(2));
+
+            },
+        error: function () {
+            alert("Failed!");
+        }
+    });
+   });
+        //unload charge
+        $("#unlChargeCheckBox").change(function () {
+            var FAmnt = parseInt((parseInt($("#totalCases").val()) + parseInt($("#totalPcinCase").val())) * 1);
+
+
+            if ($("#unlChargeCheckBox").is(':checked')) {
+                $("#unloadCharge").val(FAmnt);
+            }
+            else {
+                $("#unloadCharge").val(0);
+            }
+
+        });
+
+        $("#outDhakaChk").change(function () {
+            var FAmnt = parseInt((parseInt($("#totalCases").val()) + parseInt($("#totalPcinCase").val())) * 1);
+
+            if (($("#unlChargeCheckBox").is(':checked')) && ($("#outDhakaChk").is(':checked'))) {
+                $("#unloadCharge").val(FAmnt * .5);
+            }
+            else {
+                $("#unloadCharge").val(FAmnt);//nightShiftChk
+            }
+
+        });
+
+        $("#nightShiftChk").change(function () {
+            var FAmnt = parseInt((parseInt($("#totalCases").val()) + parseInt($("#totalPcinCase").val())) * 1);
+
+            if (($("#unlChargeCheckBox").is(':checked')) && ($("#nightShiftChk").is(':checked')) && ($("#outDhakaChk").not(':checked').length)) {
+                $("#unloadCharge").val(FAmnt * .7);
+            }
+            else {
+                $("#unloadCharge").val(FAmnt);//nightShiftChk
+            }
+
+        });
+
+        //get Fare Amount Against Transport Agency
+        $("#TransportAgencyList").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetAgencyFareAmount", "Invoice")",
+                data: { custID: $('#CustomerID').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //loadData(data);
+                $('#Rate1').val(data.Rate1);
+                $('#Rate2').val(data.Rate2);
+                $('#Rate3').val(data.Rate3);
+                //alert('Stock Quantity of this Product is: ' + data);
+                alert("Before Save, Please ensure to Check Unload charge Option!!");
+            },
+            error: function () {
+                alert("Failed! Warehouse ID not Set for Fare!");
+            }
+        });
+
+    });
+    //Radio option
+    $("#r1").change(function () {
+        var FAmnt = $("#Rate1").val();
+        $("#FareAmnt").val(FAmnt);
+    });
+    $("#r2").change(function () {
+        var FAmnt = $("#Rate2").val();
+        $("#FareAmnt").val(FAmnt);
+    });
+    $("#r3").change(function () {
+        var FAmnt = $("#Rate3").val();
+        $("#FareAmnt").val(FAmnt);
+    });
+    $("#typeid").change(function () {
+       // var FAmnt = $("#Rate2").val();
+        $("#AdvanceOrder").val("ADV");
+    });
+
+   //Save button function
+    function CreateInvoice() {
+        debugger;
+        alert('test');
+        $("#btnDelivery").click(function () {
+            $("#btnDelivery").prop('disabled', true);
+        var data = {
+            OrderID: $("#forDeliveryChallan").val(),
+            WarehouseID: $("#WarehouseID").val(),
+            VehicleID: $("#VID").val(),
+            SalesAmount: $("#txtSalesAmount").val(),
+            SecurityAmount: $("#txtSecurityAmount").val(),
+            RebateAmount: $("#txtRebateAmount").val(),
+            AgencyCommission: $("#txtAgencyAmount").val(),
+            FinishGoodsUnloadCharge: $("#unloadCharge").val(),
+            Helper1:$("#HelperLists1").val(),//HelperLists1
+            Helper2: $("#HelperLists2").val(),
+            Helper3: $("#HelperLists3").val(),
+            TAID: $('#TransportAgencyList').val(),
+            VechileNo: $('#VechileNo').val(),
+            FareAmnt: $('#FareAmnt').val(),
+            TotalCases: parseInt($("#totalCases").val()) + parseInt($("#totalPcinCase").val()),
+            TotalPcs: parseInt($("#allChallanPcs").val()),
+            AdvanceOrder: $("#AdvanceOrder").val(),
+            SalesOrderNo: $("#SOrderNo").val(),
+            //ChequeDDNo: $("#CDPNumber").val(),
+            //ChequeDate: $("#tDate").val(),
+            //LocalBankBranchID: $("#LocalBranchName").val(),
+            //DepositedByID: $("#DepositedBy").val(),
+            ////AdvanceAdjustment:$("#LocalBranchName").val.trim(),
+            //// UserID:$("#DepositedBy").val.trim(),
+            //ChallanNo: $("#chNo").val(),
+            //BankID: $("#BankName").val(),
+            //CashSettlementID: $("#csID").val()
+        }
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            $.ajax({
+                url: '/Invoice/AddInvoiceData',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+                    if (a.status == true) {
+                        $("#InvNo").val(a.v);
+                        //alert('Successfully done...');
+                        alert('Invoice Creation Successfully and No : ' + a.v);
+
+                        $(SMSsend);
+
+                        // window.location.href = "/OrderReport/Invoice?SOrderNo=" + a.SNo;//?SOrderNo=" + a.SNo;
+                        //location.href = "OrderReport/Invoice?SOrderNo=" + a.SNo;
+                        //window.location.reload();
+
+                    }
+                    else {
+                        alert('Your Execution fail.. Please check');
+
+
+                        //var newWindow = window.open("", "_blank");
+                        //newWindow.location.href = "/OrderReport/Invoice?SOrderNo=" + 619000015;
+
+                        //window.open("/OrderReport/Invoice");
+                        //window.location.href = "/OrderReport/Invoice?SOrderNo=" + 619000015,'_blank';//?SOrderNo=" + a.SNo;
+                    }
+                    // $('#create').val('Create');
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+
+                    // $('#create').val('Create');
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    });
+    };
+    $("#btnCheckData").click(function () {
+        if ($("#txtVehicle").val() == "Hired Truck") {
+            $("#btnDelivery").prop('disabled', true);
+        }
+        else
+        {
+            $("#btnDelivery").prop('disabled', false);
+        }
+        if ($('#unlChargeCheckBox').prop('checked'))
+        {
+            $("#btnDelivery").prop('disabled', false);
+        }
+        var nth = $("table").find("tr").length;
+        //$("table tbody tr").each(function () {
+        //    prID = $(this).find("td").eq(1).find(":text").val();
+        //    warehouseID = $("#WarehouseID").val(),
+        //    allCSqty = parseInt($(this).find("td").eq(4).find(":text").val()) + parseInt($(this).find("td").eq(6).find(":text").val()),
+        //    allPSqty = parseInt($(this).find("td").eq(5).find(":text").val()) + parseInt($(this).find("td").eq(7).find(":text").val())
+
+        //    alert("TextBox text is " + textval + "; DropDown selected value is " + ddlval);
+
+        for (i = 0; i < nth - 1; i++) {
+
+            prID = $("table").find("tr").eq(i + 1).find("td:eq(1) input[type='text']").val(),
+            warehouseID= $("#WarehouseID").val(),
+            allCSqty=parseInt($("table").find("tr").eq(i + 1).find("td:eq(4) input[type='text']").val())+parseInt($("table").find("tr").eq(i + 1).find("td:eq(6) input[type='text']").val()),
+            allPSqty=parseInt($("table").find("tr").eq(i + 1).find("td:eq(5) input[type='text']").val())+parseInt($("table").find("tr").eq(i + 1).find("td:eq(7) input[type='text']").val())
+
+            $.ajax({
+                url: "@Url.Action("CheckStockData", "Invoice")",
+                data: {
+                    prID:prID, //$("table").find("tr").eq(i + 1).find("td:eq(1) input[type='text']").val(),
+                    warehouseID:warehouseID, //$("#WarehouseID").val(),
+                    allCSqty:allCSqty,//parseInt($("table").find("tr").eq(i + 1).find("td:eq(4) input[type='text']").val())+parseInt($("table").find("tr").eq(i + 1).find("td:eq(6) input[type='text']").val()),
+                    allPSqty: allPSqty//parseInt($("table").find("tr").eq(i + 1).find("td:eq(5) input[type='text']").val())+parseInt($("table").find("tr").eq(i + 1).find("td:eq(7) input[type='text']").val())
+                },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //$.each(data, function (i, prDetails) {
+                //})
+                if(data==""){
+
+                }
+                else {
+                    alert(data);
+                    $("#tbl").css("background-color", "red");
+                    $("#btnDelivery").prop('disabled', true);
+                    $("#chkStock").prop('checked', true);
+                }
+            },
+            error: function () {
+                alert("Error!");
+            }
+        });
+            }
+        //  })
+        $("#btnCheckData").prop('disabled', true);
+    })
+
+
+   })
+    // Send SMS to Customer
+   function SMSsend() {
+        //To Save New Item
+       var Consms = "Dear, " +  $("#totalCases").val() + " Cases Product sending you." +
+           " Driver Name:"+  $("#txtDriver").val() + " Mobile No:" + $("#driverPhone").val() + " From PEPSI";
+           //500 Cases Product sending to you. Invoice No:610000234. Driver:Md. XX, Mobile:01712155018
+
+            var data = {
+                phoneno: $("#PhoneNo").val(),
+                sms: Consms
+            }
+            console.log(Consms);
+            $.ajax({
+                url: '/Invoice/SendSMStoDB',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully Send SMS to Customeer ...');
+                       // window.location.reload();
+                        $("#driverPhone").val('');
+                        $("#spnote").val('');
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                   // alert('SMS not send to Customer..');
+                }
+            });
+
+        };
+    //
+
+   function hiretruck() { var v = $("#VID").val();
+       if (v != 1) {
+           $("#VechileNo").prop('disabled', true);
+           $("#TransportAgencyList").prop('disabled', true);
+       }
+   }
+   function PageReLoad() {
+       alert("Are you sure Reset ...?")
+       location.reload();
+   }
+   function InvoiceAdd() {
+      // alert("test");
+       var answer = confirm('Are you sure you want to save this?');
+       if (answer) {
+           //  return;
+           //return status;
+       }
+       else {
+           return false;
+       }
+       var data = {
+           OrderID: $("#forDeliveryChallan").val(),
+           WarehouseID: $("#WarehouseID").val(),
+           VehicleID: $("#VID").val(),
+           SalesAmount: $("#txtSalesAmount").val(),
+           SecurityAmount: $("#txtSecurityAmount").val(),
+           RebateAmount: $("#txtRebateAmount").val(),
+           AgencyCommission: $("#txtAgencyAmount").val(),
+           FinishGoodsUnloadCharge: $("#unloadCharge").val(),
+           Helper1: $("#HelperLists1").val(),//HelperLists1
+           Helper2: $("#HelperLists2").val(),
+           Helper3: $("#HelperLists3").val(),
+           TAID: $('#TransportAgencyList').val(),
+           VechileNo: $('#VechileNo').val(),
+           FareAmnt: $('#FareAmnt').val(),
+           TotalCases: parseInt($("#totalCases").val()) + parseInt($("#totalPcinCase").val()),
+           TotalPcs: parseInt($("#allChallanPcs").val()),
+           AdvanceOrder: $("#AdvanceOrder").val(),
+           SalesOrderNo: $("#SOrderNo").val()
+       }
+       $.ajax({
+           url: '/Invoice/AddInvoiceData',
+           type: "POST",
+           data: JSON.stringify(data),
+           dataType: "JSON",
+           contentType: "application/json",
+           success: function (a) {
+               if (a.status == true) {
+                   $("#InvNo").val(a.v);
+                   alert('Invoice Creation Successfully and No : ' + a.v);
+                   $(SMSsend);
+                   $("#btnDelivery").prop('disabled', true);
+                   $("#btnDeliveryPrint").prop('disabled', false);
+
+               }
+               else {
+                   alert('Your Execution fail.. Please check');
+               }
+           },
+           error: function () {
+               alert('Error. Please try again.');
+           }
+       });
+
+   }
+
+</script>

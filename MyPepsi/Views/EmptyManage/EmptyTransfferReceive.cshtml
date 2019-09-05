@@ -1,0 +1,204 @@
+﻿@model MyPepsi.ViewModel.EmptyTransferVM
+
+
+@{
+    ViewBag.Title = "EmptyTransferMove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Empty Transffered Received</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <input type="hidden" id="TotalEmpty"/>
+            <input type="hidden" id="TotalBox"/>
+            <input type="hidden" id="DriverID" />
+            <label>Warehouse ID and Name:</label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <label style="color:red">Transaction Reference Number:</label>
+            @*<input type="text" id="ReferenceNo" class="form-control">*@
+            @Html.DropDownList("TransactionNo", null, "Select Reference No", new { @class = "form-control" })
+            <label>Reference No</label>
+            @Html.TextBox("tRefno", "", new { @Class = "form-control", @readonly = "readonly" })
+            <label>Remarks/Note</label>
+            <input type="text" id="Remark" class="form-control"> 
+            &nbsp;       
+            <input type="button" id="cancel" value="Reset" class="btn btn-primary btn-sm btn-block" onclick="PageReLoad();"/>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div>
+            <label>Transffered From Warehouse</label>
+            @Html.TextBox("FromWarehouse", "", new { @Class = "form-control", @readonly = "readonly" })
+            <label>Transaction Type ID</label>
+            @*<input type="text" id="ReferenceNo" class="form-control">*@
+            @Html.TextBox("TransactionType", "", new { @Class = "form-control", @readonly = "readonly" })
+            <label style="color:red">Storage Location:</label>
+            @Html.DropDownList("StorageLocationCode", null, "Select Location", new { @class = "form-control" })
+            <label style="color:red">Storage Bin:</label>
+             @Html.DropDownList("StorageBin", null, "Select Storage Bin", new { @class = "form-control" })
+             &nbsp;   
+            <input type="button" id="create" value="Save" class="btn btn-primary btn-sm btn-block" onclick="savebtn();" />
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <div class="row">
+          <div class="col-md-6" style="margin-top:15px">
+            <div>
+                <h4 style="color:green">Empty Product Information</h4>
+            </div>
+            <table id="tblEmpty" class="table-responsive table-striped table-bordered">
+                <tr>
+                    <th>SL</th>
+                    <th>Product ID</th> 
+                    <th>Product Description</th>                   
+                    <th>Quantity(Cases)</th>
+                    <th>Plastic Box</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </table>
+              <div class="col-sm-offset-7">
+                  <input type="text" id="totalCases" value="0" size="11" readonly style="text-align:right" />
+                  <input type="text" id="totalBoxes" value="0" size="11" readonly style="text-align:right" />
+              </div>
+          </div>
+    </div>
+</div>
+<script>
+    $("#create").prop('disabled', true);
+    // debugger;
+    $('#TransactionNo').change(function () {
+        $.ajax({
+            url: "@Url.Action("EmptyDetailInfo", "EmptyManage")",           
+            data: { inWarehouseID: $('#WarehouseID').val(), inTrNo: $('#TransactionNo').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (i, EmptyMove) {
+                $("#FromWarehouse").val(EmptyMove.WarehouseID);
+                $("#TransactionType").val(EmptyMove.TransactionTypeName);
+                $("#tRefno").val(EmptyMove.ReferenceNo);
+                $("#DriverID").val(EmptyMove.DriverID);
+                $("#TotalEmpty").val(EmptyMove.QuantityCase);
+                $("#TotalBox").val(EmptyMove.Boxes);
+                var table = document.getElementById("tblEmpty");
+               // console.log(EmptyMove.ExpiryDate);
+                var rowcount = i + 1;
+                var tblRow = '<tr id="row' + rowcount + '">' +
+                   '<td>' +
+                       '<label id="lblID' + rowcount + '">' + rowcount + '</label>' + 
+               '</td>' +
+               '<td> <input type="text" readonly id="tProductID' + rowcount + '" value="' + EmptyMove.ProductID + '"size ="6"' + '" style="text-align:center;"" /></td>' +
+               '<td><input type="text"  readonly id="tProductDescription' + rowcount + '" value="' + EmptyMove.ProductDescription + '"size ="25" /></td>' +
+               '<td><input type="text"  readonly id="tCaseQuantity' + rowcount + '" value="' + EmptyMove.QuantityCase + '"size ="12"' + '" style="text-align:right;"" /></td>' +
+               '<td><input type="text"  readonly id="tPlasticBoxQuantity' + rowcount + '" value="' + EmptyMove.Boxes + '"size ="12"' + '" style="text-align:right;"" /></td>' +
+               '</tr>'
+                $("#tblEmpty").append(tblRow);
+            })
+            var nth = $("table").find("tr").length;
+            var Cases = parseInt("0");           
+            var Boxes = parseInt("0");
+            for (j = 1; j < nth; j++) {
+                Cases += parseFloat($("table").find("tr").eq(j).find("td:eq(3) input[type='text']").val());               
+                Boxes += parseFloat($("table").find("tr").eq(j).find("td:eq(4) input[type='text']").val());
+            }
+            $("#totalCases").val(Cases);
+            $("#totalBoxes").val(Boxes);
+        },
+        error: function () {
+            alert("Failed! to found Empty Transfer data .Please Check....");
+        }
+    });
+    $("#TransactionNo").prop('disabled', true);
+    $("#create").prop('disabled', false);
+    });
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+    function checkvalid() {
+        var isAllValid = true;
+        var frd = $("#StorageLocationCode").val();
+        var bin = $("#StorageBin").val();
+        if (frd != null && bin!=null) {
+            return isAllValid;
+        }
+        else {
+            return false;
+        }
+    }
+
+    var isAllValid = true;
+    function savebtn() {
+        var answer = confirm('Are you sure, you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        //$(checkvalid); 
+        proddata = [];
+        //console.log(order);
+        var id = $('#tblEmpty tr:last').index()
+        $('#tblEmpty tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {              
+                proddata.push({
+                    ProductID: $('#tProductID' + row).val().trim(),
+                    QuantityCase: $('#tCaseQuantity' + row).val().trim(),
+                    Boxes: $('#tPlasticBoxQuantity' + row).val().trim()                    
+                });
+            }
+        });
+
+        $('#create').html('Please wait...');
+       // console.log(checkvalid);
+        if (isAllValid == true) {
+            var data = {
+                WarehouseID: $('#WarehouseID').val().trim(),
+                TransactionNo: $('#TransactionNo').val().trim(),
+                ReferenceNo: $("#tRefno").val().trim(),
+                Remarks: $('#Remark').val().trim(),
+                FromWarehouse: $('#FromWarehouse').val().trim(),
+                //TransactionType: $('#TransactionType').val().trim(),
+                ToWarehouse: $('#WarehouseID').val().trim(),
+                StoreLocation: $('#StorageLocationCode').val().trim(),
+                BinNo: $('#StorageBin').val().trim(),               
+                TotalEmpty: $('#totalCases').val().trim(),
+                TotalBox: $('#totalBoxes').val().trim(),
+                DriverID: $("#DriverID").val().trim(),
+                emptydetail: proddata
+            }
+        }
+        console.log(data);
+        $.ajax({
+            url: '/EmptyManage/TransfferData',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {  
+                    alert('Successfully done...Transfer No : ' + a.v);
+                    window.location.reload();
+                    proddata = [];
+
+                }
+                else {
+                    alert('Failed to save. Please Check...');
+                }
+            },
+            error: function () {
+                alert('Error found. Please try again or Contact IT Team');
+            }
+        });
+    };
+
+</script>

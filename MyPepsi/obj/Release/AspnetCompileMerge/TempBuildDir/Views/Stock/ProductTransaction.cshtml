@@ -1,0 +1,686 @@
+﻿@model MyPepsi.ViewModel.StockVM
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<p>
+        <a id="clk" class="btn btn-success" href="@Url.Action("GetProductTrData")">See Inputted Data</a>
+    </p>*@
+<h2>Product Receive and Transfer</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label style="color:red;text-align:left">Reference Number:</label>
+            <input type="text" id="ReferenceNo" class="form-control">
+            <label>Warehouse ID:</label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @*@Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })*@
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <label style="color:red">Transaction Type:</label>
+            @Html.DropDownList("TransactionTypeID", null, "Select Type", new { @class = "form-control" })
+            <label style="color:red">Storage Location:</label>
+            @Html.DropDownList("StorageLocationCode", null, "Select Location", new { @class = "form-control" })
+            <label>To Warehouse:</label>
+            @Html.DropDownList("TWarehouse", null, "Select Warehouse", new { @class = "form-control" })
+            <label style="color:red">Choose Vehicle:</label>
+            @Html.DropDownList("Vehicle", null, "Select Vehicle", new { @class = "form-control" })
+            <label>Choose Driver:</label>
+            @Html.DropDownList("Driver", null, "Select Driver", new { @class = "form-control" })
+        </div>
+    </div>
+    <div id="ht">
+        <h3>Hire Truck Fare Option</h3>
+        @Html.DropDownList("TransportAgencyList", null, "Select Transport Agency", new { @class = "form-control" })
+        <br />
+        <input type="text" id="VechileNo" placeholder="Enter Vehicle No" class="form-control">
+        <input type="radio" name="rdo" id="r1">Rate1 </>
+        <input type="text" id="Rate1" value="0.0" class="form-control" readonly>
+        <input type="radio" name="rdo" id="r2">Rate2 </>
+        <input type="text" id="Rate2" value="0.0" class="form-control" readonly>
+        <input type="radio" name="rdo" id="r3">Rate3 </>
+        <input type="text" id="Rate3" value="0.0" class="form-control" readonly>
+        <label>Selected Rate:</label>
+        <input type="text" id="FareAmnt" placeholder="Selected Fare Amount" class="form-control" readonly>
+        <label>Remark/Note:</label>
+        <input type="text" id="Remarks" placeholder="Remark/Note" class="form-control">
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:600px;">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none">
+                        <tr style="border:none">
+                            <td>
+                                <label style="color:red">Product ID:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductID", "", new { @Class = "form-control", style = "width:250px" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Product Name:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductDescription", "", new { @Class = "form-control", @readonly = "readonly" })  @*new { style = "width:250px" }*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Batch No:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("BatchNo", "", new { @Class = "form-control", style = "width:250px" })
+
+                            </td>
+                            <td>
+                                @*@Html.DropDownList("TrBatchNo", null, "Select batch", new { @Class = "form-control", style = "width:150px", onchange = "fTrBatchNo()" })*@
+                                <select id="TrBatchNo" class="form-control" ,style="width:150px" @*,onchange="fTrBatchNo()"*@><option>Select One</option></select>
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Line No </label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("PlantLineNo", null, "Select Line", new { @Class = "form-control", style = "width:250px" })  @*new { style = "width:250px" }*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Manufacture Date</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("ManufactureDate", "", new { @Class = "form-control", style = "width:250px" })
+                            </td>
+                            @*<td>
+                                    @Html.TextBox("TrManufactureDate", "", new { @Class = "form-control", style = "width:150px" })
+                                </td>*@
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Expiry Date</label>
+                            </td>
+                            <td>
+                                @*<input type="hidden" name="ExpiryDayNo" value="put" />*@
+                                @Html.TextBox("ExpiryDate", " ", new
+                           {
+                               @Class = "form-control",
+                               style = "width:250px",
+                               @readonly = "readonly" @*,@value=System.DateTime.Today*@})
+                                @*@Html.TextBox("ExpiryDayNo", "", new { @Class = "form-control", style = "width:250px" })*@
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label style="color:red">Quantity in Cases:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("QtyCase", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Filled Quantity(pcs):</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("Quantity", "0", new { @Class = "form-control", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Box Quantity:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("PlasticBoxQuantity", "0", new { @Class = "form-control", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Empty Bottle Quantity(pcs):</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("EmptyBottleQuantity", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Burst Quantity(pcs):</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("BurstBottleQuantity", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Breakage Quantity(pcs):</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("BreakageBottleQuantity", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="addB"
+                                        class="btn btn-primary"
+                                        onclick="TableRow();">
+                                    Add
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal container">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div id="row">
+            <div class="col-md-4">
+                @*<button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModal">
+                        Add Product
+                    </button>*@
+                <input id="btnAddProd" type="button" value="Add Product" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModal" />
+
+            </div>
+            <div class="col-lg-offset-2 col-md-6">
+                <input id="btnclr" type="button" value="Reset" class="btn btn-primary btn-sm btn-block" onclick="PageReLoad();" />
+                @*<input id="ChkBtn" type="button" value="Check for Save" class="btn btn-primary btn-sm btn-block" onclick="ChekDataValid();" />*@
+                <input id="create" type="button" value="Save" class="btn btn-primary btn-sm btn-block" onclick="datasave();" />
+            </div>
+        </div>
+    </div>
+    //Insertion in table
+    <div>
+        Total(Cs): <input type="text" id="tCase" value="0" size="5" readonly />
+        <table id="PTransactionDetail" class="table table-striped" border="0">
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Batch No</th>
+                <th>Line No</th>
+                <th>Mfg.Date</th>
+                <th>Exp Date</th>
+                <th>Filled pcs</th>
+                <th>Empty pcs</th>
+                <th>Burst pcs</th>
+                <th>Breakage pcs</th>
+                <th>Plastic Box</th>
+                <th>Quatity(CS)</th>
+            </tr>
+        </table>
+    </div>
+
+}
+<script src="~/Scripts/date.format.js"></script>
+<script>
+    // Date Pick
+    $('.date-picker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true
+    });
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+    $('.date-picker').attr("value", today);
+    $('#ManufactureDate').datepicker();
+    $("#create").prop('disabled', true); 
+    //$("#btnAddProd").prop('disabled', true);
+    $('#ProductID').blur(function () {
+        var t = $('#TransactionTypeID').val();
+        if (t == 1) {
+            $.ajax({
+                url: "@Url.Action("GetProductData", "Stock")",
+                data: { idProduct: $('#ProductID').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    $('#ProductDescription').val(data)
+                    $('#ProductDescription').css('border-color', '');
+                    $("#TrBatchNo").prop('disabled', true);
+
+
+
+                },
+                error: function () {
+                    alert("Failed! Product ID Invalid.");
+                    $('#ProductDescription').val('!!!!')
+                    $('#ProductDescription').css('border-color', 'red');
+                    $('#myModal').modal('hide');
+                    $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+                    $('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+                }
+            })
+        }
+        else {
+            $.ajax({
+                url: "@Url.Action("GetProdInfo", "Stock")",
+                data: { idProduct: $('#ProductID').val(), iWarehouse: $("#WarehouseID").val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    // $('#ProductDescription').val(data)
+                    //console.log(data);
+                    //   var c = val(data.ProductDescription)
+                    //console.log(data.ProductDescription);
+                    //  console.log(c);
+
+                    $("#ProductDescription").val(data.ProductDescription);
+                    $("#BatchNo").val(data.BatchNo);
+                   // $("#ManufactureDate").val(data.ManufactureDate);
+                    $("#ManufactureDate").val(new Date(parseInt(data.ManufactureDate.substr(6))).format("mm/dd/yyyy"));
+                    var d  = data.ManufactureDate
+
+                    $("#ExpiryDate").val(d);
+                    $("#PlantLineNo").val(data.PlantLineNo);
+                    console.log(data.PlantLineNo);
+                    // $("#BatchNo").val(data.BatchNo);
+                    $('#ProductDescription').css('border-color', '');
+                    $("#BatchNo").prop('disabled', true);
+
+
+
+                },
+                error: function () {
+                    alert("Failed! Product ID Invalid.");
+                    $('#ProductDescription').val('!!!!')
+                    $('#ProductDescription').css('border-color', 'red');
+                    $('#myModal').modal('hide');
+                    $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+                    $('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+                }
+            })
+        }
+
+        var id = $('#ProductID').val()
+        getBatch(id);
+    });
+
+    //function fTrBatchNo() {
+    //    //alert($("#TrBatchNo").val());
+    //};
+    function getBatch(id) {
+
+        $.ajax({
+            url: "@Url.Action("ProductBatch", "Stock")",
+            data: { idProduct: id, idWarehouse: $("#WarehouseID").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (j) {
+
+               // $("#TrBatchNo").val();
+                $("#TrBatchNo").html('');
+
+                var options = '';
+                for (var i = 0; i < j.length; i++) {
+                    options += '<option value="' + j[i].id + '">' + j[i].name + '</option>';
+
+                }
+
+
+                $("#TrBatchNo").html(options);
+            }
+        });
+
+    }
+    $("#TrBatchNo").change(function () {
+        //debugger;
+        var pbidx = $("#TrBatchNo").val();//[this.selectedIndex].values;
+
+        $("#BatchNo").val(pbidx);
+
+
+            }
+        );
+
+    $('#ManufactureDate').datepicker();
+       // $('#ExpiryDate').datepicker();
+
+        $('#ManufactureDate').datepicker('setDate', 'today');
+
+        function TableRow() {
+            // console.log("me");
+            var AllCases = 0;
+            var PID = document.getElementById("ProductID");
+            var PName = document.getElementById("ProductDescription");
+            var BatchNo = document.getElementById("BatchNo");
+            var PLineNo = document.getElementById("PlantLineNo");
+            var Mdate = document.getElementById("ManufactureDate");
+            var ExpDate = document.getElementById("ExpiryDate");
+            var FQty = document.getElementById("Quantity");
+            var EmptyQty = document.getElementById("EmptyBottleQuantity");
+            var BurstQty = document.getElementById("BurstBottleQuantity");
+            var BreakageQty = document.getElementById("BreakageBottleQuantity");
+            var BoxQty = document.getElementById("PlasticBoxQuantity");
+            var csQty = document.getElementById("QtyCase");
+            var TransactionDetail = document.getElementById("PTransactionDetail");
+            var tablerow = TransactionDetail.rows.length;
+            var nrow = TransactionDetail.insertRow(tablerow);
+            var c1 = nrow.insertCell(0);
+            var c2 = nrow.insertCell(1);
+            var c3 = nrow.insertCell(2);
+            var c4 = nrow.insertCell(3);
+            var c5 = nrow.insertCell(4);
+            var c6 = nrow.insertCell(5);
+            var c7 = nrow.insertCell(6);
+            var c8 = nrow.insertCell(7);
+            var c9 = nrow.insertCell(8);
+            var c10 = nrow.insertCell(9);
+            var c11 = nrow.insertCell(10);
+            var c12 = nrow.insertCell(11);
+
+
+            c1.innerHTML = PID.value;
+            c2.innerHTML = PName.value;
+            c3.innerHTML = BatchNo.value;
+            c4.innerHTML = PLineNo.value;
+            c5.innerHTML = Mdate.value;
+            c6.innerHTML = ExpDate.value;
+            c7.innerHTML = FQty.value;
+            c8.innerHTML = EmptyQty.value;
+            c9.innerHTML = BurstQty.value;
+            c10.innerHTML = BreakageQty.value;
+            c11.innerHTML = BoxQty.value;
+            c12.innerHTML = csQty.value;
+            // $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+            // $('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+        }
+        var isAllValid = true;
+        var status = true;
+        function datasave() {
+            var answer = confirm('Are you sure you want to save this?');
+            if (answer) {
+                //  return;
+            }
+            else {
+                return false;
+            }
+            detailrecord = [];
+
+            var id = $('#PTransactionDetail tr:last').index()
+            $('#PTransactionDetail tr').each(function (row, tr) {
+                if ((row > 0) && (row <= id)) {
+                    detailrecord.push({
+                        ProductID: $(tr).find('td:eq(0)').text(),
+                        LineNoPlant: $(tr).find('td:eq(3)').text(),
+                        BatchNo: $(tr).find('td:eq(2)').text(),
+                        ManufactureDate: $(tr).find('td:eq(4)').text(),
+                        ExpiryDate: $(tr).find('td:eq(5)').text(),
+                        Quantity: $(tr).find('td:eq(6)').text(),
+                        EmptyBottleQuantity: $(tr).find('td:eq(7)').text(),
+                        BurstBottleQuantity: $(tr).find('td:eq(8)').text(),
+                        BreakageBottleQuantity: $(tr).find('td:eq(9)').text(),
+                        PlasticBoxQuantity: $(tr).find('td:eq(10)').text(),
+                        // Tcases: + $(tr).find('td:eq(2)').text(),
+                    });
+                }
+            });
+            if ($('#Vehicle').val() != 1) {
+                var s = document.getElementById("TransportAgencyList");
+                s.value = 2;
+               // $('#VechileNo').val() = $('#Vehicle').val().trim();
+            }
+            if (isAllValid) {
+                var data = {
+                    TransactionTypeID: $('#TransactionTypeID').val(),
+                    FromWarehouse: $('#WarehouseID').val(),
+                    WarehouseID: $('#WarehouseID').val(),
+                    ToWarehouse: $('#TWarehouse').val(),
+                    ReferenceNo: $('#ReferenceNo').val(),
+                    VehicleID: $('#Vehicle').val(),
+                    DriverID: $('#Driver').val(),
+                    TAID: $('#TransportAgencyList').val(),
+                    VechileNo: $('#VechileNo').val(),
+                    FareAmnt: $('#FareAmnt').val(),
+                    TotCase: $('#tCase').val(),
+                    StoreLocation: $('#StorageLocationCode').val(),
+                    Remarks: $('#Remarks').val(),
+                    ProdTrDtl: detailrecord
+                }
+                // console.log(data);
+            }
+            //console.log(data);
+            //alert(JSON.stringify(orderItems));
+            $.ajax({
+                url: '/Stock/SaveData',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+                    //check is successfully save to database
+                    //var status = true;
+                    if (a.status == true) {
+                        //will send status from server side
+                        alert('Product Received or Transffer Successfully Done...Transaction No: '+a.v);
+                        window.location.reload();
+                        detailrecord = [];
+                    }
+                    else {
+                        alert('Failed!! Please check..');
+                    }
+
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+
+                }
+            });
+
+        }
+        $("#TransportAgencyList").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetAgencyFareAmount", "Stock")",
+                data: { fWarehouse: $('#WarehouseID').val(), tWarehouse: $('#TWarehouse').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    $('#Rate1').val(data.Rate1);
+                    $('#Rate2').val(data.Rate2);
+                    $('#Rate3').val(data.Rate3);
+                    //alert('Stock Quantity of this Product is: ' + data);
+                },
+                error: function () {
+                    alert("Failed! Warehouse ID not Set for Fare!");
+                }
+            });
+
+        });
+        //Radio option
+        $("#r1").change(function () {
+            var FAmnt = $("#Rate1").val();
+            $("#FareAmnt").val(FAmnt);
+        });
+        $("#r2").change(function () {
+            var FAmnt = $("#Rate2").val();
+            $("#FareAmnt").val(FAmnt);
+        });
+        $("#r3").change(function () {
+            var FAmnt = $("#Rate3").val();
+            $("#FareAmnt").val(FAmnt);
+        });
+
+        $('#addB').click(function () {
+            var allcs = 0;
+            allcs = parseFloat($('#tCase').val()) + parseFloat($('#QtyCase').val());
+            $('#tCase').val(allcs);
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID],input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity],input[id=QtyCase],input[id=BatchNo]').val('0');
+            // $('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+            $("#addB").prop('disabled', true);
+            $("#create").prop('disabled', false);
+        });
+        $("#TransactionTypeID").change(function () {
+            var idx = this.selectedIndex;
+            if (idx == 1) {
+                $("#FWarehouse").val(0);
+                $("#FWarehouse").prop('disabled', true);
+                $("#TWarehouse").prop('disabled', true);
+                $("#Vehicle").prop('disabled', true);
+                $("#Driver").prop('disabled', true);
+                $("#TransportAgencyList").val('0');
+                $("#TransportAgencyList").prop('disabled', true);
+                $("#VechileNo").val('V');
+                $("#FareAmnt").val('0.0');
+            }
+            else if (idx == 2) {
+                $("#TransportAgencyList").val('0');
+                $("#VechileNo").val('V');
+                $("#FareAmnt").val('0.0');
+                // $("#FWarehouse").prop('disabled', true);
+            }
+
+            else {
+                $("#FWarehouse").prop('disabled', true);
+                $("#TWarehouse").prop('disabled', true);
+                $("#Vehicle").prop('disabled', true);
+                $("#Driver").prop('disabled', true);
+                $("#TransportAgencyList").val('0');
+                $("#TransportAgencyList").prop('disabled', true);
+            }
+        });       
+        $("#Vehicle").change(function () {
+            var idx = $("#Vehicle").val();
+            //$("select#selected").prop('selectedIndex', idx);
+            if (idx == 1) {
+                $("#ht").children().attr('disabled', false)
+                $("#VechileNo").val('Vehicle');
+                $("#FareAmnt").val('0.0');
+                $("#Driver").prop('disabled', true);
+            }
+            else {
+                $("#TransportAgencyList").val('100');
+                $("#ht").children().attr('disabled', true)
+
+            }
+
+        });
+
+        $('#QtyCase').blur(function () {
+            var C = $('#QtyCase').val();
+            // $("#TransactionTypeID").change(function () {
+            var idx = $("#TransactionTypeID").val();
+
+            console.log(idx);
+            $.ajax({
+                url: "@Url.Action("StockinPcs", "Stock")",
+                data: { idProduct: $('#ProductID').val(), fWarehouse: $('#WarehouseID').val(), convertpcs: $('#QtyCase').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    if ($('#WarehouseID').val() == 0) {
+                        $(':input[type="submit"],[id=addB]').prop('disabled', false);
+                        $("#Quantity").val(data.CsToPc);
+                    }
+                    else {
+                        // if (idx = 2) {
+                        if (C <= 0) {
+                            alert('You Can not transfer 0 or Negetive Pcs');
+                            $(':input[type="submit"],[id=addB]').prop('disabled', true);
+                        }
+
+                        else if ((C > data.StockQuantity) && (idx == 2)) {
+                            // alert("Here");
+                            alert('You Can not transfer more than ' + data.StockQuantity + ' Pieces');
+                            $(':input[type="submit"],[id=addB]').prop('disabled', true);
+                        }
+                        else {
+                            $("#Quantity").val(data.CsToPc);
+                            $(':input[type="submit"],[id=addB]').prop('disabled', false);
+                        }
+                    }
+                },
+                error: function () {
+                    alert("Failed! Product ID Invalid.");
+                    $('#ProductDescription').val('!!!!')
+                    $('#ProductDescription').css('border-color', 'red');
+                }
+            });
+            $("#addB").prop('disabled', true);
+        }
+        );
+
+        function PageReLoad() {
+            alert("Are you sure Reset ...?")
+            location.reload();
+        }
+        function ChekDataValid() {
+            //var answer = confirm('Are you sure ready for Save?');
+            //if (answer) {
+            //    //  return;
+            //}
+            //else {
+            //    return false;
+            //}
+            var t= $('#TransactionTypeID').val();
+            var v = $('#Vehicle').val();
+            if (t != 1) {
+                alert("Failed!");
+                alert(v);
+                alert(t);
+            }
+            
+        }
+        $('#QtyCase').keydown(function () {
+            $.ajax({
+                url: "@Url.Action("GetPlasticData", "Stock")",
+                data: { idProduct: $('#ProductID').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //loadData(data);
+                if (data == true) {
+                    $('#PlasticBoxQuantity').val($('#QtyCase').val());
+                }
+                else {
+                    $('#PlasticBoxQuantity').val("0");
+
+                }
+            },
+            error: function () {
+                alert("Failed! Product ID Invalid.");
+            }
+        })
+        });
+
+</script>

@@ -1,0 +1,226 @@
+﻿@model MyPepsi.ViewModel.StockReceivedVM
+
+
+@{
+    ViewBag.Title = "StockReceive";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transffered Product Received</h2>
+
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Warehouse ID:</label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <label style="color:red">Transaction Reference Number:</label>
+            @*<input type="text" id="ReferenceNo" class="form-control">*@
+            @Html.DropDownList("TransactionNo", null, "Select Reference No", new { @class = "form-control" })
+            <label>Reference No</label>
+            @Html.TextBox("tRefno", "", new { @Class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div>
+            <label>Transffered Warehouse ID</label>
+            @Html.TextBox("FromWarehouse", "", new { @Class = "form-control", @readonly = "readonly" })
+            <label>Transaction Type ID</label>
+            @*<input type="text" id="ReferenceNo" class="form-control">*@
+            @Html.TextBox("TransactionTypeID", "", new { @Class = "form-control", @readonly = "readonly" })
+            <label style="color:red">Storage Location:</label>
+            @Html.DropDownList("StorageLocationCode", null, "Select Location", new { @class = "form-control" })
+            <label>Remarks/Note</label>
+            <input type="text" id="Remark" class="form-control">
+            <input type="button" id="cancel" value="Reset" class="btn btn-primary btn-sm btn-block" onclick="PageReLoad();" />
+            <input type="button" id="create" value="Save" class="btn btn-primary btn-sm btn-block" onclick="savebtn();" />
+        </div>
+    </div>
+
+</div>
+@*<div class="col-md-offset-2 col-md-6">
+        <input type="button" id="cancel" value="Reset" class="btn btn-primary" onclick="PageReLoad();" />
+        <input type="button" id="create" value="Save" class="btn btn-primary" onclick="savebtn();" />
+    </div>*@
+<div>
+    <div class="row">
+        @*Total(Cs): <input type="text" id="tCase" value="0" size="5" readonly />*@
+
+
+        <div class="col-md-12">
+            <div>
+                <h4>Product Information</h4>
+            </div>
+            <table id="PTransactionDetail" class="table table-striped" border="0">
+                <tr>
+                    <th>SL</th>
+                    <th>Product ID</th>
+                    <th>Batch No</th>
+                    <th>Line No</th>
+                    <th>Mfg.Date</th>
+                    <th>Exp Date</th>
+                    <th>Filled pcs</th>
+                    <th>Burst pcs</th>
+                    <th>Breakage pcs</th>
+                    <th>Plastic Box</th>
+                    <th>Empty pcs</th>
+                    <th>Cases Qty</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/date.format.js"></script>
+<script>
+    $("#create").prop('disabled', true);
+       // debugger;
+        $('#TransactionNo').change(function () {
+            $.ajax({
+                url: "@Url.Action("ProductDetail", "Stock")",
+                //url: '/LoadSheet/GetProductDetail',
+                data: { inWarehouseID: $('#WarehouseID').val(), inTrNo: $('#TransactionNo').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                     console.log(data);
+                    $.each(data, function (i, prDetails) {
+                        $("#FromWarehouse").val(prDetails.WarehouseID);
+                        $("#TransactionTypeID").val(prDetails.TransactionTypeID);
+                        $("#tRefno").val(prDetails.ReferenceNo);
+                        var table = document.getElementById("PTransactionDetail");
+                        console.log(prDetails.ExpiryDate);
+                        var rowcount = i + 1;
+                        var tblRow = '<tr id="row' + rowcount + '">' +
+                           '<td>' +
+                               '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+                       '</td>' +
+                       '<td> <input type="text"  readonly id="tProductID' + rowcount + '" value="' + prDetails.ProductID + '"size ="7" /></td>' +
+                       //'<td><input type="text"   readonly id="tProductDescription' + rowcount + '" value="' + prDetails.ProductDescription + '"size ="20" /></td>' +
+                       '<td><input type="text"   id="tBatchNo' + rowcount + '" value="' + prDetails.BatchNo + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                      // '<td><input type="text"   id="tLineNo' + rowcount + '" value="' + prDetails.LineNoPlant + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                      '<td><input type="text"   id="tLineNo' + rowcount + '" value="' + prDetails.LineNoPlant + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tManufactureDate' + rowcount + '" value="' + new Date(parseInt(prDetails.ManufactureDate.substr(6))).format("mm/dd/yyyy") + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tExpiryDate' + rowcount + '" value="' + new Date(parseInt(prDetails.ExpiryDate.substr(6))).format("mm/dd/yyyy") + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tQuantity' + rowcount + '" value="' + prDetails.Quantity + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tBurstBottleQuantity' + rowcount + '" value="' + prDetails.BurstBottleQuantity + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tBreakageBottleQuantity' + rowcount + '" value="' + prDetails.BreakageBottleQuantity + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tPlasticBoxQuantity' + rowcount + '" value="' + prDetails.PlasticBoxQuantity + '"size ="8"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tEmptyBottleQuantity' + rowcount + '" value="' + prDetails.EmptyBottleQuantity + '"size ="8"' + '" style="text-align:center;"" /></td>' +
+                       '<td><input type="text"   id="tCaseQuantity' + rowcount + '" value="' + prDetails.caseqty + '"size ="8"' + '" style="text-align:center;"" /></td>' +
+                       '</tr>'
+                        $("#PTransactionDetail").append(tblRow);
+                    })
+
+
+                },
+                error: function () {
+                    alert("Failed! to found Product Transfer data .Please Check....");
+                }
+            });
+            $("#TransactionNo").prop('disabled', true);
+            $("#create").prop('disabled', false);
+        });
+
+
+        function displayPerson(ctl) {
+            $('#myModal').modal('show');
+            var row = $(ctl).parents("tr");
+            var cols = row.children("td");
+            currentId = $($(cols[0]).children("button")[0]).data("id");
+            $("#Accountno").val($(cols[1]).text());
+            $("#Remarks").val($(cols[3]).text());
+            $("#DrAmt").val($(cols[4]).text());
+            $("#CrAmt").val($(cols[5]).text());
+            updr = parseFloat($(cols[4]).text().trim());
+            upcr = parseFloat($(cols[5]).text().trim());
+            //alert(updr);
+            // Change Update Button Text
+            $("#updateButton").text("Update");
+        }
+        function PageReLoad() {
+            alert("Are you sure Reset ...?")
+            location.reload();
+        }
+
+
+        // Data Save work
+        var isAllValid = true;
+        // var status = true;
+        function savebtn() {
+            var answer = confirm('Are you sure, you want to save this?');
+            if (answer) {
+                //  return;
+                //return status;
+            }
+            else {
+                return false;
+            }
+            proddata = [];
+            //console.log(order);
+            var id = $('#PTransactionDetail tr:last').index()
+            $('#PTransactionDetail tr').each(function (row, tr) {
+                if ((row > 0) && (row <= id)) {
+                    //alert($('#txtSales' + row).val().trim());
+                    proddata.push({
+                        ProductID: $('#tProductID' + row).val().trim(),
+                        PlantNo: $('#tLineNo' + row).val().trim(),
+                        LineNoPlant: $('#tLineNo' + row).val().trim(),
+                        BatchNo: $('#tBatchNo' + row).val().trim(),
+                        ManufactureDate:$('#tManufactureDate' + row).val().trim(),
+                        ExpiryDate: $('#tExpiryDate' + row).val().trim(),
+                        Quantity: $('#tQuantity' + row).val().trim(),
+                        EmptyBottleQuantity: $('#tEmptyBottleQuantity' + row).val().trim(),
+                        PlasticBoxQuantity: $('#tPlasticBoxQuantity' + row).val().trim(),
+                        BurstBottleQuantity: $('#tBurstBottleQuantity' + row).val().trim(),
+                        BreakageBottleQuantity: $('#tBreakageBottleQuantity' + row).val().trim()
+                    });
+                }
+            });
+
+            $('#create').html('Please wait...');
+            console.log(isAllValid);
+            if (isAllValid) {
+                var data = {
+                    WarehouseID: $('#WarehouseID').val().trim(),
+                    TransactionNo: $('#TransactionNo').val().trim(),
+                    ReferenceNo: $("#tRefno").val().trim(),
+                    Remarks: $('#Remark').val().trim(),
+                    FromWarehouse: $('#FromWarehouse').val().trim(),
+                    TransactionTypeID: $('#TransactionTypeID').val().trim(),
+                    ToWarehouse: $('#WarehouseID').val().trim(),
+                    StoreLocation: $('#StorageLocationCode').val().trim(),
+                    //OrderDate: $("#OrderDate").val().trim(),
+                    ProdTrDtl: proddata
+                }
+            }
+            console.log(data);
+            $.ajax({
+                url: '/Stock/SaveProductReceived',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+                    //check is successfully save to database
+                    var status = true;
+                    if (a.status == true) {
+                        //will send status from server side
+                       // alert('Successfully done...');
+                        alert('Successfully done...Transfer No : ' + a.v);
+                       // $('#OrderID').val(a.v);
+                        //clear form array
+                        window.location.reload();
+                        proddata = [];
+
+                    }
+                    else {
+                        alert('Failed to save. Please Check...');
+                    }
+                },
+                error: function () {
+                    alert('Error found. Please try again or Contact IT Team');
+                    }
+            });
+        };
+
+</script>

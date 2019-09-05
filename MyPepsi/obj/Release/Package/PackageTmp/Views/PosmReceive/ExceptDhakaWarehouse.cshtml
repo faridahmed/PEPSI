@@ -1,0 +1,130 @@
+﻿@model MyPepsi.ViewModel.StockReceivedVM
+
+
+@{
+    ViewBag.Title = "POSM Transferred Receive";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>POSM Transferred Receive</h2>
+
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Warehouse ID:</label>
+            @Html.TextBox("fWarehouse", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            @Html.DropDownList("TransactionNo", null, "Select Reference No", new { @class = "form-control" })
+            <label>From Warehouse</label>
+            @Html.TextBox("fromW", "", new { @Class = "form-control", @readonly = "readonly" })
+             <label>Remarks</label>
+            @Html.TextBox("tRefno", "", new { @Class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+</div>
+<div>
+    <input type="button" id="cancel" value="Reset" class="btn btn-primary" />
+    <input type="button" id="create" value="Save" class="btn btn-primary"  />
+</div>
+<div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered" id="tbl">
+                <tr>
+                    <th>SL</th>
+                    <th>POSM ID</th>
+                    <th>Item </th>
+                    <th>Scheme ID</th>
+                    <th>Scheme Name</th>
+                    <th>Received Qty </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/date.format.js"></script>
+<script>
+        $('#TransactionNo').change(function () {
+            $.ajax({
+                url: "@Url.Action("GetChallanDetail", "PosmReceive")",
+                //url: '/LoadSheet/GetProductDetail',
+                data: { Chno: $('#TransactionNo').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                     console.log(data);
+                    $.each(data, function (i, prDetails) {
+                        var rowcount = i + 1;
+                        var tblRow = '<tr id="row' + rowcount + '">' +
+                           '<td>' +
+                               '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+                       '</td>' +
+                       '<td> <input type="text"  readonly id="posmid' + rowcount + '" value="' + prDetails.POSItemID + '"size ="7"  readonly/></td>' +
+                       //'<td><input type="text"   readonly id="tProductDescription' + rowcount + '" value="' + prDetails.ProductDescription + '"size ="20" /></td>' +
+                       '<td><input type="text"   id="Item' + rowcount + '" value="' + prDetails.PosmName + '"size ="40"' + '" style="text-align:left;"" readonly /></td>' +
+'<td><input type="text"   id="Schemeid' + rowcount + '" value="' + prDetails.SchemeID + '"size ="5"' + '" style="text-align:left;"" readonly /></td>' +
+'<td><input type="text"   id="Scheme' + rowcount + '" value="' + prDetails.SchemeDescription + '"size ="40"' + '" style="text-align:left;"" readonly /></td>' +
+                      '<td><input type="text"   id="Received' + rowcount + '" value="' + prDetails.IssuedQty + '"size ="10"' + '" style="text-align:left;""  readonly /></td>' +
+                                           '</tr>'
+                        $("#tbl").append(tblRow);
+                        $("#fromW").val(prDetails.FromWarehouse);
+                    })
+                },
+                error: function () {
+                    alert("Failed! to found Product Transfer data .Please Check....");
+                }
+            });
+            $("#TransactionNo").prop('disabled', true);
+        });
+
+    $("#create").click(function () {
+        var totalCount = $("#tbl").find("tr").length;
+        //alert(totalCount);
+        var dt = [];
+        //debugger
+        for (i = 0; i < totalCount - 1; i++) {
+            dt.push({
+                //SchemeID: $("#PosmSchemeLists").val(),
+                SupplierID: $("#fromW").val(),
+                //SuppRefNo: $("#SuppRefNo").val(),
+                //SupplierRefDate: $("#SupplierRefDate").val(),
+                POSItem: $("table").find("tr").eq(i + 1).find("td:eq(1) input[type='text']").val(),
+                SchemeID: $("table").find("tr").eq(i + 1).find("td:eq(3) input[type='text']").val(),
+                //Description: $("table").find("tr").eq(i + 1).find("td:eq(2) input[type='text']").val(),
+                ReceivedQty: $("table").find("tr").eq(i + 1).find("td:eq(5) input[type='text']").val(),
+                //UnitPrice: $("table").find("tr").eq(i + 1).find("td:eq(4) input[type='text']").val(),
+                //WarrentyPeriod: $("table").find("tr").eq(i + 1).find("td:eq(5) input[type='text']").val(),
+                //WarrentyType: $("table").find("tr").eq(i + 1).find("td:eq(6) input[type='text']").val(),
+            })
+        }
+        var data = { PODetails: dt, Chno: $('#TransactionNo').val() }
+
+        $.ajax({
+            //url: "//@*@Url.Action("UpdateDetail", "ProductRate")*@",
+            url: 'SavePOSMReceiveLater',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+
+                if (a.status == true) {
+
+                    alert('Successfully done...');
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                alert('Error. Please try again.');
+            }
+        });
+
+
+    })
+
+
+       </script>

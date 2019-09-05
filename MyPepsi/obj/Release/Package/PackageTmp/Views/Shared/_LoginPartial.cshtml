@@ -1,0 +1,59 @@
+﻿<div class="navbar-header">
+    @*<a class="navbar-brand" href="a">Primary Saless System </a>*@
+
+</div>
+<ul class="nav navbar-nav">
+
+    @if (Session["MenuMaster"] != null)
+            {
+                var MenuMaster = (List<MyPepsi.ViewModel.MenuModels>)Session["MenuMaster"];
+                var groupByMenu = MenuMaster.GroupBy(x => x.MainMenuName).ToList();
+                foreach (var MenuList in groupByMenu)
+                {
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">@MenuList.Key<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    @foreach (var SubMenuList in MenuList)
+                    {
+                        <li>
+                            @Html.ActionLink(SubMenuList.SubMenuName, SubMenuList.ActionName, SubMenuList.ControllerName)
+
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+</ul>
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new
+    {
+        id = "logoutForm",
+        @class = "navbar-right"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("User ID : " + User.Identity.Name + "", "Index", "Home", routeValues: null, htmlAttributes: new
+           {
+               title = "Manage"
+           })
+            </li>
+            <li> <a href="javascript:document.getElementById('logoutForm').submit()"> Log off </a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Log in", "UserLogin", "Account", routeValues: null, htmlAttributes: new
+       {
+           id = "loginLink"
+       })
+        </li>
+    </ul>
+} 

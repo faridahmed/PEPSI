@@ -1,0 +1,237 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h1>Reprint reports</h1>
+<input type="radio" name="nm" id="r1" value="1" class="radio radio-inline"> Invoice</>
+<input type="radio" name="nm" id="r2" value="2" class="radio radio-inline"> Loadsheet</>
+<input type="radio" name="nm" id="r3" value="3" class="radio radio-inline"> Money Receipt</>
+<input type="radio" name="nm" id="r4" value="4" class="radio radio-inline"> Transfer Note</>
+<input type="radio" name="nm" id="r5" value="5" class="radio radio-inline"> POSM Invoice</>
+<input type="radio" name="nm" id="r6" value="6" class="radio radio-inline"> Replacement Invoice</>
+
+
+<h2>Please choose report parameter from Below:</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Choose OrderID:</label>
+            @Html.DropDownList("soNumber", null, "Select a Number ", new { @class = "form-control" })
+            <label>Choose Invoice Number:</label>
+            @Html.DropDownList("invNumber", null, "Select a Number ", new { @class = "form-control" })
+            <label>Choose Replacement Invoice Number:</label>
+            @Html.DropDownList("ReplaceInvoiceNumber", null, "Select a Number ", new { @class = "form-control" })
+            <br />
+            <input type="button" id="showReport" value="Preview" class="form-control btn-primary" />
+        </div>
+    </div>
+    <div>
+        <label>Choose MR:</label>
+        @Html.DropDownList("MR", null, "All", new { @class = "form-control" })
+        <label>Choose Tr Number:</label>
+        @Html.DropDownList("TrNumber", null, "Select One", new { @class = "form-control" })
+        <label>Choose POSM Invoice No:</label>
+        @Html.DropDownList("POSMInvoiceNumber", null, "Select One", new { @class = "form-control" })
+    </div>
+</div>
+<br />
+<div id="tabledata"></div>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-0:+0"
+    });
+
+    $("#soNumber").prop('disabled', true);
+    $("#trID").prop('disabled', true);
+    $("#MR").prop('disabled', true);
+    $("#TrNumber").prop('disabled', true);
+    $("#POSMInvoiceNumber").prop('disabled', true);
+    $("#invNumber").prop('disabled', true);
+    $("#ReplaceInvoiceNumber").prop('disabled', true);
+
+
+    $(document).ready(function () {
+        $("#r1").change(function () {
+            $("#soNumber").prop('disabled', true);
+            $("#invNumber").prop('disabled', false);
+            $("#MR").prop('disabled', true);
+            $("#TrNumber").prop('disabled', true);
+            $("#POSMInvoiceNumber").prop('disabled', true);//ReplaceInvoiceNumber
+            $("#ReplaceInvoiceNumber").prop('disabled', true);
+        });
+        $("#r2").change(function () {
+            $("#soNumber").prop('disabled', false)
+            $("#invNumber").prop('disabled', true);
+            $("#MR").prop('disabled', true);
+            $("#TrNumber").prop('disabled', true);
+            $("#POSMInvoiceNumber").prop('disabled', true);
+            $("#ReplaceInvoiceNumber").prop('disabled', true);
+           // $("#soNumber").append(view)
+        });
+        $("#r3").change(function () {
+            $("#soNumber").prop('disabled', true)
+            $("#invNumber").prop('disabled', true);
+            $("#MR").prop('disabled', false);
+            $("#TrNumber").prop('disabled', true);
+            $("#POSMInvoiceNumber").prop('disabled', true);
+            $("#ReplaceInvoiceNumber").prop('disabled', true);
+            // $("#soNumber").append(view)
+        });
+        $("#r4").change(function () {
+            $("#soNumber").prop('disabled', true);
+            $("#invNumber").prop('disabled', true);
+            $("#trID").prop('disabled', true);
+            $("#MR").prop('disabled', true);
+            $("#TrNumber").prop('disabled', false);
+            $("#POSMInvoiceNumber").prop('disabled', true);
+            $("#ReplaceInvoiceNumber").prop('disabled', true);
+        });
+        $("#r5").change(function () {
+            $("#soNumber").prop('disabled', true);
+            $("#invNumber").prop('disabled', true);
+            $("#trID").prop('disabled', true);
+            $("#MR").prop('disabled', true);
+            $("#TrNumber").prop('disabled', true);
+            $("#POSMInvoiceNumber").prop('disabled', false);
+            $("#ReplaceInvoiceNumber").prop('disabled', true);
+        });
+        $("#r6").change(function () {
+            $("#soNumber").prop('disabled', true);
+            $("#invNumber").prop('disabled', true);
+            $("#trID").prop('disabled', true);
+            $("#MR").prop('disabled', true);
+            $("#TrNumber").prop('disabled', true);
+            $("#POSMInvoiceNumber").prop('disabled', true);
+            $("#ReplaceInvoiceNumber").prop('disabled', false);
+        });
+
+        $('#showReport').click(function () {
+            //var wValue = $("#Warehouse").val();
+            //if (wValue == "") {
+            //    wValue = 0;
+            //} else {
+            //    wValue;
+            //}
+            //var custValue = $("#custLits").val();
+            //if (custValue == "") {
+            //    custValue = 0;
+            //} else {
+            //    custValue;
+            //}
+            var radioValue = $('input:radio[name=nm]:checked').val();
+            if (radioValue == 1) {
+                $.ajax({
+                    //url: "@Url.Action("Invoice", "ReprintReport")",
+                    url: '/ReprintReport/Invoice',
+                dataType: "HTML",
+            type: "POST",
+            data: { InvNo: $("#invNumber").val(), typeInv: "Reprint Invoice" },
+            cache: false,
+            async: true,
+            success: function(data) {
+                $("#tabledata").html(data);
+                    }
+                });
+            }
+            else if (radioValue == 2) {
+                $.ajax({
+                    url: "@Url.Action("LoadSheet", "ReprintReport")",
+                dataType: "HTML",
+            type: "POST",
+            data: { SOrderNo: $("#soNumber").val() },
+            cache: false,
+            async: true,
+            success: function(data) {
+                $("#tabledata").html(data);
+            }
+        });
+            }
+            else if (radioValue == 3) {
+                $.ajax({
+                    url: "@Url.Action("MoneyReceipt", "ReprintReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { mrNumber: $("#MR").val() },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+            else if(radioValue == 4){
+                $.ajax({
+                    url: "@Url.Action("ProductTransferNote", "ReprintReport")",
+                dataType: "HTML",
+            type: "POST",
+            data: { trNo: $("#TrNumber").val(), trId: 2 },
+            cache: false,
+            async: true,
+            success: function (data) {
+                $("#tabledata").html(data);
+            }
+        });
+            }
+            else if(radioValue == 5){
+                $.ajax({
+                    url: "@Url.Action("POSMInvoice", "ReprintReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { POInv: $("#POSMInvoiceNumber").val() },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+
+            else if(radioValue == 6){
+                $.ajax({
+                    url: "@Url.Action("ReplacementInvoice", "ReprintReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { ReplaceInv: $("#ReplaceInvoiceNumber").val() },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+        }
+
+        else {
+            $.ajax({
+                url: "@Url.Action("LoadSheet", "OrderReport")",
+                dataType: "HTML",
+            type: "POST",
+            data: { SOrderNo: 219000001, Trip: 1 },
+            cache: false,
+            async: true,
+            success: function(data) {
+                $("#tabledata").html(data);
+            }
+        });
+        }
+
+            @*else {
+                $.ajax({
+                    url: "@Url.Action("ProductTransferNote", "StockReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { trNo: 100009,trId:2 },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }*@
+        })
+    })
+</script>

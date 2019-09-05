@@ -1,0 +1,317 @@
+﻿@model MyPepsi.ViewModel.ReplacementMasterVM
+
+@{
+    ViewBag.Title = "ReplaceProcess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Replacement Process</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <label style="color:red">Warehouse ID And Name</label>
+                @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+                @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+                <label>Transaction Date</label>
+                @*<input type="date" class="form-control" id="TransactionDate" value= DateTime.Today, style="text-align:center" />*@
+                @Html.TextBox("TransactionDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control", @readonly = "readonly" })
+                <label style="color:red">Customer ID and Name</label>
+                @Html.DropDownList("CustomerID", null, "Select One", new { @class = "form-control" })
+                <label>Customer Name</label>
+                <input class="form-control" type="text" id="CustName" readonly />
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label style="color:red">Process From Date</label>
+            <input type="date" class="form-control" id="Fromdate" style="text-align:center" />
+            <label style="color:red">To Date</label>
+            <input type="date" class="form-control" id="Todate" style="text-align:center" />
+            <label style="color:red">Return Method</label>
+            @Html.DropDownList("ReturnMethod", null, "Select One", new { @class = "form-control" })
+            <label>Ref. Number</label>
+            @Html.TextBox("ReferenceNo", null, new { @class = "form-control" })
+            <input type="button" id="btnShow" value="View Market Return Product Info" class="btn btn-primary btn-sm btn-block" @*onclick="ShowReplaceData();"*@ />
+        </div>
+        <div class="col-md-4">
+            <label style="color:blue">Total Return Amount</label>
+            <input type="text" class="form-control" id="ReturnAmnt" value="0.00" readonly style="text-align:right" />
+            <label style="color:blue">Payable Replace Amount</label>
+            <input type="text" class="form-control" id="ReplacementAmnt" value="0.00" readonly style="text-align:right" />
+            <label style="color:blue">Total Sales Amount(In Period) </label>
+            <input type="text" class="form-control" id="MonthlySalesAmt" value="0.00" readonly style="text-align:right" />
+            <label>Remarks/Note</label>
+            @Html.TextBox("Note", null, new { @class = "form-control" })
+            @*@Html.TextBox("ReferenceNo", null, new { @class = "form-control" })
+                <label>Remarks</label>
+                @Html.TextBox("Note", null, new { @class = "form-control" })
+                <input type="button" id="btnShow" value="Show Return" class="btn btn-primary"/>*@
+        </div>
+
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="grid-empty-text">
+        <div class="row">
+            @*<h5 style="color:green;font:bold">Note-> Green Color field you can change</h5>*@
+            <table id="ProductInfo" class="table table-striped table-bordered">
+                <tr>
+                    <th>SL</th>
+                    <th>Product ID</th>
+                    <th>Description</th>
+                    <th>ReturnID</th>
+                    <th>Return Qty.</th>
+                    <th>Replace Qty.</th>
+                    <th>Plastic Boxs</th>
+                    <th>SubTotal Amt.</th>
+                </tr>
+            </table>
+            <button type="button" id="btnRowAdd" class="btn btn-xs btn-primary" onclick="addRow()">Add More</button>
+            <h3>Calculation Part:</h3>
+            <div>
+                <input type="text" id="tReturnAmt" value="0" size="8" readonly />
+                <input type="text" id="tSaleAmt" value="0" size="8" readonly />
+                <input type="text" id="tCalAmt" value="0" size="8" readonly />
+                <input type="text" id="tPayAmt" value="0" size="8" readonly style="text-align:right" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-offset-7 col-md-offset-7">
+                <input id="btnCalculate" type="button" class="btn-danger" value="Return Process " onClick="checkProcess();" />
+                <input id="btnReset" type="button" class="btn-default" value="Reset" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="" value="Save" onClick="DisburseDataSave();" />
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true
+    });
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+    $('.date-picker').attr("value", today);
+    $('#Fromdate').datepicker();
+    $('#Todate').datepicker();
+
+    $('#btnShow').click(function () {
+        //console.log(data);
+        getsalesAmt();
+        $.ajax({
+            url: "@Url.Action("GetDataForReplaceData", "Replacement")",
+            data: {
+                inWarehouse: $('#WarehouseID').val(),
+                inCustomer: $('#CustomerID').val(),
+                inFromdate: $('#Fromdate').val(),
+                inTodate: $('#Todate').val()
+            },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+              $.each(data, function (i, rtnDetail) {
+                //$("#CustomerID").val(prDetails.CustomerID);
+                  $("#CustName").val(rtnDetail.CustomerName);
+                //$("#CustAdd").val(prDetails.CustomerAddress1);
+                  $("#totalPlasticBox").val(rtnDetail.Packsize);
+                //$("#remarks").val(prDetails.Remarks);
+                  $("#totalOrderCase").val(rtnDetail.ReturnQty);
+                var table = document.getElementById("ProductInfo");
+                var rowcount = i + 1;
+                var tblRow = '<tr id="row' + rowcount + '">' +
+                   '<td>' +
+                       '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+               '</td>' +
+               '<td> <input type="text"  readonly id="tProductID' + rowcount + '" value="' + rtnDetail.ProductID + '"size ="7" /></td>' +
+               '<td><input type="text"   readonly id="tProductDescription' + rowcount + '" value="' + rtnDetail.ProductDescription + '"size ="20" /></td>' +
+               '<td><input type="text"   readonly id="tReturnID' + rowcount + '" value="' + rtnDetail.ReturnmentID + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+               '<td><input type="text"   readonly id="txtReturn' + rowcount + '" value="' + rtnDetail.ReturnQty + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+               '<td><input type="text"   readonly id="txtReplace' + rowcount + '" value="' + 0 + '"size ="10"' + '" style="text-align:center;"" /></td>' +
+               '<td><input type="text"   id="txtPlasticBox' + rowcount + '" value="' + rtnDetail.Packsize + '"size ="8"' + '" style="text-align:center;"" /></td>' +
+               '<td><input type="text"   id="txtTotal' + rowcount + '" value="' + ((rtnDetail.AlternateUnitPrice * rtnDetail.ReturnQty) + (rtnDetail.ReturnQty * rtnDetail.AlternateSecurityDeposit) + (rtnDetail.Packsize * rtnDetail.PlasticBoxSecurity) - (rtnDetail.ReturnQty * rtnDetail.AlternateAgencyCommission)) + '"size ="10"' + '" style="text-align:right;"" /></td>' +
+                //'<td><button class="btnDelete">Delete</button></td>'+
+                '</tr>'
+                $("#ProductInfo").append(tblRow);
+            })
+        },
+        error: function () {
+            alert("Failed! to found Return for the Customer .Please Check....");
+        }
+        });
+        $("#ReturnMethod").prop('disabled', true);
+        $("#btnShow").prop('disabled', true);
+
+    });
+    function getsalesAmt() {
+        // alert("Blur..");
+        $.ajax({
+            url: "@Url.Action("GetCustomerSalesAmount", "Replacement")",
+            data: {
+                inCustomer: $('#CustomerID').val(),
+                inFromdate: $('#Fromdate').val(),
+                inTodate: $('#Todate').val()
+            },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#MonthlySalesAmt").val(data);
+                   },
+        error: function () {
+            alert("Failed! To found Customer Total Sales Amount.Please Check....");
+            $('#MonthlySalesAmt').val('0')
+        }
+    });
+
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+  }
+    function checkProcess() {
+
+        var answer = confirm('Are you sure! you want to process for calculation?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        var rm = parseInt($("#ReturnMethod").val());
+        var nth = //$("table").find("tr").length;
+        $('#ProductInfo tr').length
+        var amnt = parseFloat("0");
+        for (j = 1; j < nth; j++) {
+            amnt += parseFloat($("table").find("tr").eq(j).find("td:eq(7) input[type='text']").val());
+
+        }
+        console.log(amnt);
+        //debugger;
+        $("#ReturnAmnt").val(amnt);
+        $("#tReturnAmt").val(amnt);
+        var totsale= $("#MonthlySalesAmt").val()
+        $("#tSaleAmt").val(totsale);
+        var com = 0;
+        var comm = 0;
+        if (rm = 100001) {
+            com = 0.01;
+            var calamnt = parseFloat($("#MonthlySalesAmt").val() * com).toFixed(2);
+            $("#tCalAmt").val(calamnt);
+        }
+       else if (rm = 100002) {
+             comm = 0.007;
+             var calamnt2 = parseFloat($("#MonthlySalesAmt").val() * comm).toFixed(2);
+            $("#tCalAmt").val(calamnt2);
+       }
+
+        var payamt1 = parseInt($("#tCalAmt").val());
+        var payamt2 = parseInt($("#ReturnAmnt").val());
+        //alert(payamt1);
+        //alert(payamt2);
+
+       if (payamt1 > payamt2) {
+           $("#tPayAmt").val(payamt2);
+           $("#ReplacementAmnt").val(payamt2);
+           //alert(payamt2);
+       }
+       else {
+           $("#tPayAmt").val(payamt1);
+           $("#ReplacementAmnt").val(payamt1);
+       }
+    };
+    function DisburseDataSave() {
+
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        var isAllValid = true;
+        var status = true;
+        ReturnData = [];
+        debugger;
+        var id = $('#ProductInfo tr:last').index()
+        $('#ProductInfo tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {
+                ReturnData.push({
+                    ProductID: $('#tProductID' + row).val().trim(),
+                    ReturnID: $('#tReturnID' + row).val().trim(),
+                    AlternateQuantity: $('#txtReturn' + row).val().trim(),
+                    PlasticBoxQuantity: $('#txtPlasticBox' + row).val().trim(),
+                    SubTotAmount: $('#txtTotal' + row).val().trim(),
+                });
+            }
+        });
+        if (isAllValid) {
+            var data = {
+                 CustomerID: $('#CustomerID').val(),
+                 WarehouseID: $('#WarehouseID').val(),
+                 TransactionDate: $('#TransactionDate').val(),
+                 ProcessfromDate: $('#Fromdate').val(),
+                 ProcessToDate: $('#Todate').val(),
+                 ReferenceNo: $('#ReferenceNo').val(),
+                 Remarks: $('#Note').val(),
+                 TotReturnAmt: $('#ReturnAmnt').val(),
+                 TotSalesAmt: $('#tSaleAmt').val(),
+                 TotPayableAmt: $('#tPayAmt').val(),
+                 CalculationID: $('#ReturnMethod').val(),
+                 replacedetail: ReturnData
+            }
+        }
+        console.log(data);
+        //debugger;
+
+        $.ajax({
+            url: '/Replacement/ReplaceSave',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done... Replacement No:' + a.v);
+                    window.location.reload();
+                    ReturnData = [];
+
+                }
+                else {
+                    alert('Replace Process is Failed!! Please Contact to IT dept.. ');
+                }
+
+            },
+            error: function () {
+                alert('Error. Please try again.');
+
+            }
+        });
+
+    }
+
+</script>
+
+

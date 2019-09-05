@@ -1,0 +1,335 @@
+﻿
+@model MyPepsi.ViewModel.EmptyMoveVM
+
+
+@{
+    ViewBag.Title = "EmptyMove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Empty Movement</h2>
+
+<div class="panel-body">
+    <div class="col-md-4">
+        <div>
+            <label>Warehouse ID:</label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <label style="color:red">Reference Number:</label>
+            @Html.TextBox("RefNo", "", new { @Class = "form-control" })
+            <label style="color:red">Select Type</label>
+            @Html.DropDownList("TransactionTypeID", null, "Select Reference No", new { @class = "form-control" })
+            <label>Transaction Date</label>
+            @Html.TextBox("TransactionDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label>Transffered Warehouse ID</label>
+            @Html.DropDownList("ToWarehouse", null, "Select One", new { @class = "form-control" })
+            @Html.TextBox("NToWarehouse", null, new { @class = "form-control", @Value = 0, @readonly = "readonly" })
+            <label>Driver</label>
+            @Html.DropDownList("Driver", null, "Select One", new { @class = "form-control" })
+            @Html.TextBox("NDriver", null, new { @class = "form-control", @Value = 0, @readonly = "readonly" })
+            <label>Vehicle</label>
+            @Html.DropDownList("Vehicle", null, "Select One", new { @class = "form-control" })
+            @Html.TextBox("NVehicle", null, new { @class = "form-control", @Value = 0, @readonly = "readonly" })
+            @*<label>Remarks/Note</label>
+                <input type="text" id="Remark" class="form-control">*@
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div>
+            <label>Select Storage location</label>
+            @Html.DropDownList("StorageLocationCode", null, "Select One", new { @class = "form-control" })
+            <label>Select Bin</label>
+            @Html.DropDownList("BinID", null, "Select One", new { @class = "form-control" })
+            <label>Total Quantity(Cases)</label>
+            @Html.TextBox("TotalEmpty", "", new { @Class = "form-control", @Value = "0.0", @readonly = "readonly" })
+            <label>Total Boxes</label>
+            @Html.TextBox("TotalBox", "", new { @Class = "form-control", @Value = "0.0", @readonly = "readonly" })
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:600px;">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none">
+                        <tr style="border:none">
+                            <td>
+                                <label style="color:red">Product ID:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductID", "", new { @Class = "form-control", style = "width:250px" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Product Name:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductDescription", "", new { @Class = "form-control", @readonly = "readonly" })  @*new { style = "width:250px" }*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label style="color:red">Quantity in Cases:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("QuantityCase", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label style="color:blue">Box Quantity:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("Boxes", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="addB"
+                                        class="btn btn-primary"
+                                        onclick="emptyProductInfo();">
+                                    Add
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal container">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div id="row">
+            <div class="col-md-4">
+                <input id="btnAddProd" type="button" value="Add Product" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModal" />
+
+            </div>
+            <div class="col-lg-offset-8 col-md-4">
+                <input id="btnclr" type="button" value="Reset" class="btn btn-primary btn-sm btn-block" onclick="PageReLoad();" />
+                <input id="create" type="button" value="Save" class="btn btn-primary btn-sm btn-block" onclick="saveEmptyData();" />
+            </div>
+        </div>
+    </div>
+    //Insertion in table
+    <div>
+        @*Total(Cs): <input type="text" id="tCase" value="0" size="5" readonly />*@
+        <table id="tblEmptyDetail" class="table table-striped" border="0">
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Quantity(Cases)</th>
+                <th>Plastic Boxes</th>
+
+            </tr>
+        </table>
+    </div>
+
+}
+<script>
+    $("#create").prop('disabled', true);
+    $("#ToWarehouse").prop('disabled', true);
+    $("#Driver").prop('disabled', true);
+    $("#Vehicle").prop('disabled', true);
+    $("#addB").prop('disabled', true);
+
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+    $('#ProductID').blur(function () {
+        $.ajax({
+            url: "@Url.Action("GetProductDesc", "EmptyManage")",
+            data: { idProduct: $('#ProductID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+             $('#ProductDescription').val(data);
+            $('#ProductDescription').css('border-color', '');
+        },
+        error: function () {
+            alert("Failed! Product ID Invalid.");
+            $('#ProductDescription').val('!!!!')
+            $('#ProductDescription').css('border-color', 'red');
+            $('#myModal').modal('hide');
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+        }
+    });
+    });
+   $('#QuantityCase').keydown(function () {
+        $.ajax({
+            url: "@Url.Action("GetPlasticData", "EmptyManage")",
+            data: { idProduct: $('#ProductID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data == true) {
+                $('#Boxes').val($('#QuantityCase').val());
+                $("#addB").prop('disabled',false);
+
+            }
+            else {
+                $('#Boxes').val("0");
+            }
+        },
+        error: function () {
+            alert("Failed! Product ID Invalid.");
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID]').val('');
+
+
+        }
+    })
+    });
+    function emptyProductInfo() {
+       
+        var d = document.getElementById("ProductID");
+        var s = document.getElementById("ProductDescription");
+        var x = document.getElementById("QuantityCase");
+        var y = document.getElementById("Boxes");
+        var vorder = document.getElementById("tblEmptyDetail");
+        var tbr = vorder.rows.length;
+        var n = vorder.insertRow(tbr);
+        var c1 = n.insertCell(0);
+        var c2 = n.insertCell(1);
+        var c3 = n.insertCell(2);
+        var c4 = n.insertCell(3);
+        c1.innerHTML = d.value;
+        c2.innerHTML = s.value;
+        c3.innerHTML = x.value;
+        c4.innerHTML = y.value;
+
+       
+    }
+    var isAllValid = true;
+    var status = true;
+    function saveEmptyData() {
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+
+        ProductItems = [];
+        var id = $('#tblEmptyDetail tr:last').index()
+        $('#tblEmptyDetail tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {
+                ProductItems.push({
+                    ProductID: $(tr).find('td:eq(0)').text(),
+                    QuantityCase: $(tr).find('td:eq(2)').text(),
+                    Boxes: $(tr).find('td:eq(3)').text()
+                });
+            }
+        });
+        if (isAllValid) {
+            var data = {
+                WarehouseID: $('#WarehouseID').val().trim(),
+                ToWarehouse: $('#NToWarehouse').val().trim(),
+                TotalEmpty: $('#TotalEmpty').val().trim(),
+                TotalBox: $('#TotalBox').val().trim(),
+                TransactionType: $('#TransactionTypeID').val().trim(),
+                DriverID: $('#NDriver').val().trim(),
+                VehicleNo: $('#NVehicle').val().trim(),
+                //VehicleNo: $('#NVehicle').val().trim(),
+                ReferenceNo: $('#RefNo').val().trim(),
+                LocationID: $('#StorageLocationCode').val().trim(),
+                BinNo: $('#BinID').val().trim(),
+                emptydetail: ProductItems
+            }
+        }
+        console.log(data);
+        $.ajax({
+            url: '/EmptyManage/SaveEmptyMove',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done... Transaction No:' + a.v);
+                    window.location.reload();
+                    ProductItems = [];
+
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                alert('Error. Please try again.');
+            }
+        });
+    }
+    $("#Vehicle").change(function () {
+        var vid = $("#Vehicle").val();
+        $("#NVehicle").val(vid);
+    });
+    $("#Driver").change(function () {
+        var did = $("#Driver").val();
+        $("#NDriver").val(did);
+    });
+    $("#ToWarehouse").change(function () {
+        var wid = $("#ToWarehouse").val();
+        $("#NToWarehouse").val(wid);
+    });
+    $("#TransactionTypeID").change(function () {
+        var tid = $("#TransactionTypeID").val();
+        //alert(tid);
+        if (tid == 29) {
+            $("#ToWarehouse").prop('disabled', false);
+            $("#Driver").prop('disabled', false);
+            $("#Vehicle").prop('disabled', false);
+        }
+        else {
+
+        }
+    });
+    $("#addB").click(function (a) {
+        debugger;
+        var xtotCase =  parseFloat($('#QuantityCase').val());
+        var xtotBox = parseFloat($('#Boxes').val());
+        var totCase = 0;
+        var totBox = 0;
+       // Console.log(a.QuantityCase);
+        //Console.log(a.PlasticBox);
+        if (xtotCase != 0) {
+            totCase = parseFloat($('#TotalEmpty').val()) + parseFloat($('#QuantityCase').val())
+        };
+        $('#TotalEmpty').val(totCase);
+        if (xtotBox != 0) {
+            totBox = parseFloat($('#TotalBox').val()) + parseFloat($('#Boxes').val())
+        };
+        $('#TotalBox').val(totBox);
+        $("#addB").prop('disabled', true);
+        $("#create").prop('disabled', false);
+        $('#myModal').find('input[id=ProductDescription],input[id=ProductID],input[id=QuantityCase],input[id=Boxes]').val('0');
+    });
+
+</script>

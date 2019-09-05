@@ -1,0 +1,490 @@
+﻿@model  MyPepsi.ViewModel.OrderEntryVM
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Order Entry</h2>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:800px">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none" class="col-md-12">
+                        <tr style="border:none">
+                            <td style="color:red;text-align:right">
+                                Product Id:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductId", "", new { @Class = "form-control" })
+                                @*@Html.DropDownList("ProductId", (IEnumerable<SelectListItem>)ViewBag.ProductID, "Select Product", new { style = "width:250px" })*@
+                                @*@Html.DropDownList("Accountno", (IEnumerable<SelectListItem>)ViewBag.invacc, "Select Account Name")*@
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Outstanding :
+                            </td>
+                            <td>
+                                @Html.TextBox("tOutstanding", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none;text-align:right">
+                            <td>
+                                ProductName:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductDescription", "", new { @Class = "form-control", @readonly = "readonly" })
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Order Value :
+                            </td>
+                            <td>
+                                @Html.TextBox("tOrderValue", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="color:red;text-align:right">
+                                OrderCase:
+                            </td>
+                            <td>
+                                @Html.TextBox("OrderCase", "", new { @Class = "form-control", @style = "float: left;text-align: center;" })
+                                @*<span id="dr" class="error">Required</span>*@
+                            </td>
+                            <td style="color:blue;text-align:right">
+                                Rem. Balance :
+                            </td>
+                            <td>
+                                @Html.TextBox("tRemBalnace", "0.00", new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="text-align:right">
+                                PlasticBox:
+                            </td>
+
+                            <td>
+                                @Html.TextBox("PlasticBox", "0", new { @Class = "form-control", @style = "float: left;text-align: center;", @readonly = "readonly" })
+                                @*<span class="error">Required</span>*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="text-align:right">
+                                Order Value:
+                            </td>
+
+                            <td>
+                                @Html.TextBox("modalOrderAmount", "0.00", htmlAttributes: new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+                                @*<span class="error">Required</span>*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="AddBtn"
+                                        class="btn btn-primary"
+                                        onclick="productInfo();">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <Label style="color:blue">Warehouse ID & Name</Label>
+            @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+            @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+            <Label style="color:red">Customer ID</Label>
+            @Html.DropDownList("CustomerID", (IEnumerable<SelectListItem>)ViewBag.CustomerID, "Select Customer", new { @class = "form-control" })
+            @*<Label style="color:red">Choose Warehouse ID</Label>
+                @Html.DropDownList("WarehouseID", (IEnumerable<SelectListItem>)ViewBag.WarehouseID, "Select Warehouse", new { @class = "form-control" })*@
+            @*<label style="color:blue">Sales Order NO</label>
+                @Html.TextBoxFor(model => model.SalesOrderNO, htmlAttributes: new { @class = "form-control",  @readonly = "readonly" })*@
+            @*<label style="color:blue">Outstanding Amt.</label>*@
+            <input type="hidden" class="form-control" id="ActualOutstanding" style="text-align:right" placeholder="Current Outstanding" readonly />
+            <label style="color:blue">Expect Delivery Date</label>
+            @*@Html.TextBoxFor(model => model.ExpectDeliverDate, new { placeholder = "Expect Delivery Date ", @class = "form-control" })*@
+            @*@Html.TextBoxFor(model => model.ExpectDeliverDate, new { @Value = @DateTime.Today.AddDays(1).ToString("dd/MM/yyyy"), @class = "form-control" })*@
+            <input type="date" class="form-control" id="ExpectDeliverDate" value="@DateTime.Today.AddDays(1)" style="text-align:center" />
+            <label style="color:blue">A/c Balance with CL & BG </label>
+            <input type="text" class="form-control" id="currentOutstanding" style="text-align:right" placeholder="Current Outstanding" readonly />
+        </div>
+    </div>
+    <div>
+        <label>Total Order Case</label>
+        @Html.TextBoxFor(model => model.TotOrderCase, new { @class = "form-control", @readonly = "readonly", @Value = ViewBag.TotOrderCase, style = "text-align:center" })
+        <label>Total Plastic Boxes</label>
+        @Html.TextBoxFor(model => model.TotOrderBox, new { @class = "form-control", @readonly = "readonly", @Value = ViewBag.TotPlasticBox, style = "text-align:center" })
+        <label style="color:blue">Order Value</label>
+        <input type="text" class="form-control" id="orderAmount" value="0.00" readonly style="text-align:right" />
+        <label style="color:blue">Total Empty(cs) for DB</label>
+        @Html.TextBoxFor(model => model.EmptyBottleCase, new { @Value = 0, @class = "form-control" })
+        <label>Note:</label>
+        @Html.TextBoxFor(model => model.Remarks, new { placeholder = "Note if Rebate/Free Invoice", @class = "form-control" })
+
+        <button type="button" class="btn btn-primary" style="width:25%" data-toggle="modal" data-target="#myModal">
+            Add Product
+        </button>
+    </div>
+</div>
+
+@*<div class="col-md-offset-1 col-md-5">
+
+    </div>*@
+
+<div class="row">
+    <div class="col-md-offset-6 col-md-5">
+        <input type="button" id="checkOutstanding" value="Check Balance" class="btn btn-primary" style="background-color:orangered" onclick="checkbtn()" ; />
+        <input type="button" id="btnReset" value="Reset" class="btn btn-primary" style="background-color:yellowgreen" onclick="PageReLoad()" ; />
+        <input type="button" id="create" value="Save" class="btn btn-primary" style="background-color:orangered" onclick="saveProduct();" />
+    </div>
+</div>
+<div>
+    <div>
+        <h3>Product Information </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <table id="tblProduct" class="table table-striped">
+                <tr>
+                    <th>Product Id</th>
+                    <th>Product Description</th>
+                    <th>Order Case</th>
+                    <th>Plastic Box</th>
+                    <th>Amount(Tk.)</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $("#create").prop('disabled', true);
+    $("#checkOutstanding").prop('disabled', true);
+    $("#AddBtn").prop('disabled', false);
+    // For Product Desc
+    $('#ProductId').blur(function () {
+        $.ajax({
+            url: "@Url.Action("GetProductDesc", "OrderEntry")",
+            data: { idProduct: $('#ProductId').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //loadData(data);
+                $('#ProductDescription').val(data);
+                $('#ProductDescription').css('border-color', '');
+            },
+            error: function () {
+                alert("Failed! Product ID Invalid.");
+                $('#ProductDescription').val('!!!!')
+                $('#ProductDescription').css('border-color', 'red');
+                $('#myModal').modal('hide');
+                $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+                //$('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+            }
+        });
+        $("#AddBtn").prop('disabled', false);
+    });
+    //get auto Plastic Box Qty
+    $('#OrderCase').keydown(function () {
+        $.ajax({
+            url: "@Url.Action("GetPlasticData", "OrderEntry")",
+            data: { idProduct: $('#ProductId').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //loadData(data);
+            if (data == true) {
+                $('#PlasticBox').val($('#OrderCase').val());
+            }
+            else {
+                $('#PlasticBox').val("0");
+            }
+            int();
+        },
+        error: function () {
+            alert("Failed! Product ID Invalid.");
+           // $('#myModal').modal('hide');
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+            //$('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+        }
+    })
+    });
+    //For Ordered Value
+    function int() {
+        $('#OrderCase').keyup(function () {
+
+        var c = $('#OrderCase').val();
+        $.ajax({
+            url: "@Url.Action("GetOrderValue", "OrderEntry")",
+            data: { custID: $('#CustomerID').val(), idProduct: $('#ProductId').val(), tOrder: $('#OrderCase').val(), totalPB: $('#PlasticBox').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert("Farid");
+            //$('#modalOrderAmount').val(data);
+            //console.log(data);
+            //alert(tAmount);
+
+            if (c < 0) {
+                alert('You Can not enter Negetive Pcs');
+                $("#AddBtn").prop('disabled', true);
+                $("#checkOutstanding").prop('disabled', false);
+            }
+            else {
+                $("#AddBtn").prop('disabled', false);
+                $('#modalOrderAmount').val(data);
+                $("#checkOutstanding").prop('disabled', false);
+                   // ordamt = parseFloat($('#tOrderValue').val()) + parseFloat($('#modalOrderAmount').val());
+                  //  $('#tOrderValue').val(ordamt);
+                  //  remamt = parseFloat($('#tOutstanding').val()) - parseFloat($('#tOrderValue').val());
+                  //  $('#tRemBalnace').val(remamt);
+                //  $('#AddBtn').focus();
+
+                //var ordamt = 0.00;
+                //var remamt = 0.00;
+                ////$('#orderAmount').val(allOrders);
+                //ordamt = parseFloat($('#tOrderValue').val()) + parseFloat($('#modalOrderAmount').val());
+                //$('#tOrderValue').val(ordamt);
+                //remamt = parseFloat($('#tOutstanding').val()) - parseFloat($('#tOrderValue').val());
+                //$('#tRemBalnace').val(remamt);
+            }
+
+
+        },
+        error: function () {
+            alert("Failed-OrderAmount");
+            $('#myModal').modal('hide');
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+            //$('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+        }
+    })
+
+    });
+  }
+
+
+    function productInfo() {
+        var d = document.getElementById("ProductId");
+        var s = document.getElementById("ProductDescription");
+        var x = document.getElementById("OrderCase");
+        var y = document.getElementById("PlasticBox");
+        var z = document.getElementById("modalOrderAmount");
+        var vorder = document.getElementById("tblProduct");
+        var tbr = vorder.rows.length;// - 1;
+        var n = vorder.insertRow(tbr);
+        var c1 = n.insertCell(0);
+        var c2 = n.insertCell(1);
+        var c3 = n.insertCell(2);
+        var c4 = n.insertCell(3);
+        var c5 = n.insertCell(4);
+        c1.innerHTML = d.value; //d.options[d.selectedIndex].text;
+        c2.innerHTML = s.value;
+        c3.innerHTML = x.value;
+        c4.innerHTML = y.value;
+        c5.innerHTML = z.value;
+    }
+    var isAllValid = true;
+    var status = true;
+    function saveProduct() {
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        //debugger;
+        ProductItems = [];
+        // console.log(DtlItems);
+        var id = $('#tblProduct tr:last').index()
+        $('#tblProduct tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {
+                ProductItems.push({
+                    ProductId: $(tr).find('td:eq(0)').text(),
+                    // ProductDescription: $(tr).find('td:eq(1)').text(),
+                    OrderCase: $(tr).find('td:eq(2)').text(),
+                    PlasticBox: $(tr).find('td:eq(3)').text(),
+                    Amount: $(tr).find('td:eq(4)').text(),
+
+                });
+            }
+        });
+
+       // $('#create').html('Please wait...');
+
+        //  console.log($('#create').html());
+       // console.log(isAllValid);
+        if (isAllValid) {
+            var data = {
+                CustomerID: $('#CustomerID').val().trim(),
+                //SalesOrderNO: $('#SalesOrderNO').val().trim(),
+                WarehouseID: $('#WarehouseID').val().trim(),
+                Remarks: $('#Remarks').val().trim(),
+                TotOrderCase: $('#TotOrderCase').val().trim(),
+                TotOrderBox: $('#TotOrderBox').val().trim(),
+                TotalOrderAmount: $('#orderAmount').val().trim(),
+                EmptyBottleCase: $('#EmptyBottleCase').val().trim(),
+                ExpectDeliverDate: $('#ExpectDeliverDate').val().trim(),
+                oderCustomer: ProductItems
+            }
+        }
+        console.log(data);
+        //debugger;
+        // console.log(allord);
+        // alert(JSON.stringify(allord));
+        $.ajax({
+            url: '/OrderEntry/OrderEntrySave',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                //var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done... Order No:'+a.v);
+                    //alert('SalesOrderNO:' + a.v);
+                    //$('#SalesOrderNO').val(a.v);
+                    window.location.reload();
+
+                    //clear form array
+                    ProductItems = [];
+
+                }
+                else {
+                    alert('Failed');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+                $('#create').val('Create');
+            }
+        });
+      //  console.log(data);
+        //$('#create').html('Create');
+    }
+
+
+    // Customer Outstanding
+    $('#CustomerID').blur(function () {
+        // alert("Blur..");
+        $.ajax({
+            url: "@Url.Action("GetCustomerOutstanding", "OrderEntry")",
+            data: { custId: $('#CustomerID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //console.log(data);
+
+            // var table = document.getElementById("ProductInfo");
+            $("#currentOutstanding").val(data);
+            $("#tOutstanding").val(data);
+
+        },
+        error: function () {
+            alert("Failed! To found Customer Current Outstanding.Please Check....");
+            $('#CurOutAmt').val('0')
+        }
+        });
+        $('#ExpectDeliverDate').focus();
+    });
+    $('#CustomerID').change(function () {
+        // alert("Blur..");
+        $.ajax({
+            url: "@Url.Action("GetCustomerActualOutstanding", "OrderEntry")",
+            data: { custId: $('#CustomerID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //console.log(data);
+            $("#ActualOutstanding").val(data);
+        },
+        error: function () {
+            alert("Failed! To found Customer Current Outstanding.Please Check....");
+           // $('#CurOutAmt').val('0')
+        }
+    });
+        $('#ExpectDeliverDate').focus();
+    });
+
+    $('#AddBtn').click(function (a) {
+        var totCase = 0;
+        var totBox = 0;
+        if (a.OrderCase != 0) {
+            totCase = parseInt($('#TotOrderCase').val()) + parseInt($('#OrderCase').val())
+        };
+        $('#TotOrderCase').val(totCase);
+        if (a.PlasticBox != 0) {
+            totBox = parseInt($('#TotOrderBox').val()) + parseInt($('#PlasticBox').val())
+        };
+        $('#TotOrderBox').val(totBox);
+
+        var allOrders = 0.00;
+        allOrders = parseFloat($('#orderAmount').val()) + parseFloat($('#modalOrderAmount').val());
+        $('#orderAmount').val(allOrders);
+        var ordamt = 0.00;
+        var remamt = 0.00;
+            ordamt = parseFloat($('#tOrderValue').val()) + parseFloat($('#modalOrderAmount').val());
+            $('#tOrderValue').val(ordamt);
+            remamt = Math.abs(parseFloat($('#tOutstanding').val())) - parseFloat($('#tOrderValue').val());
+            $('#tRemBalnace').val(remamt);
+            $("#AddBtn").prop('disabled', true);
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductId],input[id=OrderCase]').val('');
+           // $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+
+    });
+    //
+    function checkbtn() {
+        //debugger;
+       // $('#checkOutstanding').click(function (a) {
+       // var tOutstanding = 0.00;
+           //tOutstanding = parseFloat($('#currentOutstanding').val());
+
+         //  var tOAmount = 0.00;
+          // tOAmount = parseFloat($('#orderAmount').val());
+            //alert($('#tOAmount').val())
+          //  console.log(tOAmount);
+          //  console.log(tOutstanding);
+          //  if (tOAmount < tOutstanding) {
+                // alert("This Transaction Not Possible, Check Outstanding please!!")
+             //   alert('Failed !! Please check again..!!');
+                //$("#create").prop('disabled', true);
+
+
+          //  }
+         //   else if (tOAmount > tOutstanding) {
+                alert("Now you can complete the transaction..!!")
+                $("#create").prop('disabled', false);
+            //    $("#create").prop('disabled', true);
+         //   }
+      //  });
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+
+</script>
+

@@ -1,0 +1,120 @@
+﻿@model MyPepsi.ViewModel.POSMVM
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Create POSM Scheme</h2><br />
+@Html.DropDownList("PosmSchemeLists", null, "Select Supplier", new { @class = "form-control" })
+<label>Scheme ID:</label>
+<input type="text" id="SchemeID" class="form-control" readonly />
+<label>Scheme Name:</label>
+<input type="text" id="SchemeDescription" class="form-control" /><br />
+<input type="button" id="addButton" value="Add New" class="btn-primary" />
+<input type="button" id="saveButton" value="Save" class="btn-primary" />
+<input type="button" id="updateButton" value="Update" class="btn-primary" />
+
+
+<script>
+    $(document).ready(function () {
+        //To get Posm Next ID
+        $("#addButton").click(function () {
+            $.ajax({
+                url: "@Url.Action("GetPOSMItemID", "POSMScheme")",
+                //data: { csID: $("#csID").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#SchemeID").val(data);
+            },
+            error: function () {
+                alert("Failed!");
+            }
+        });
+        })
+        //Edit
+        $("#PosmSchemeLists").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetPOSMSchemeName", "POSMScheme")",
+                data: { SchemeID: $("#PosmSchemeLists").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#SchemeID").val($("#PosmSchemeLists").val());
+                $("#SchemeDescription").val(data);
+
+                //window.location.reload();
+            },
+            error: function () {
+                alert("Failed!");
+            }
+        });
+    })
+        //To Save New Item
+        $("#saveButton").click(function () {
+            var data = {
+                SchemeID: $("#SchemeID").val(),
+                SchemeDescription: $("#SchemeDescription").val()
+            }
+            $.ajax({
+                url: '/POSMScheme/SavePOSMItem',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully Added...');
+                        window.location.reload();
+                        $("#SchemeID").val('');
+                        $("#SchemeDescription").val('');
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+
+        //To Update Item Name
+        $("#updateButton").click(function () {
+            var data = {
+                SchemeID: $("#SchemeID").val(),
+                SchemeDescription: $("#SchemeDescription").val()
+            }
+            $.ajax({
+                url: '/POSMScheme/UpdatePOSMItem',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully Updated...');
+                        window.location.reload();
+                        $("#SchemeID").val('');
+                        $("#SchemeDescription").val('');
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+    })
+
+
+</script>
+
+

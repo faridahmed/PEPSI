@@ -1,0 +1,672 @@
+﻿@model MyPepsi.ViewModel.ReturnmentVM
+
+@{
+    ViewBag.Title = "Return";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Return Information</h2>
+<div>
+    <input type="hidden" id="totalPcinCase" />
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none">
+                        <tr style="border:none">
+                            <td style="color:red">
+                                Product Code:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductID", "", new { @Class = "form-control" })
+                            </td>
+                            <td style="color:blue">
+                                SchemeID:
+                            </td>
+                            <td>
+                                @Html.TextBox("SchemeID", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                ProductName:
+                            </td>
+                            <td>
+                                @Html.TextBox("ProductDescription", "", new { @Class = "form-control", @readonly = "readonly" })
+                            </td>
+                            <td style="color:blue">
+                                Level Qty:
+                            </td>
+                            <td>
+                                @Html.TextBox("LevelQty", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                Batch No:
+                            </td>
+
+                            <td>
+                                @Html.TextBox("BatchNo", "0", new { @Class = "form-control" })
+                                @*<span class="error">Required</span>*@
+                            </td>
+                            <td style="color:blue">
+                                Crown Qty:
+                            </td>
+                            <td>
+                                @Html.TextBox("CrownQty", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="color:red">
+                                Plastic Qty:
+                            </td>
+                            <td>
+                                @Html.TextBox("PlasticBox", "0", new { @Class = "form-control" })
+                            </td>
+                            <td style="color:blue">
+                                Rebate Plastic Qty:
+                            </td>
+                            <td>
+                                @Html.TextBox("RebatePlasticBox", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td style="color:red">
+                                Return Qty(Case):
+                            </td>
+                            <td>
+                                @Html.TextBox("ReturnQty", "0", new { @Class = "form-control" })
+                            </td>
+                            <td style="color:blue">
+                                Rebate Qty(Case):
+                            </td>
+                            <td>
+                                @Html.TextBox("RebateQty", "0", new { @Class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                Amount:
+                            </td>
+
+                            <td>
+                                @Html.TextBox("Amount", "0.00", htmlAttributes: new { @Class = "form-control", @style = "float: left;text-align: right;", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="AddBtn"
+                                        class="btn btn-primary"
+                                        onclick="productInfo();">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <label style="color:red">Warehouse ID And Name</label>
+                @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+                @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+                @*@Html.DropDownList("WarehouseID", null, "Select One", new { @class = "form-control" })*@
+                <label style="color:red">Customer ID and Name</label>
+                @Html.DropDownList("CustomerID", null, "Select One", new { @class = "form-control" })
+                <label>Customer Name</label>
+                <input class="form-control" type="text" id="CustName" readonly />
+                <label style="color:red">Return Type</label>
+                @Html.DropDownList("ReturnTypeID", null, "Select a Type", new { @class = "form-control" })
+                <label>Return Date</label>
+                @Html.TextBox("ReturnDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control", @readonly = "readonly" })
+                @*<label>Total Qty. with Rebate</label>
+                    <input type="text" id="txtSecurityAmount" class="form-control" value="0" size="8" readonly />*@
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            @*<label>Customer Address</label>
+                @Html.TextBox("CustAdd", null, new { @class = "form-control", @readonly = "readonly" })*@
+            <label>Total Qty.</label>
+            <input type="text" class="form-control" id="ReturnGoodsQty" value="0" readonly style="text-align:center" />
+            <input type="hidden" class="form-control" id="TotReturnGoodsQty" value="0" />
+            <label>Amount</label>
+            <input type="text" class="form-control" id="InAmount" value="0.00" readonly style="text-align:right" />
+
+            <label>Ref. Number</label>
+            <select id="RefNumber" class="form-control" ,style="width:150px"><option>Select One</option></select>
+            @Html.TextBox("RNumber", null, new { @class = "form-control", @Value = 0, @readonly = "readonly" })
+            <label style="color:blue">Hire Truck Informations*</label>
+            @Html.DropDownList("TransportAgencyList", null, "Select Transport Agency", new { @class = "form-control" })
+            <label>Hire Truck No</label>
+            <input type="text" id="VechileNo" value="N/A" class="form-control">
+            @*<button type="button" class="btn btn-primary btn-sm btn-block"  style="text-decoration-color:red" data-toggle="modal" data-target="#myModal">
+                  ADD RETURN PRODUCT INFO
+                </button>*@
+            <input id="btnProduct" type="button" class="btn btn-primary btn-sm btn-block" value="Product Information" data-toggle="modal" data-target="#myModal" />
+
+        </div>
+        <div class="col-md-4">
+            <input type="radio" name="rdo" id="r1">Rate1 (Fare Amount)</>
+            <input type="text" id="Rate1" value="0.0" class="form-control" readonly>
+            <input type="radio" name="rdo" id="r2">Rate2 </>
+            <input type="text" id="Rate2" value="0.0" class="form-control" readonly>
+            <input type="radio" name="rdo" id="r3">Rate3</>
+            <input type="text" id="Rate3" value="0.0" class="form-control" readonly>
+            <label style="color:blue">Amount of Fare*</label>
+            <input type="text" id="FareAmnt" value="0.0" class="form-control">
+            <input type="checkbox" id="unlChargeCheckBox">Unload Charge</> <input type="checkbox" id="outDhakaChk">Outside Metro</>
+            <input type="text" id="unloadCharge" value="0" class="form-control" />
+            <label>Remarks</label>
+            @Html.TextBox("Reasons", null, new { @class = "form-control", @style = "text-align:left;color:blue;font:bold" })
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                @*<button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModal">Product Information</button>*@
+
+            </div>
+            <div class="col-lg-4">
+                <input id="btbChk" type="button" class="btn btn-primary btn-sm btn-block" value="Check Return Data" onClick="CheckData();" />
+                <input id="btnReset" type="button" class="btn btn-primary btn-sm btn-block" value="Reset" onClick="PageReLoad();" />
+                <input type="button" id="create" value="Save Return Information" class="btn btn-primary btn-sm btn-block" onclick="saveReturnData();" />
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-md-9">
+            <div>
+                <h4 style="color:green">Return Information </h4>
+            </div>
+            <table id="tblProduct" class="table table-striped">
+                <tr>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Batch No</th>
+                    <th>Return Qty</th>
+                    <th>Plastic Qty</th>
+                    <th>Amount</th>
+                    <th>Rebate/Level Qty</th>
+                    <th>Rebate Box/Crowns</th>
+                    <th>Scheme ID</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+        $("#create").prop('disabled', true);
+        $("#btbChk").prop('disabled', true);
+        $("#AddBtn").prop('disabled', true);
+        $("#CrownQty").prop('disabled', true);
+        $("#LevelQty").prop('disabled', true);
+        // For Product Desc
+        $('#ProductID').blur(function () {
+            $.ajax({
+                url: "@Url.Action("GetProductDesc", "Returnment")",
+                data: { idProduct: $('#ProductID').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    $('#ProductDescription').val(data);
+                    $('#ProductDescription').css('border-color', '');
+                    $("#AddBtn").prop('disabled', true);
+                },
+                error: function () {
+                    alert("Failed! Product ID Invalid.");
+                    $('#ProductDescription').val('!!!!')
+                    $('#ProductDescription').css('border-color', 'red');
+                    $('#myModal').modal('hide');
+                    $('#myModal').find('input[id=ProductDescription],input[id=ProductId]').val('');
+                    //$('#myModal').find('input[id=Quantity],input[id=EmptyBottleQuantity],input[id=PlasticBoxQuantity],input[id=BurstBottleQuantity],input[id=BreakageBottleQuantity]').val('0');
+
+                }
+            })
+            $("#CustomerID").prop('disabled', true);
+        });
+
+    $('#ReturnTypeID').blur(function () {
+        var tid = $("#ReturnTypeID").val();
+        //alert('Your Return type ID');
+        if (tid == 12) {
+            $("#CrownQty").prop('disabled', false);
+            $("#LevelQty").prop('disabled', false);
+           // $("#ReturnQty").prop('disabled', true);
+            $("#RebateQty").prop('disabled', true);
+           $("#RebatePlasticBox").prop('disabled', true);
+        }
+        else {
+            $("#CrownQty").prop('disabled', true);
+            $("#LevelQty").prop('disabled', true);
+           // $("#ReturnQty").prop('disabled', false);
+            $("#RebateQty").prop('disabled', false);
+            $("#RebatePlasticBox").prop('disabled', false);
+        }
+
+    });
+
+    $('#CrownQty').blur(function () {
+        var lqty = $("#LevelQty").val();
+        var cqty = $("#CrownQty").val();
+        $("#RebateQty").val(cqty);
+        $("#RebatePlasticBox").val(lqty);
+
+        if (lqty > cqty) {
+            $("#ReturnQty").val(cqty);
+            $("#ReturnQty").focus();
+        }
+        else {
+            $("#ReturnQty").val(lqty);
+            $("#ReturnQty").focus();
+        }
+    });
+
+        function productInfo() {
+            var d = document.getElementById("ProductID");
+            var s = document.getElementById("ProductDescription");
+            var x = document.getElementById("BatchNo");
+            var y = document.getElementById("ReturnQty");
+            var p = document.getElementById("PlasticBox");
+            var z = document.getElementById("Amount");
+            var xx = document.getElementById("RebateQty");
+            var pp = document.getElementById("RebatePlasticBox");
+            var ss = document.getElementById("SchemeID");
+            var vorder = document.getElementById("tblProduct");
+            var tbr = vorder.rows.length;
+            var n = vorder.insertRow(tbr);
+            var c1 = n.insertCell(0);
+            var c2 = n.insertCell(1);
+            var c3 = n.insertCell(2);
+            var c4 = n.insertCell(3);
+            var c5 = n.insertCell(4);
+            var c6 = n.insertCell(5);
+            var c7 = n.insertCell(6);
+            var c8 = n.insertCell(7);
+            var c9 = n.insertCell(8);
+            c1.innerHTML = d.value;
+            c2.innerHTML = s.value;
+            c3.innerHTML = x.value;
+            c4.innerHTML = y.value;
+            c5.innerHTML = p.value;
+            c6.innerHTML = z.value;
+            c7.innerHTML = xx.value;
+            c8.innerHTML = pp.value;
+            c9.innerHTML = ss.value;
+        }
+        var isAllValid = true;
+        function saveReturnData() {
+            var answer = confirm('Are you sure you want to save this?');
+            if (answer) {
+                //  return;
+                //return status;
+            }
+            else {
+                return false;
+            }
+            //debugger;
+            ProductItems = [];
+            // console.log(DtlItems);
+            var id = $('#tblProduct tr:last').index()
+            $('#tblProduct tr').each(function (row, tr) {
+                if ((row > 0) && (row <= id)) {
+                    ProductItems.push({
+                        ProductID: $(tr).find('td:eq(0)').text(),
+                        BatchNo: $(tr).find('td:eq(2)').text(),
+                        ReturnQty: $(tr).find('td:eq(3)').text(),
+                        Packsize: $(tr).find('td:eq(4)').text(),
+                        Amount: $(tr).find('td:eq(5)').text(),
+                        RebateQty: $(tr).find('td:eq(6)').text(),
+                        RebatePlastic: $(tr).find('td:eq(7)').text(),
+                        SchemeID: $(tr).find('td:eq(8)').text()
+
+                    });
+                }
+            });
+
+            $('#create').html('Please wait...');
+
+            if (isAllValid) {
+                var data = {
+                    CustomerID: $('#CustomerID').val().trim(),
+                    RefNumber: $('#RNumber').val().trim(),
+                    WarehouseID: $('#WarehouseID').val().trim(),
+                    Reasons: $('#Reasons').val().trim(),
+                    InAmount: $('#InAmount').val().trim(),
+                    ReturnGoodsQty: $('#ReturnGoodsQty').val().trim(),
+                    ReturnTypeID: $('#ReturnTypeID').val().trim(),
+                    AdjustedAmt: $('#unloadCharge').val().trim(),
+                    FareAmt: $('#FareAmnt').val().trim(),
+                    TAID: $('#TransportAgencyList').val().trim(),
+                    VechileNo: $('#VechileNo').val().trim(),
+                    listreturndetail: ProductItems
+                }
+            }
+            console.log(data);
+            //debugger;
+            // console.log(allord);
+            // alert(JSON.stringify(allord));
+            $.ajax({
+                url: '/Returnment/SaveReturn',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+                    //check is successfully save to database
+                    //var status = true;
+                    if (a.status == true) {
+                        //will send status from server side
+                        alert('Successfully done...Return Transaction No:' + a.v);
+                        //alert('SalesOrderNO:' + a.v);
+                        //$('#SalesOrderNO').val(a.v);
+                        window.location.reload();
+
+                        //clear form array
+                        ProductItems = [];
+
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                    // $('#create').val('Create');
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                    //$('#create').val('Create');
+                }
+            });
+            //  console.log(data);
+           // $('#create').html('Create');
+        }
+
+        $('#ReturnQty').keyup(function () {
+            var c = $('#ReturnQty').val();
+            $.ajax({
+                url: "@Url.Action("GetReturnAmt", "Returnment")",
+                data: { inCustID: $('#CustomerID').val(), inProduct: $('#ProductID').val(), inCase: $('#ReturnQty').val(), inPlastic: $('#PlasticBox').val(), inTrType: $('#ReturnTypeID').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //alert("Farid");
+                    $('#Amount').val(data);
+                    //console.log(data);
+                   // $("#BatchNo").focus();
+                   // $("#AddBtn").prop('disabled', false);
+                   
+                },
+                error: function () {
+                    alert("Failed.! Retun amount not found for the product please check..!!");
+                    $("#AddBtn").prop('disabled', true);
+                    //$('#myModal').modal('hide');
+                    $('#myModal').find('input[id=ReturnQty]').val('0');
+
+
+                }
+            });
+        });
+    $('#ReturnQty').blur(function () {
+        var c = $('#ReturnQty').val();
+        $.ajax({
+            url: "@Url.Action("GetReturnAmt", "Returnment")",
+            data: { inCustID: $('#CustomerID').val(), inProduct: $('#ProductID').val(), inCase: $('#ReturnQty').val(), inPlastic: $('#PlasticBox').val(), inTrType: $('#ReturnTypeID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert("Farid");
+            $('#Amount').val(data);
+            //console.log(data);
+            // $("#BatchNo").focus();
+            $("#AddBtn").prop('disabled', false);
+          
+                   
+        },
+        error: function () {
+            alert("Failed.! Retun amount not found for the product please check..!!");
+            $("#AddBtn").prop('disabled', true);
+           // $('#myModal').modal('hide');
+            $('#myModal').find('input[id=ReturnQty]').val('0');
+
+
+        }
+    });
+    });
+    $('#PlasticBox').keyup(function () {
+        var c = $('#ReturnQty').val();
+        $.ajax({
+            url: "@Url.Action("GetReturnAmt", "Returnment")",
+            data: { inCustID: $('#CustomerID').val(), inProduct: $('#ProductID').val(), inCase: $('#ReturnQty').val(), inPlastic: $('#PlasticBox').val(), inTrType: $('#ReturnTypeID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert("Farid");
+            $('#Amount').val(data);
+             
+        },
+        error: function () {
+            alert("Failed.! Retun amount not found for the product please check..!!");
+            $('#myModal').find('input[id=ReturnQty]').val('0');
+
+        }
+    });
+    });
+    $('#PlasticBox').blur(function () {
+        var c = $('#ReturnQty').val();
+        $.ajax({
+            url: "@Url.Action("GetReturnAmt", "Returnment")",
+            data: { inCustID: $('#CustomerID').val(), inProduct: $('#ProductID').val(), inCase: $('#ReturnQty').val(), inPlastic: $('#PlasticBox').val(), inTrType: $('#ReturnTypeID').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert("Farid");
+            $('#Amount').val(data);
+             
+        },
+        error: function () {
+            alert("Failed.! Retun amount not found for the product please check..!!");
+            $('#myModal').find('input[id=ReturnQty]').val('0');
+
+        }
+    });
+    });
+
+        $("#CustomerID").change(function(){
+            var id = $('#CustomerID').val()
+            ChalanNoList(id);
+        })
+
+
+        $('#AddBtn').click(function (a) {
+            var totamt = 0.00;
+            var totcase = 0.00;
+            totamt = parseFloat($('#InAmount').val()) + parseFloat($('#Amount').val());
+            $('#InAmount').val(totamt);
+            totcase = parseFloat($('#ReturnGoodsQty').val()) + parseFloat($('#ReturnQty').val());
+            totcaseRebate = parseFloat($('#TotReturnGoodsQty').val()) + parseFloat($('#ReturnQty').val()) + parseFloat($('#RebateQty').val());
+            $('#ReturnGoodsQty').val(totcase);
+            $('#TotReturnGoodsQty').val(totcaseRebate);
+            $('#myModal').find('input[id=ProductDescription],input[id=ProductID],input[id=ReturnQty],input[id=Amount],input[id=PlasticBox],input[id=BatchNo],input[id=RebateQty],input[id=RebatePlasticBox]').val('0');
+            $("#btbChk").prop('disabled', false);
+            $("#AddBtn").prop('disabled', true);
+        });
+        //unload charge
+        $("#unlChargeCheckBox").change(function () {
+            var tid = $("#ReturnTypeID").val();
+            var xx = $("#ReturnGoodsQty").val();
+            $("#totalPcinCase").val(xx);
+            if (tid == 13) {
+                var FAmnt = parseInt(parseInt($("#TotReturnGoodsQty").val()) * 0.2);// + parseInt($("#totalPcinCase").val())) * 0.2)
+
+
+                if ($("#unlChargeCheckBox").is(':checked')) {
+                    $("#unloadCharge").val(FAmnt);
+                }
+                else {
+                    $("#unloadCharge").val(0);
+                }
+
+            }
+            if (tid == 14) {
+                var FAmnt = parseInt(parseInt($("#TotReturnGoodsQty").val()) * 1);
+
+
+                if ($("#unlChargeCheckBox").is(':checked')) {
+                    $("#unloadCharge").val(FAmnt);
+                }
+                else {
+                    $("#unloadCharge").val(0);
+                }
+                if (($("#unlChargeCheckBox").is(':checked')) && ($("#outDhakaChk").is(':checked'))) {
+                            $("#unloadCharge").val(FAmnt * .5);
+                      }
+
+            }
+        });
+
+
+        $("#outDhakaChk").change(function () {
+            var xx = $("#TotReturnGoodsQty").val();
+            var tid = $("#ReturnTypeID").val();
+            $("#totalPcinCase").val(xx);
+            var FAmnt = parseInt(parseInt($("#TotReturnGoodsQty").val()) * 1);
+            if (tid == 14) {
+                if (($("#unlChargeCheckBox").is(':checked')) && ($("#outDhakaChk").is(':checked'))) {
+                    $("#unloadCharge").val(FAmnt * .5);
+                }
+                else {
+                    $("#unloadCharge").val(FAmnt);
+                }
+            }
+
+        });
+
+        //$("#nightShiftChk").change(function () {
+        //    var xx = $("#ReturnGoodsQty").val();
+        //    $("#totalPcinCase").val(xx);
+        //    var FAmnt = parseInt((parseInt($("#ReturnGoodsQty").val()) + parseInt($("#totalPcinCase").val())) * 1);
+
+        //    if (($("#unlChargeCheckBox").is(':checked')) && ($("#nightShiftChk").is(':checked')) && ($("#outDhakaChk").not(':checked').length)) {
+        //        $("#unloadCharge").val(FAmnt * .25);
+        //    }
+        //    else {
+        //        $("#unloadCharge").val(FAmnt);//nightShiftChk
+        //    }
+
+        //});
+
+        //get Fare Amount Against Transport Agency
+        $("#TransportAgencyList").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetAgencyFareAmount", "Returnment")",
+                data: { custID: $('#CustomerID').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    $('#Rate1').val(data.EmptyFixAmt);
+                    $('#Rate2').val(data.PerCaseAmt);
+                    $('#Rate3').val(data.SpecialRatePerCase);
+                    //alert('Stock Quantity of this Product is: ' + data);
+                },
+                error: function () {
+                    alert("Failed! Warehouse ID not Set for Fare!");
+                }
+            });
+
+        });
+        //Radio option
+        $("#r1").change(function () {
+            var FAmnt = $("#Rate1").val();
+            $("#FareAmnt").val(FAmnt);
+        });
+        $("#r2").change(function () {
+            var FAmnt = parseFloat($("#Rate2").val());
+            var totcase = parseInt($("#ReturnGoodsQty").val());
+            var amt = totcase * FAmnt;
+            $("#FareAmnt").val(amt);
+        });
+        $("#r3").change(function () {
+            //var FAmnt = $("#Rate3").val();
+            var FAmnt = parseFloat($("#Rate3").val());
+            var totcase = parseInt($("#ReturnGoodsQty").val());
+            var amt = totcase * FAmnt;
+            $("#FareAmnt").val(amt);
+        });
+        function ChalanNoList(id) {
+
+            $.ajax({
+                url: "@Url.Action("getCustomerChallan", "Returnment")",
+                data: {inChalan: id, inCustomer: $("#CustomerID").val() },
+            type: "GET",
+            dataType: "json",
+            success: function (j) {
+
+                // $("#TrBatchNo").val();
+                $("#RefNumber").html('');
+
+                var options = '';
+                for (var i = 0; i < j.length; i++) {
+                   options += '<option value="' + j[i].id + '">' + j[i].name + '</option>';
+                   // console.log(i.id);
+                   // console.log(i.name);
+                }
+                //  $("#TrBatchNo").val(options);
+
+                $("#RefNumber").html(options);
+            }
+        });
+
+        }
+        function ChallanNo() {
+            alert($("#RefNumber").val());
+        };
+        function CheckData() {
+             alert("Are you sure!! checked all data of return");
+             var load = (parseInt($("#unloadCharge").val()));
+             alert("Return Load/Unload charge is:" + load);
+            var totamt = parseInt((parseInt($("#unloadCharge").val()) + parseInt($("#InAmount").val())));
+           // $("#InAmount").val(totamt);
+            $("#create").prop('disabled', false);
+            $("#btnProduct").prop('disabled', true);
+            $("#btbChk").prop('disabled', true);
+            //var d = $("#TotReturnGoodsQty").val();
+            //$("#txtAgencyAmount").val(d);
+        };
+        function PageReLoad() {
+            alert("Are you sure Reset ...?")
+            location.reload();
+        }
+        $("#RefNumber").change(function () {
+            //debugger;
+            var c = $("#RefNumber").val();
+
+            $("#RNumber").val(c);
+
+        }
+   );
+
+
+</script>
+

@@ -1,0 +1,140 @@
+﻿@model MyPepsi.ViewModel.CustomerVM
+@{
+    ViewBag.Title = "Create Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Customer Entry</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <label>Customer ID</label>
+                @Html.TextBox("CustomerID", null, new { @class = "form-control", @readonly = "readonly" })
+                <label style="color:red">Customer Type</label>
+                @Html.DropDownList("CustomerTypeID", null, "Select One", new { @class = "form-control" })
+                <label style="color:red">Warehouse ID</label>
+                @*@Html.TextBox("WarehouseIDN", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })*@
+                @Html.DropDownList("WarehouseID", null, "Select One", new { @class = "form-control" })
+                <label style="color:red">Customer Name</label>
+                @Html.TextBox("CustomerName", null, new { @class = "form-control" })
+                <label>Address</label>
+                @Html.TextArea("CustomerAddress1", null, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <label style="color:red">Contact No</label>
+                @Html.TextBox("CustomerPhone", null, new { @class = "form-control" })
+                <label>Proprietors Name</label>
+                @Html.TextBox("ProprietorsName", null, new { @class = "form-control" })
+                <label>CE Name</label>
+                @Html.DropDownList("CustomerExecutiveID", null, "Select One", new { @class = "form-control" })
+                <label>Sales Person Name</label>
+                @Html.DropDownList("SalesPersonID", null, "Select One", new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <label>Region</label>
+                @Html.DropDownList("RegionID", null, "Select One", new { @class = "form-control" })
+                <label>Cluster Name</label>
+                @Html.DropDownList("ClusterName", null, "Select One", new { @class = "form-control" })
+                <label>Product Rate</label>
+                @Html.DropDownList("ProductRateID", null, "Select One", new { @class = "form-control" })
+                @*<label>VAT Rate ID</label>
+                    @Html.TextBox("VATRateId", null, new { @class = "form-control" })*@
+                <label style="color:red">VAT Registration No</label>
+                @Html.TextBox("VATRegistrationNumber", null, new { @class = "form-control" })
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <input id="btnReset" type="button" class="btn btn-primary" value="Reset" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" onClick="savedata();" />
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $('#CustomerTypeID').focus();
+    $('#CustomerTypeID').click(function () {
+        $(warehouse);
+    });
+    function warehouse() {
+        var c = $('#WarehouseIDN').val();
+        if (c != null) {
+            $("#WarehouseID").prop('disabled', true);
+        }
+    };
+    var status = true;
+    function savedata() {
+        var data = {
+           // CustomerID: $('#CustomerID').val().trim(),
+            WarehouseID: $('#WarehouseID').val().trim(),
+            CustomerTypeID: $('#CustomerTypeID').val().trim(),
+            CustomerName: $('#CustomerName').val().trim(),
+            CustomerAddress1: $('#CustomerAddress1').val().trim(),
+            CustomerPhone: $('#CustomerPhone').val().trim(),
+            CustomerExecutiveID: $('#CustomerExecutiveID').val().trim(),
+            SalesPersonID: $('#SalesPersonID').val().trim(),
+            RegionID: $('#RegionID').val().trim(),
+            CustomerExecutiveID: $('#CustomerExecutiveID').val().trim(),
+            ClusterName: $('#ClusterName').val().trim(),
+            ProductRateID: $('#ProductRateID').val().trim(),
+            VATRegistrationNumber: $('#VATRegistrationNumber').val().trim(),
+            ProprietorsName: $('#ProprietorsName').val().trim()
+            //CustomerExecutiveID: $('#CustomerExecutiveID').val().trim(),
+        }
+
+        var answer = confirm('Are you sure, you want to save this customer?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        $.ajax({
+            url: '/Customer/SaveCustomer',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    $('#CustomerID').val(a.v);
+                    alert('Successfully done and Customer ID :' + a.v);
+                    $("#btnSave").prop('disabled', true);
+                }
+                else {
+                    alert('Failed, Please Check...');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+                //  $('#create').val('Create');
+            }
+        });
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset form ...?")
+        location.reload();
+    }
+
+</script>

@@ -1,0 +1,212 @@
+﻿@model MyPepsi.ViewModel.PaymentTransactionVM
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="text-center">Money Receipt</h2>
+<input type="hidden" id="pType" />
+
+@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>*@
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label style="color:red;">Select Customer:</label>
+            @Html.DropDownList("CustomerLists", null, "Select Customer", new { @class = "form-control" })
+            <label style="color:red;">Select Transaction Type:</label>
+            @Html.DropDownList("PTransactionType", null, "Select Type", new { @class = "form-control" })
+            <label style="color:red;">Select Payment Mode:</label>
+            @Html.DropDownList("PayMode", null, "Select Payment Mode", new { @class = "form-control" })
+            @*<label style="color:red;">Select Deposited By:</label>
+            @Html.DropDownList("DepositedBy", null, "Select Deposited By", new { @class = "form-control" })*@
+            <label>Payment Date:</label>
+            @Html.TextBox("txtPDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control", @readonly = "readonly" })
+            <label>Receivable Amount:</label>
+            <input class="form-control" type="text" id="receivableAmnt" readonly />
+            <label style="color:red;">Payment Amount:</label>
+            <input class="form-control" type="text" id="paymentAmnt" />
+        </div>
+    </div>
+    <div>
+        <label>Select Bank:</label>
+        @Html.DropDownList("BankName", null, "Select Bank Name", new { @class = "form-control" })
+        <label>Select Issuing Bank/Branch:</label>
+        @Html.DropDownList("BranchName", null, "Select Branch Name", new { @class = "form-control" })
+        <label>CheQue/DD/PO/MobileBanking Tr. Number:</label>
+        <input class="form-control" type="text" id="CDPNumber" />
+        <label>Cheque/DD/PO Date:</label>
+        @Html.TextBox("tDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+        <label>Select Local Branch:</label>
+        @*@Html.DropDownListFor(m => m.BankBranchID, new SelectList(""), "--Select Local Branch--", new { @class = "form-control" })*@
+        @Html.DropDownList("LocalBranchName", null, "Select Local Branch", new { @class = "form-control" })
+        <label>Payment Note:</label>
+        <input class="form-control" type="text" id="paymentNote" value="N/A" />
+
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal container">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <input id="btnReset" type="button" class="btn btn-primary btn-sm btn-block" value="Reset" onClick="PageReLoad();" />
+        </div>
+        <div>
+            <input id="btnSave" type="button" value="Save" class="btn btn-primary btn-sm btn-block" />
+
+        </div>
+    </div>
+    @*<div id="detailData">
+
+        </div>*@
+}
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-0:+0"
+    });
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+    $("#btnSave").prop('disabled', true);
+    $(document).ready(function (a) {
+
+       //Disable and Enable fields against Payment Mode
+        $("#PayMode").change(function () {
+            var selectedMode = $("#PayMode").val();
+            $("#btnSave").prop('disabled', false);
+            if(selectedMode=="C"){
+                $("#BankName").prop('disabled', true);
+                $("#BranchName").prop('disabled', true);
+                $("#CDPNumber").prop('disabled', true);
+                $("#tDate").prop('disabled', true);
+            }
+            else {
+                $("#BankName").prop('disabled', false);
+                $("#BranchName").prop('disabled', false);
+                $("#CDPNumber").prop('disabled', false);
+                $("#tDate").prop('disabled', false);
+            }
+
+        })
+        //Get Customer Current Outstanding
+        $("#CustomerLists").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetCustomerCurrentOuts", "Payment")",
+                data: { custID: $('#CustomerLists').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $("#receivableAmnt").val(data);
+                },
+                error: function () {
+                    alert("Failed! can't load Outstanding");
+                }
+            });
+
+        });
+
+        //Load local branch after choosing Bank Name
+        $("#LocalBranchName").prop('disabled', true);
+        $("#BankName").change(function () {
+            $.ajax({
+                url: "@Url.Action("fillLocalBranch", "Payment")",
+                data: { idBank: $('#BankName').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    $(LocalBranchName).prop('disabled', false);
+                    $("#LocalBranchName").html("");
+                    //$("#detailData").html("");// clear before appending new list
+                    $.each(data, function (i, branch) {
+                        $("#LocalBranchName").append(
+                            $('<option></option>').val(branch.BankBranchID).html(branch.BranchName));
+
+                        //$("#detailData").append('<input type="text" id="'+i+'" value="'+branch.BranchName+'" /><br/>')
+                        //$("#column1").append(branch.BranchName + '<br/>');
+                    })
+                },
+                error: function () {
+                    alert("Failed! can't load local Branch");
+                }
+            });
+        });
+        //Check Duplicate cheque or DD Number
+        $('#CDPNumber').keyup(function () {
+            $.ajax({
+                url: "@Url.Action("CheckDuplicate", "Payment")",
+                data: { ckequeNo: $('#CDPNumber').val(), bankBrnchID: $('#BranchName').val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //loadData(data);
+                    alert('Duplicate Number, Please check!!');
+                    $("#btnSave").prop('disabled', true);
+                },
+                error: function () {
+                    $("#btnSave").prop('disabled', false);
+                }
+        });
+         });
+
+        //Save button function
+        $("#btnSave").click(function () {
+            var data = {
+                PaymentTransactionType: $("#PTransactionType").val(),
+                CustomerID: $("#CustomerLists").val(),
+                PaymentDate: $("#txtPDate").val(),
+                PaymentReceived: $("#paymentAmnt").val(),
+                PaymentModeID: $("#PayMode").val(),
+                //ActualPaymentEntryDate:Date.trim(),
+                PaymentNote: $("#paymentNote").val(),
+                // MoneyReceiptNo:$("#PayMode").val.trim(),
+                BankBranchID: $("#BranchName").val(),
+                ChequeDDNo: $("#CDPNumber").val(),
+                ChequeDate: $("#tDate").val(),
+                LocalBankBranchID: $("#LocalBranchName").val(),
+               // DepositedByID: $("#DepositedBy").val(),
+                //AdvanceAdjustment:$("#LocalBranchName").val.trim(),
+                // UserID:$("#DepositedBy").val.trim(),
+                BankID: $("#BankName").val(),
+                CashSettlementID: $("#csID").val(),
+                payType:$("#pType").val()
+            }
+            var answer = confirm('Are you sure you want to save this?');
+            if(answer){
+            $.ajax({
+                url: '/Payment/AddPaymentData',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+                        alert('Successfully done...MR No: '+ a.v);
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                    $('#create').val('Create');
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                    $('#create').val('Create');
+                }
+            });
+            }
+            else {
+                return false;
+            }
+        });
+    });
+</script>

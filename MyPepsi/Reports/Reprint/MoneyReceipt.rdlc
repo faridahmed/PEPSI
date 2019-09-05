@@ -1,0 +1,1107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Textbox Name="Textbox12">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>MR NO</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>: </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=first(Fields!MoneyReceiptNo.Value, "MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>0.125in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>1.43875in</Width>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox13">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Received with thanks from Mr./ M/s :</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!CustomerName.Value, "MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>0.47569in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21007in</Height>
+        <Width>7.09544in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox14">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Address:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!CustomerAddress1.Value +","+ Fields!CustomerAddress2.Value ,"MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>0.74479in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>7.09544in</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox15">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>TAKA:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!PaymentReceived.Value, "MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Format>#,0.00;(#,0.00)</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>1.05382in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>7.09544in</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox16">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>In word:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Code.TakaToWord(Sum(Fields!PaymentReceived.Value, "MRDataSet"))</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>1.37674in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>7.09544in</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox18">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Bank Name:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!BankName.Value, "MRDataSet")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>1.9948in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>4.34152in</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox23">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>This is a system generated money receipt and does not require any signature.</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>7pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>3.10417in</Top>
+        <Left>0.125in</Left>
+        <Height>0.21875in</Height>
+        <Width>7.09544in</Width>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <TopBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </TopBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox26">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>By /Cash/ Cheque /D.D/ P.O. No.</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!ChequeDDNo.Value, "MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve">   </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>1.65105in</Top>
+        <Left>0.125in</Left>
+        <Height>0.23263in</Height>
+        <Width>4.34152in</Width>
+        <ZIndex>7</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox20">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>For : </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>Transcom Beverages Limited</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>2.76042in</Top>
+        <Left>4.41097in</Left>
+        <Height>0.21875in</Height>
+        <Width>2.80947in</Width>
+        <ZIndex>8</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <TopBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </TopBorder>
+          <VerticalAlign>Middle</VerticalAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox27">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Cheque Date :</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!ChequeDate.Value, "MRDataSet")</Value>
+                <Style>
+                  <FontSize>9pt</FontSize>
+                  <Format>dd-MMM-yy</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>1.66493in</Top>
+        <Left>4.53597in</Left>
+        <Height>0.21875in</Height>
+        <Width>2.68447in</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox19">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Branch Name:</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=First(Fields!BranchName.Value, "MRDataSet")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>2.02084in</Top>
+        <Left>4.53597in</Left>
+        <Height>0.21875in</Height>
+        <Width>2.68447in</Width>
+        <ZIndex>10</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Dotted</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="ExecutionTime">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Print Time: </Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <Format>d MMM yyyy h:mm:ss tt</Format>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Globals!ExecutionTime</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <Format>d MMM yyyy h:mm:ss tt</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>ExecutionTime</rd:DefaultName>
+        <Top>2.85764in</Top>
+        <Left>0.1261in</Left>
+        <Height>0.21875in</Height>
+        <Width>2.29182in</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+    </ReportItems>
+    <Height>3.36459in</Height>
+    <Style />
+  </Body>
+  <Width>7.5in</Width>
+  <Page>
+    <PageHeader>
+      <Height>1.24875in</Height>
+      <PrintOnFirstPage>true</PrintOnFirstPage>
+      <PrintOnLastPage>true</PrintOnLastPage>
+      <ReportItems>
+        <Textbox Name="Textbox1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>MONEY RECEIPT</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                    <TextDecoration>None</TextDecoration>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox1</rd:DefaultName>
+          <Top>0.67646in</Top>
+          <Left>1.17171in</Left>
+          <Height>0.21875in</Height>
+          <Width>4.54164in</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox2">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Transcom Beverages Limited</Value>
+                  <Style>
+                    <FontSize>14pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <TextDecoration>None</TextDecoration>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox1</rd:DefaultName>
+          <Top>0.19854in</Top>
+          <Left>1.169in</Left>
+          <Height>0.3125in</Height>
+          <Width>4.54164in</Width>
+          <ZIndex>1</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="WarehouseDescription">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Fields!WarehouseAddress.Value</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>WarehouseDescription</rd:DefaultName>
+          <Top>0.45771in</Top>
+          <Left>1.17171in</Left>
+          <Height>0.20833in</Height>
+          <Width>4.53893in</Width>
+          <ZIndex>2</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Image Name="Image4">
+          <Source>Embedded</Source>
+          <Value>Pepsi</Value>
+          <Sizing>FitProportional</Sizing>
+          <Top>0.32354in</Top>
+          <Left>0.45972in</Left>
+          <Height>0.36421in</Height>
+          <Width>0.51167in</Width>
+          <ZIndex>3</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Image>
+        <Textbox Name="Textbox4">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value />
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox4</rd:DefaultName>
+          <Top>0.99875in</Top>
+          <Left>0.125in</Left>
+          <Height>0.05208in</Height>
+          <Width>7.09544in</Width>
+          <ZIndex>4</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <TopBorder>
+              <Style>Dotted</Style>
+            </TopBorder>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+      </ReportItems>
+      <Style>
+        <Border>
+          <Style>None</Style>
+        </Border>
+      </Style>
+    </PageHeader>
+    <PageFooter>
+      <Height>0.32292in</Height>
+      <PrintOnFirstPage>true</PrintOnFirstPage>
+      <PrintOnLastPage>true</PrintOnLastPage>
+      <Style>
+        <Border>
+          <Style>None</Style>
+        </Border>
+      </Style>
+    </PageFooter>
+    <PageHeight>11.69in</PageHeight>
+    <PageWidth>8.27in</PageWidth>
+    <LeftMargin>0.5in</LeftMargin>
+    <RightMargin>0.25in</RightMargin>
+    <TopMargin>0.5in</TopMargin>
+    <BottomMargin>0.25in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="MRDataSet">
+      <ConnectionProperties>
+        <DataProvider>System.Data.DataSet</DataProvider>
+        <ConnectString>/* Local Connection */</ConnectString>
+      </ConnectionProperties>
+      <rd:DataSourceID>b7981c7f-0697-4b80-9851-5c1c3f435dfc</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="MRDataSet">
+      <Query>
+        <DataSourceName>MRDataSet</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="CustomerID">
+          <DataField>CustomerID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CustomerName">
+          <DataField>CustomerName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomerAddress1">
+          <DataField>CustomerAddress1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomerAddress2">
+          <DataField>CustomerAddress2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomerAddress3">
+          <DataField>CustomerAddress3</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustomerAddress4">
+          <DataField>CustomerAddress4</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="WarehouseID">
+          <DataField>WarehouseID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="WarehouseDescription">
+          <DataField>WarehouseDescription</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PaymentDate">
+          <DataField>PaymentDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="MoneyReceiptNo">
+          <DataField>MoneyReceiptNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PaymentReceived">
+          <DataField>PaymentReceived</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PaymentModeID">
+          <DataField>PaymentModeID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PaymentModeDescription">
+          <DataField>PaymentModeDescription</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PaymentNote">
+          <DataField>PaymentNote</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ActualPaymentEntryDate">
+          <DataField>ActualPaymentEntryDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="BankID">
+          <DataField>BankID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="BankName">
+          <DataField>BankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BranchID">
+          <DataField>BranchID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="BranchName">
+          <DataField>BranchName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ChequeDDNo">
+          <DataField>ChequeDDNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ChequeDate">
+          <DataField>ChequeDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="UserID">
+          <DataField>UserID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="UserName">
+          <DataField>UserName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="WarehouseAddress">
+          <DataField>WarehouseAddress</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>MRDataSet</rd:DataSetName>
+        <rd:SchemaPath>D:\PSS_Online_Documentation\PSS_Online_UAT\Farid_source_26092018\MyPepsi\MyPepsi\MRDataSet.xsd</rd:SchemaPath>
+        <rd:TableName>sprptMoneyreceiptCR</rd:TableName>
+        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
+        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
+        <rd:TableAdapterName>sprptMoneyreceiptCRTableAdapter</rd:TableAdapterName>
+      </rd:DataSetInfo>
+    </DataSet>
+  </DataSets>
+  <Code>Function TakaToWord(ByVal MyNumber) 
+Dim Temp 
+Dim Taka, Paisa As String 
+Dim DecimalPlace, iCount 
+Dim Hundreds, Words As String 
+Dim place(9) As String 
+place(0) = " Thousand " 
+place(2) = " Lakh " 
+place(4) = " Crore " 
+place(6) = " Arab " 
+place(8) = " Kharab " 
+On Error Resume Next 
+' Convert MyNumber to a string, trimming extra spaces. 
+MyNumber = Trim(Str(MyNumber)) 
+' Find decimal place. 
+DecimalPlace = InStr(MyNumber, ".") 
+' If we find decimal place... 
+If DecimalPlace &gt; 0 Then 
+' Convert Paisa 
+Temp = Left(Mid(MyNumber, DecimalPlace + 1) &amp; "00", 2) 
+Paisa = " and " &amp; ConvertTens(Temp) &amp; " Paisa" 
+Paisa = "" 
+' Strip off paisa from remainder to convert. 
+MyNumber = Trim(Left(MyNumber, DecimalPlace - 1)) 
+End If 
+'=============================================================== 
+Dim TM As String ' If MyNumber between Rs.1 To 99 Only. 
+TM = Right(MyNumber, 2) 
+If Len(MyNumber) &gt; 0 And Len(MyNumber) &lt;= 2 Then 
+If Len(TM) = 1 Then 
+Words = ConvertDigit(TM) 
+TakaToWord = "Taka " &amp; Words &amp; Paisa &amp; " Only" 
+Exit Function 
+Else 
+If Len(TM) = 2 Then 
+Words = ConvertTens(TM) 
+TakaToWord = "Taka " &amp; Words &amp; Paisa &amp; " Only" 
+Exit Function 
+End If 
+End If 
+End If 
+'=============================================================== 
+' Convert last 3 digits of MyNumber to ruppees in word. 
+Hundreds = ConvertHundreds(Right(MyNumber, 3)) 
+' Strip off last three digits 
+MyNumber = Left(MyNumber, Len(MyNumber) - 3) 
+iCount = 0 
+Do While MyNumber &lt;&gt; "" 
+'Strip last two digits 
+Temp = Right(MyNumber, 2) 
+If Len(MyNumber) = 1 Then 
+If Trim(Words) = "Thousand" Or _ 
+Trim(Words) = "Lakh Thousand" Or _ 
+Trim(Words) = "Lakh" Or _ 
+Trim(Words) = "Crore" Or _ 
+Trim(Words) = "Crore Lakh Thousand" Or _ 
+Trim(Words) = "Arab Crore Lakh Thousand" Or _ 
+Trim(Words) = "Arab" Or _ 
+Trim(Words) = "Kharab Arab Crore Lakh Thousand" Or _ 
+Trim(Words) = "Kharab" Then 
+Words = ConvertDigit(Temp) &amp; place(iCount) 
+MyNumber = Left(MyNumber, Len(MyNumber) - 1) 
+Else 
+Words = ConvertDigit(Temp) &amp; place(iCount) &amp; Words 
+MyNumber = Left(MyNumber, Len(MyNumber) - 1) 
+End If 
+Else 
+If Trim(Words) = "Thousand" Or _ 
+Trim(Words) = "Lakh Thousand" Or _ 
+Trim(Words) = "Lakh" Or _ 
+Trim(Words) = "Crore" Or _ 
+Trim(Words) = "Crore Lakh Thousand" Or _ 
+Trim(Words) = "Arab Crore Lakh Thousand" Or _ 
+Trim(Words) = "Arab" Then 
+Words = ConvertTens(Temp) &amp; place(iCount) 
+MyNumber = Left(MyNumber, Len(MyNumber) - 2) 
+Else 
+'================================================================= 
+' if only Lakh, Crore, Arab, Kharab 
+If Trim(ConvertTens(Temp) &amp; place(iCount)) = "Lakh" Or _ 
+Trim(ConvertTens(Temp) &amp; place(iCount)) = "Crore" Or _ 
+Trim(ConvertTens(Temp) &amp; place(iCount)) = "Arab" Then 
+Words = Words 
+MyNumber = Left(MyNumber, Len(MyNumber) - 2) 
+Else 
+Words = ConvertTens(Temp) &amp; place(iCount) &amp; Words 
+MyNumber = Left(MyNumber, Len(MyNumber) - 2) 
+End If 
+End If 
+End If 
+iCount = iCount + 2 
+Loop 
+TakaToWord = "Taka " &amp; Words &amp; Hundreds &amp; Paisa &amp; " Only" 
+End Function 
+' Conversion for hundreds 
+'***************************************** 
+Private Function ConvertHundreds(ByVal MyNumber) 
+Dim Result As String 
+' Exit if there is nothing to convert. 
+If Val(MyNumber) = 0 Then Exit Function 
+' Append leading zeros to number. 
+MyNumber = Right("000" &amp; MyNumber, 3) 
+' Do we have a hundreds place digit to convert? 
+If Left(MyNumber, 1) &lt;&gt; "0" Then 
+Result = ConvertDigit(Left(MyNumber, 1)) &amp; " Hundreds " 
+End If 
+' Do we have a tens place digit to convert? 
+If Mid(MyNumber, 2, 1) &lt;&gt; "0" Then 
+Result = Result &amp; ConvertTens(Mid(MyNumber, 2)) 
+Else 
+' If not, then convert the ones place digit. 
+Result = Result &amp; ConvertDigit(Mid(MyNumber, 3)) 
+End If 
+ConvertHundreds = Trim(Result) 
+End Function 
+' Conversion for tens 
+'***************************************** 
+Private Function ConvertTens(ByVal MyTens) 
+Dim Result As String 
+' Is value between 10 and 19? 
+If Val(Left(MyTens, 1)) = 1 Then 
+Select Case Val(MyTens) 
+Case 10 : Result = "Ten" 
+Case 11 : Result = "Eleven" 
+Case 12 : Result = "Twelve" 
+Case 13 : Result = "Thirteen" 
+Case 14 : Result = "Fourteen" 
+Case 15 : Result = "Fifteen" 
+Case 16 : Result = "Sixteen" 
+Case 17 : Result = "Seventeen" 
+Case 18 : Result = "Eighteen" 
+Case 19 : Result = "Nineteen" 
+Case Else 
+End Select 
+Else 
+' .. otherwise it's between 20 and 99. 
+Select Case Val(Left(MyTens, 1)) 
+Case 2 : Result = "Twenty " 
+Case 3 : Result = "Thirty " 
+Case 4 : Result = "Forty " 
+Case 5 : Result = "Fifty " 
+Case 6 : Result = "Sixty " 
+Case 7 : Result = "Seventy " 
+Case 8 : Result = "Eighty " 
+Case 9 : Result = "Ninety " 
+Case Else 
+End Select 
+' Convert ones place digit. 
+Result = Result &amp; ConvertDigit(Right(MyTens, 1)) 
+End If 
+ConvertTens = Result 
+End Function 
+Private Function ConvertDigit(ByVal MyDigit) 
+Select Case Val(MyDigit) 
+Case 1 : ConvertDigit = "One" 
+Case 2 : ConvertDigit = "Two" 
+Case 3 : ConvertDigit = "Three" 
+Case 4 : ConvertDigit = "Four" 
+Case 5 : ConvertDigit = "Five" 
+Case 6 : ConvertDigit = "Six" 
+Case 7 : ConvertDigit = "Seven" 
+Case 8 : ConvertDigit = "Eight" 
+Case 9 : ConvertDigit = "Nine" 
+Case Else : ConvertDigit = "" 
+End Select 
+End Function 
+</Code>
+  <EmbeddedImages>
+    <EmbeddedImage Name="Pepsi">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAFkAAABVCAYAAAAiyUjUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAABqZSURBVHhe7V0JfFTV1f/PPslkskMIISQkKJuArEJQRFZRFK1SXAGtrSJtXWrV9mur/rRq+dRWaPls3ZDiVhdcoBEFZZFVEwhLNkjMvu/bTDLL+865900SYmxgeBPsr/2TefPeffeed87/nXvuuW8ZdAoB3xeQKopOJ1blsm+w9rIJm3G6rfoXevX7ewFFJauTM/XL9xGglc51WhMEdxV8L/G98WRWQ6d68elDZZya8ak509b9he8BySpLKry03dzaAUeHS5RK6vhDoUT8A4LMJoTZLLT274FzRPKpxNa1OJFZUIPyuha42hW4yKPdJgMMBj1Meh28tK0nNV1eBR6PF0aXB0avF2aLHkMG2DEyPgoRdqsqjXGq/L5xpvXPDAElmUUL1Ykk6YNsijSmrd2NtNxy5BTXw+kB4gdFYHBcOGKMbgxwNyMIbqDeQRVpJ48cXvoEG4CIIDhgRLkuGLWKBZVljSgor4NJ58WooVGYOioWVpNRHENSpxJIusg1KtGRXrQhxwCxV0BoSIVnHLX6QD+QTBqzRaopDeS1OzOKkVtWj7i4gZiSHI7hJgoNh74C0rPgzCiAq7QQ7rpGKDUOeFvd0FN7Lxmvtxmhiw6CMTIUlrhEmMclApNGwXvhVOR26HHomyZUlFUjYVAoLpswFBG2IHFMQR+1Z5qlFtw7FOodYkOSTevyBHhpqW0+EECSfWKlWV46zOfpBfg6pxLjRg/B9KRwRGQfhufDbWjZth8eCheKo4NODJlKMVevM0Ax0ofs9dFD9kPn9sDr9UChmK3XUwS3mmEYNgAh8y6C8aq5qBs1ATtP1CErpwxTRsRgzsREkqWy2Gmq1Km7y/pokEVd5VqgX2LyNxWNeGdXNgbHROKKybGI
+TN+Ptr+8gfYvj8Hb4ASsVuioi0tCmQ7h/4JaYTWrqH4Lb6N9cj99U5yGyw3F6YA+PAjmS8bAdvfNqJ8wDVvSylBW2YAlM0dg2KAwqs2NSCo11tEivbAaDgpb9mAzxsVHCnkMlu1bagFtSVYliZinKvn54QLsP16OK+ddiPHuEjgfW4fWD3ZB5yC3DKLByqjvJOys4SaZDgcUit22xTNhfWQVMnSx2LLtMKaNHYLZFyaIamq/wKav8vBxWiFGD4nEA4suFPukJtoRzNCYZBIl4q+Maf/YlYXiWidunzcCEZs/RMPjL4qwALsNOsocAgWFMhDKA6FPjETEk/eg7rLL8conR2lwDcXSmSNlHVKTx9IWZwcspIvVzIOl9gQzNCS5S0GOv6+mHoHOEoQVKTHwPP6/aPrLB+S1VuitFmEc19TMg1X45PGHT6Gnsg7W2+Yh5MU1YN7Xp2ZAoQTltgXjYOgWjxkiNBFk6an7zhYaulOXYm9sOwaT3Y7bp8fC+dOH0LD2Q4q7IdB1EixNEqO6hmB5LJfleylW60LNMM5JEfu44/zoyvEw6/R4Y/txUSbBunBGwasaK6RC8z773p4cOHVmLJs2EK0rfwHH23tgCLGDZhViv3AgWkijeKEhSJ6QywehwdCQGAPL7JnqLnmwZQvGwulwkZ65Ylu2oI9oq7VCEv6TTPqIQOP7EL7KLkdBpQPLZyWg7e4H4XhvH3kTEUyzNh7NBbrV1x7qMQiKsx2mOVOgGzhYbIs96nGXU7goKKrH19llYlvqxhTLb63hJ8nkF5xBkD6qfqhsaMWnaQVYtnA0dL9fDcebu6CnkCFdt79A+TP/o1xabzPAvGi+Wq6CB2X6M5sNWDb/Amw9kE96twn92Q5hD1cQH+3gJ8mqZ5Iuqt54d0cOLrtkNAbs/BRNaz+AzhYiPLj/0I0YhxOmlAtgTJkit327VF25Bw6IsmHelCS8+0WWKBNJEX18Xq0l/A8XrJWqT1pOOUzW
+IKQENaPxt2sohSKxJhrG+xGdXV1lzHT9PJrgBKvbXIMW8k94bHl1M+KjQmC3mIT+coevrrbwn2RVGzflRjuPlOKKGcPgWvMSXFkV0NEMSlrXf2BtxBHb2mEcnwjLVVfwVg/SaEPdbqMp/KYd2Zg7ZRh2HykWdjDYy32DpFbwn2RVj73HSxAXNwBDirLQ/FoqEUzewxDdrn8hswM3LLddQwNuFK33RpYsS4gNx45vKlFQ1YjhgyOwN7NUlMvhT1vdzypc8AX29JNVmDEmGh0vvw2l1iFTNWFHbwYGGG0d5MUJsFx3rVrQkyyfjyowUjiz2YPw7EfpmD5yMA6fqBL2aMyvgH8kC011yC2qJUVtiG+sQMtHewCbVSYTtJAxsh9Bkw+FvDho1U3Q2cNJx95OMvtol16jKSZvOZiPBgodkTYz2VNHpdrr7R/Jqh6H8ioxYVQclNTPgKom6Iw0/1dPQL+CDqe0OGCaPQHmxVephYzeiOYyWc6zwPZWp5iYTCFvPnSyUpT33s5/+B0u2tpdcDi8SArxwPHpASohS6Ub0yfwftx9cFI63ECYCUEP3QlYbHJfpy49IJrJciNNsZnpj44UIdJqRnu7W9jVa7uzgN8kl9e1wh1kQWRdFdozcqBQCtefEDSIXJ0odThgXXktTFOncaGa6/bujeK5DnVXM01aYDQgI78KDe0dMFsMqCC7tIbfJJdRnhkXYQMysuCtaKGcVNuz3yeYSB0NVRwmpp2P4J/9hAqZQC7nCv9CH+HlQHZti6jW6mjHgfxqxNP4UlbVLPZpCf9Jrm3F8Fg7XMczZHDr3XECB8puOEzows2wPXG/SNn4qq0MI/QRA9+3ldKpA6KzpQN5hTTQ8aSJwsahzBIMHRyGsjoiXmP4TXJLhwuhNOnwnKDBgmOb6h2BgpQuKRSgnq5rdyLo4R/BeJG8nCkejvHFYt93T6h6FtQ2IrOUSabBmopya1oQEmKmLJDiu8bwi2QXP/NAmpld
+Lri/qVdt6cUgrcBeS+IlwbRkb2xtgem2uQi66zZR6kPfWkgpnx8uRqPDSQxQC3KSvOY2uN00Had9bJ+W8IvkDreXYrAZpoZqKE4aKPQsptPHtIc6wDGD7IhKYwuMs8ZQmPg1HdtER+7m4aeBDqcbbx84KfQWJ8WgoLW1A/X1DphpIOzgAVFD+B0uWDvF6ybjWCFWNYAkM5hgUldpdsBAuXnwnx6B3h4tyac9gqzTgg7bDxViH18UolAhW+rFLTMPebB8Hu/0pZ0O/CZZqEHdjNMlua6tYqfAJ5oI1seFIuSlx2BM5huiXSf2dE+xq8OD1R+nw0Wk8lDC18UZYi5Ixznzhx77ht8kC9UU9mLuqqTg6Vp5BpDZGAumY7S0AzFW2Nb9BsYLp8oKDCKFaemdGmonm/sWWLflMHZkFkNn4ehL7fggvI8qer3yaL66WsEvkoVBXiLYFibuQOvkpRXtwDbTWeOHDBVyN2+zE7qBFoT89RGYZ81TKzF6p7YTopeRMFFNh/1HS/DY+wdBgZc21bYKDXJErpFCR3CQkYjmm6p9yD1D+EVyECnp9rjgDA6DPjqE9PR0djtt4JuW0+njQS45GvZXnoT5sh63k/qAcFKVr4LiBtyy7jPUt7XToM25sXoMJpvGlgF2M+x2C9pp0GP7tITfnswqdpAXGJIjSUkq0zLr4bSKu25jM0zjExGy/mmYLp4lesuZ5BGSXx1yC2tx05pU5FU0UJig5FOwr54EUUuH80Jt8Hi6hnEt4XdMjrZZUUnzfNPwZNKWWdZINRbj8sDb0gjj4qmwv/08jOMmdu7yEfRt9E7+F2kFmP/kh9hHkyZ9EN+x8YonOsWDdxyOuB39jRoajVqaxUaHdH/OWRv4TfKwuAgU1rfDMHkCeQeJ4Qf//ALH3a5zpFB3hrsde66eiPF7PkMyefD69evlToavno8gXueu1APOtg784a0DuObZf6KwplncEuPaooVoy3e2eZuWJDNlbBzK
+GlrJrnCuoSn89+QwKyqqWuBOjKeYGQNFXCL0AyI7IFM95GGNTdAPDUfwi/+De/fsRkFhEQoKCrBy5Uq1che4jc+n5fPE6had7C17T2Lho+/j4bf2osnjgd7C+fB3gCZWQ6JCcF6kDSXUM6PC1NtnGsJvkgeG22BT3Cg1RyBo6jhOQNU9Zwh2Y5pt6dodsNwwC6Gb1sH6g+vxkzvvVCsAK1asUNe6gZPcbtTVkxe+vT0LCx/bhMXPpWLHyQoeoeWDjXSM7r3lFHS4kTIijiaORhoKvGSX9iSf1QOHW7/KJ0OCsaDyEGqX/ppG7SA5aJ0uOPa2tsJwAc3gfn4rLDcvpUJ1ZBdd2kdM7zKbW5zILqrH+/tPIPVwITL4gg+bQ9mBjvRgCTxx5mvIIh2kf6cEFq5LU+xN916BmPAgNLncWDA5Sd2pHc6K5JomB978Ihcr5ySgbfHtcKUVQUcDIqdHzBALZlNPJYlMdZGpbQ7oooNhvXEBLD9dDkPcsG/V7AmFctj80gak51Zgd14lvjxegoyqRngd1IsMlJaZOTWjinxmSJjIKuUqkd35WCFBhhqFZn8jBoVj7+PX452d2bh+9hhEhWo/8J31o7N///QoRo6Kx5TP3kXtPc9Dx49m8csY3EXJFOlPbCuZRV1TcTgptw6GafHFsK5YAuOEbrO3HnASeXnF9cipbsS+zFIcOFmFTFqvbXRQLKUxgPNZJvcMeo/0bFJPhCkn/rjiUlw+figOnqgQDyMGAmdBsqSusKoJqV8V4c4Z0Wha/BN4Mkqh8F1r3s/GuOmbB0WK2frYUJgWpsB2xw+hGzdZivGBvKqkrhn5lEalZ5XhUEEVMiqaUFrVjJrmFnk4I8VXPZHK36LgzMFOzqfE2+5BYnQovnpiCT4+mIfZkxKREKO+8qAxztqTGa+lHsV5NHikZO9G7S2PACaLmJx4Wx3iwT/DqCGwLLwE1h9eCSSPEW0cFAtLKLXKyC7H3sJKHCuqQy6F
+gkKa4YkntlkrZoQJNRoEMbzgPJl39Za29QWWIa7kkcmKox3/uOcKjI6PwNfUQ5ZfTl7MVMhBQFP4TbJsRQGBlKqikf1vqcdx/3XjoLv7AbRt/ByGEYMRMmsSjItmAhfPoAEyHFnlrUjLLMR+6prpOeXIIM9to3xWeDqTyXcp+Bovyey8OsbdWvVaGXz4BAi21dIzg5BB2cyiKUl4576FeP6jr7Fi4Xga+Gy01xfaZE2toIknM7alfYPSxg4svzAU7Tv3wjJjOqqsYcgod2DXwZP4PKsE2WU1qONHVfmQTKiBDBF3Jk7PIK51JspyfZ9kzjMEiXRCEyLtOPjUUuw6UoSw0CDMmzxMVgoQNCOZxaz5MB3TRw/F1PMH4Pa/7sDO9ELk1zRQ3PDIWMqk8icAXbI3+AY5kexw76CBl98V+fy31yIiyIQvjpbgZ9dMFD0nkODTqwlY0WVzxuCzfbkoKqvHVJp251fUiiPogyzQWyl3pdjaXwQzhPeIBcVhysmZ7NfumoORsWH4cO8J3Dp3TMAJZmhGMhvDL5HftOACbKSZ140Xn4+NP7ucphY6ePkOsBiwhMX9CI7AdHzKbIx07FfvnI1Fk5LwMg3Ut8wf2+Ol98BBO5LFQKWINz8XTB+O5z5Iw6KpSdiwaj5CKP56nb5pt/QcXspPd0/ylZ4OTq0r6Ty1NZ9UPm6IwYgNd8/HNRcl47lNX2NeSjISSc/+OumaxWQJFiXNzCioxubdORRCLkBZgwN3rPsUx4pp2kuxkKe8ghI+tNpdfQbLudjppGci4oq1zhOlymNZCl8VpMnMBfGReJEIjgsPxoZtx7Bo5kiMT4yW9UV7tW0AoSHJbBqZ6xNHxuZX1OPdzzMxfUw8kmn6+qs39mDDl7mSDCs/ucF1mVAmjLbEdWlpel8Q1FBFnY4nzF1yxEniXkMncnnKCDx5cwrp0YC9x4rFtDkptuuxWh4MpQ6BJVpbktlosUZL+UfO5MbGz46B/BeL
+pg1HWl4FHnnnK5oi83saVMNMeyjjEMaqcVuS9q/BLfgfhyk+nuKhNh2Ub5MSFw2PxWNLpmBSciy27D8h7kzfPH+M+MUXIVnoKY8iO5JYBAyahgshiu0WJshJg2/0/vJoEXlTKSafPwhjEwZi+5FCvLIjCzuyS+RVUiO15cuSfC1CUtEHSK6HUkOeHbp1MJmBWSOH4PZZozBnXAKO8rQ8vxpTRsfi4gviZRPST5wSn/ezuqp+gYTGMZnB4npXvKm1nSYtBaitb8WI+CicPyQSlY2teIdi9yeZpThZ1YRGqiM8kgnvnKjwh0mhD0cFJtdkQpjdgvOi7VhA4WjJJecjJsyG3JI65BTXIirChrmTEhH6nb9V9N16ao0AkNw36psd2H6oCJW1zRhCJI0cHInQUCsqq5tRUt+CI1WNKKpoRkVtC1ziR0SIb+LcRHn2oKgQDB1kx9iBYRgSHoJBA+1oanIiq6wOpTXNiImyYw7/aou9f5+X/lc4JyT70EoDVA5lHCfJ+/gXtMKCzLBTFjAw2IxQip9GItVIHh0dFYya2jbxGpibSG8mT6+lzKG+vg1NNE22Wkw4Pz5C/AaRjQbU7xv6n2Q6mhxy6OA94uHJ0nrxfDAPlm1EOt+fd7jccCpuWHVGyv74egdgs5kRTMQOigjG8LhItbWEzxw5KIrVc45+J5kP5yOXD9wXD3xC+HkIg8hAvqu2lNRdXvfjnGuc03BxbiDNFWmmOBG8FdiTod20+t8GTKivT8j1QOM/kOQusBf3Rz/+jyO5nvLwTQfyO1/A0YkLW4HFOSCZjToTw3rW7b6trosvXvSs+208tyUDP/jl6/j12/vVkq5w0Xdr/6A5ydLe71bXRwVXEReE+gLf2qAWXeNz9xh65vF0QmI0pk9NxkXDB6klpyIQ4UPD7ILFSEL4u6rJgXf3ncT2zGIq0SFleAxunjkCsTT1ZfBRfRnWZ8eLkZpehJyyeiQNDMU1RMKcMXFiX/d6Vc1t
+eOvLXOzOLkcHTQPn03T6BxclI5Zf2uyGLYcK8c6+XJTSZGUMTd+vmTIMl4yIpZm6HjVNbdh6tBiThw1EOE25eQLEM0kDT+HpWOJ2lSpHK2hMMkOHQwXVuPFPnyCHX37hJ4rYgBYnkhIH4NWfz8PMkUwg19fhV2/tx9Nv7RNsiicvHXwlzYP7rp+OZ26eIZ9boc/+3AosX7sVuSerADvN6vh6MU1YkpJj8Pq9CzBN9czVmw/hoVd2UhtqxE8UOd2gaSKeuXMOfrFoAv6+OxvL/piKB66bBotRDzf1poevmigIZyoCklszyZrAK78q61uV8+7ZoODK1crKl3cq6d9UKcdLapVVr+5UsHC1Er/qFaWktlnU/cvWIwoW/EEZ+8BG5d0DeUplY5vywdf5yrgH3xTl6z49IurVNDmUJCHzWeWe13YphwpqlK/zqqTMRc8oiavWK9VUp7qpTbEtW6cMufsV5XBBtVLf6lQ2HypQbvnzVmVfbqWQtWFnFsl5RvnTPzOUrNJaZUdmqeJod4l9XrKBP1pDO5JVltekZiiY+6Ry2wvbxHZ3CFLm/F5ZvTlNcbs9SsKq15RBP35RqWt2qjUkmh0uJWHleiX53g2Ki+r9eetRBfOeVH780hdqjS7cRWWY97Ty/CcZSnVjq4Ila5RR921UMonA3rBhlyT5hW1H1ZLAQ8OBT3azg3mV0EfYcdcc+aQQByNfIFl2yUjow4KRVVKH46V1qKT4GBMZgj98nIYlFF5+/tou/HLjlzTy70MbdfE8itF5lQ3iChvfSblr9mhVEkNKXX7pSAofFmynOBsVGoxVC8cjK6sEo+97HTN+9x7u+Ot2pGYUilDQBXYudbUfoHl2wS++6M16EeMYgnrVIhvFSIPVhHa3gnb+yXSKiccLa/D81iP4OP0brN18BM9sSsPaj9O5Ee5aMB7R9mA4+W632Yhgi3ystvuJExeNKNdtbOsQx1q74hKsf/hqXD0xEbl0gl7+Zwau
+eHQTHnn3oKgfgIjbJzQnOYgHk4ZWMcILkFW+wWTrkWK4ypsQT947Ki4CoUE0utPAmP77pah76ccofGE5Dq6+AfufWor0p2/A/91+KaLsVhrjqD3/gniW+ouELFOlKzWjCGhzYVLSQLHNx1p+6Sh8+NBVKFyzDHtW34iIiGCs/SRDnAj567L9C81J5jSJKfjdO/ux4csc1DQ70ETe/d6BPDxCYcAcE4olFyUhhLr/jSnJqC2pxRPvHxS/kDgwNAgxlI69wHeVn9qMtHzKJFimWOjw4Ot7sHF3DmqJcJ65vb43F4++uQ+WcBt+RKGkuLYFc5/4APdt2C3eE+Hr0SGcopFO7R6veK33XEDz0+qh1MpA3mkkw5Y/9RHiycMsZOxJ/skGqwHP3zGbvC5G1P3ttVMoN27AG5sP4409J5A0KBSFVS3wVDVh5NghsIu3lfiOkwJ9kFX8zwy3rt6MBEoF+dJn/okK8dD5i6vmYvTgCBw8WY3M4lps35GFv23PRMIAO7Ip/it0Uh68KQWRIVY0k9dz6tfOD6L3EwyPEtR1TbBxTw7KaCLywX1XInloJHlyh7i7sWBSIp697VLcMP08qiUHHu66S6cNR/yQKPEmKN8THU+Thzuunoi1FCr4FwgZ7x/MwzEaBN+7/wqMGjYAVQ1tMBkMmD9pGJ5ZMRPXTZGvIMRF2nDd9OGIHBAq3npzeRRMphPyGyL4/ivHixDDz3y00wlaODGBTkKoaBdwyCRDOyxe/bFiXfaCUlrfIrY5BXO6ZB7aCUpGZT56alLq7OhRT8Wtf/5UwdK1CmUaYtvtIZnfqnuqLDoC1XGrWxI9U2CRF6vrgYTmMdlBWQMRIP4fEQZ7sYV/ykyAcwL54atfPN0WXi3KAAtnCj50y7Ha+e40y+Qsg8Bx31dXtKa6Uha5r9qMvdbS/fdCqZymt6K+D6yDvJ8SWGhO8kSKwbNGD0Zorzc0ZUbgez1MbvFSLe8EM9JVNiouEjPGxlM2
+It/s734CRAigup2yeorygctFPVlBShCFYi2Q0Pz2E3VB4Vk8MEn4Y4TPM2lJsvjhIIb4/0LkH8EfuecGGpPMonzGd1/3A9RcSBAX1bvJ4U3Gvw/HGoYLYTxbfvYs8Hn3+bJPjs8V+Evbn30IPDS+1EmEqF9nDSFHqsZ0dw1QWgjvX2gek/+Lb0Pz7OK/6Ang/wET6BunzQgO/AAAAABJRU5ErkJggg==</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>940ffa95-3824-401e-8d2d-4d1d2c0b577d</rd:ReportID>
+</Report>

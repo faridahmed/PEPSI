@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+
+            <h2>Promotional Item Issue</h2>
+            <label>Promotional Challan No:</label>
+            @Html.TextBox("PrChNO", (int)ViewBag.ChallanNumber, new { @class = "form-control", @readonly = "readonly" })
+            <label>Issuing Date:</label>
+           @Html.TextBox("issueDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+           
+            <label>Issue Type:</label>
+            @Html.DropDownList("PosmIssueType", null, "Select Item", new { @class = "form-control" })
+
+            <label>Customer Name:</label>
+            @Html.DropDownList("CustomerLists", null, "Select Item", new { @class = "form-control" })
+
+            <label>Ref Delivery Challan:</label>
+            <select id="RefDeliveryChallan" class="form-control"><option>0</option></select>
+            @Html.TextBox("fromWarehouse", (int)ViewBag.fWarehouse, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div id="ht">
+
+        <h2>Transaction</h2>
+        <label>Transfer Warehouse Name:</label>
+        @Html.DropDownList("WarehouseName", null, "Select Item", new { @class = "form-control" })
+
+        <label>Transfer Note:</label>
+        <textarea class="span6 form-control" rows="5" id="trNote" placeholder="TP Remarks"></textarea>
+
+        <label>Vehicle:</label>
+        @Html.DropDownList("VehicleName", null, "Select Item", new { @class = "form-control" })
+
+        <label>Driver:</label>
+        @Html.DropDownList("DriverName", null, "Select Item", new { @class = "form-control" })
+
+        <div>
+            <input type="button" id="btnAdd" value="Add Item" class="form-control btn btn-primary" data-toggle="modal" data-target="#myModal" />
+            <input type="button" id="chkStock" value="Check Stock" class="form-control btn btn-primary" /><br /><br />
+            <input type="button" id="btnSave" value="Save" class="form-control btn btn-primary" />
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:600px;">
+        <!-- Modal content-->
+        <div class="modal-content row">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table style="border:none">
+                        <tr style="border:none">
+                            <td>
+                                <label>Promotional item:</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("POItem", null, "Select Item", new { @class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td>
+                                <label>Scheme ID:</label>
+                            </td>
+                            <td>
+                                @Html.DropDownList("POScheme", null, "Select Scheme", new { @class = "form-control" })
+
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Issued Qty:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("IssuedQty", "0", new { @Class = "form-control" })  @*new { style = "width:250px" }*@
+                            </td>
+                        </tr>
+                        <tr style="border:none">
+                            <td>
+                                <label>Current Stock:</label>
+                            </td>
+                            <td>
+                                @Html.TextBox("CurrStock", "0", new { @Class = "form-control", @readonly = "readonly" })  @*new { style = "width:250px" }*@
+                            </td>
+                        </tr>
+
+                        <tr style="border:none">
+                            <td></td>
+                            <td>
+                                <button style="width:100%" type="button" id="addB"
+                                        class="btn btn-primary" ;">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table class="table table-striped table-bordered" id="tbl">
+    <tr>
+        <th>SL </th>
+        <th>Posm ID </th>
+        <th>Item Name</th>
+        <th>Scheme ID </th>
+        <th>Scheme </th>
+        <th>Issued Qty </th>
+    </tr>
+</table>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-0:+0"
+    });
+    $("#CustomerLists").prop('disabled', true);
+    $("#RefDeliveryChallan").prop('disabled', true);
+    $("#WarehouseName").prop('disabled', true);
+
+    $(document).ready(function () {
+
+
+        $("#PosmIssueType").change(function () {
+            if ($("#PosmIssueType").val() == 2) {
+                $("#CustomerLists").prop('disabled', false);
+                $("#WarehouseName").prop('disabled', true);
+            }
+            else if (($("#PosmIssueType").val() == 3)) {
+                $("#WarehouseName").prop('disabled', false);
+                $("#CustomerLists").prop('disabled', true);
+                $("#RefDeliveryChallan").prop('disabled', true);
+            }
+            else if (($("#PosmIssueType").val() == 1)) {
+                $("#CustomerLists").prop('disabled', false);
+               $("#WarehouseName").prop('disabled', true);
+            }
+            else
+                {
+               $("#CustomerLists").prop('disabled', true);
+               $("#WarehouseName").prop('disabled', true);
+            }
+        });
+
+        $("#CustomerLists").change(function () {
+            $("#RefDeliveryChallan").empty();
+            // $("#Customer").append('<option>All</option>');
+            if ($("#PosmIssueType").val() == 2){
+                $("#RefDeliveryChallan").prop('disabled', false);
+            }
+            $.ajax({
+                url: "@Url.Action("GetCustomerInvoiceNumber", "POSMIssue")",
+                data: { cId: $('#CustomerLists').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#RefDeliveryChallan").html('');
+                var options = '<option>Choose Invoice</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].ChallanNumber + '">' + data[i].ChallanNumber + '</option>';
+                }
+                //  $("#TrBatchNo").val(options);
+
+                $("#RefDeliveryChallan").html(options);
+            },
+            error: function () {
+                var all;
+                all='<option>Invoice Not Found</option>'
+                $("#RefDeliveryChallan").html(0);
+                // alert("Failed! can't load Customer");
+            }
+        });
+
+        }); 
+        //Check Stock
+        $("#POItem").change(function () {
+
+            $.ajax({
+                url: "@Url.Action("GetStockQty", "POSMIssue")",
+                data: { pId: $('#POItem').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#CurrStock").val(data);
+            },
+            error: function () {
+                alert("Failed! can't load stock!");
+            }
+        });
+
+        });
+
+        $("#IssuedQty").keyup(function () {
+            var issQty = parseInt($("#IssuedQty").val());
+            var CurrStock = parseInt($("#CurrStock").val());
+            if (CurrStock < issQty) {
+                alert("Stock not available!!");
+                $("#addB").prop('disabled', true);
+            }
+            else
+             
+                $("#addB").prop('disabled', false);
+                // $("#btnAdd").prop('disabled', false);
+
+        });
+
+
+        $("#addB").click(function () {
+            // $("#tbl td").remove();
+            var rowcount = $("#tbl").find("tr").length;
+            var tblRow = '<tr id="row' + rowcount + '">' +
+                                        '<td>' +
+                                            '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+                                    '</td>' +
+                                    '<td> <input type="text"  id="txtPOItemID' + rowcount + '" value="' + $('#POItem').val() + '"  size="2" readonly/></td>' +
+                                    '<td><input type="text"   id="txtPOItemDescription' + rowcount + '" value="' + $('#POItem option:selected').text() + '"  size="20" readonly /></td>' +
+                                    '<td><input type="text"   id="txtPOScheme' + rowcount + '" value="' + $('#POScheme').val() + '" size="3" readonly /></td>' +
+                                    '<td><input type="text"   id="txtPOSchemeName' + rowcount + '" value="' + $('#POScheme option:Selected').text() + '"size="20" readonly /></td>' +
+                                    '<td><input type="text"   id="txtQty' + rowcount + '" size="14" value="' + $('#IssuedQty').val() + '" readonly /></td>' +
+                                                                   '</tr>'
+            $("#tbl").append(tblRow);
+        })
+
+        //Save And Update
+        $("#btnSave").click(function () {
+            var n = $("#tbl").find("tr").length;
+           // alert(n);
+            DtlItems = [];
+            //debugger
+            //alert(n);
+            // $('#tbl tr').each(function (row, tr) {
+            for (var i = 1; i < n; i++) {
+                //if ((row > 0) && (row <= id)) {
+                DtlItems.push({
+                    POSMChallanNo: $("#PrChNO").val(),
+                    FromWarehouse: $("#fromWarehouse").val(),
+                    IssuingDate: $("#issueDate").val(),
+                    IssueTypeID: $("#PosmIssueType").val(),
+                    DistributorID: $("#CustomerLists").val(),
+                    RefDChallan: $("#RefDeliveryChallan").val(),
+                    //CheckedByShipping
+                    WareHousID: $("#WarehouseName").val(),
+                    TransferNote: $("#trNote").val(),
+                    //IsBottleCreditGiven
+                    VehicleID: $("#VehicleName").val(),
+                    DriverID: $("#DriverName").val(),
+                    POSItemID: $("#tbl").find("tr").eq(i).find("td:eq(1) input[type='text']").val(),
+                    SchemeID: $("#tbl").find("tr").eq(i).find("td:eq(3) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(3).text(),
+                    IssuedQty: $("#tbl").find("tr").eq(i).find("td:eq(5) input[type='text']").val(), //$("table").find("tr").eq(i).find("td").eq(4).text(),
+                });
+            }
+            var data = {
+
+               // IssuedBy: $("#cancelChk").is(':checked'),
+                PODetails: DtlItems
+            }
+            var answer = confirm('Are you sure you want to save this?');
+            if (answer) {
+                $.ajax({
+                    url: '/POSMIssue/SavePOSMIssue',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (a) {
+
+                        if (a.status == true) {
+
+                            alert('Successfully done...');
+                            window.location.reload();
+                        }
+                        else {
+                            alert('Failed');
+                        }
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+
+    })
+
+</script>

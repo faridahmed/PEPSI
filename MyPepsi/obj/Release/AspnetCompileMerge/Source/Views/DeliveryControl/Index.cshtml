@@ -1,0 +1,256 @@
+﻿@model MyPepsi.ViewModel.DeliveryControlVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>*@
+
+<h2>Delivery Control Form</h2>
+
+<div>
+    <label>Choose Customer Name:</label>
+    @Html.DropDownList("CustomerLists", null, "Select Customer", new { @class = "form-control" })
+    <input type="checkbox" id="chk1">Have Bank Guarantee?? </>
+    <input type="text" size="3" id="bg" readonly />
+</div>
+
+<div class="panel-body">
+    <div class="col-md-4">
+        <div>
+            <label>Receivable Amount Limit:</label>
+            <input type="text" id="rcamLimit" value="0" class="form-control" />
+            <label>Outstanding Days Limit:</label>
+            <input type="text" id="outsdaysLimit" value="0" class="form-control" />
+            <label>Transit Amount Limit:</label>
+            <input type="text" id="tamntLimit" value="0" class="form-control" />
+            <label>Transit Case Limit:</label>
+            <input type="text" id="tcaseLimit" value="0" class="form-control" />
+            <label>Transit Days Limit:</label>
+            <input type="text" id="tdaysLimit" value="0" class="form-control" />
+            <label>Bottle Credit Amount Limit:</label>
+            <input type="text" id="bcreditamntLimit" value="0" class="form-control" />
+            <label>Total Outstanding Limit:</label>
+            <input type="text" id="tOutsLimit" value="0" class="form-control" />
+            <input type="button" id="saveButton" value="Save" class="btn-primary" />
+            <input type="button" id="updateButton" value="Update" class="btn-primary" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div>
+            <label>Begining Date:</label>
+            <input type="text" id="bDate1" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate2" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate3" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate4" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate5" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate6" class="date-picker form-control" />
+            <label>Begining Date:</label>
+            <input type="text" id="bDate7" class="date-picker form-control" /><br />
+            <input type="text" id="remarks" placeholder="Remarks" value="N/A" class="form-control" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div>
+            <label>Ending Date:</label>
+            @Html.TextBox("eDate1", "", new { @class = "form-control date-picker"})
+                      <label>Ending Date:</label>
+            <input type="text" id="eDate2" class="date-picker form-control" />
+            <label>Ending Date:</label>
+            <input type="text" id="eDate3" class="date-picker form-control" />
+            <label>Ending Date:</label>
+            <input type="text" id="eDate4" class="date-picker form-control" />
+            <label>Ending Date:</label>
+            <input type="text" id="eDate5" class="date-picker form-control" />
+            <label>Ending Date:</label>
+            <input type="text" id="eDate6" class="date-picker form-control" />
+            <label>Ending Date:</label>
+            <input type="text" id="eDate7" class="date-picker form-control" /> <br />
+            <input type="checkbox" id="chk9">IsActive</>
+        </div>
+    </div>
+    <div>
+        <br />
+        <input type="checkbox" id="chk2" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk3" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk4" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk5" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk6" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk7" />
+        <br /><br /><br />
+        <input type="checkbox" id="chk8" />
+    </div>
+</div>
+@*<input type="text" class="date-picker" />*@
+
+@*<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />*@
+<script src="~/Scripts/date.format.js"></script>
+<!-- Required jQuery and jQuery UI Javascript references -->
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
+<script>
+    //$('.date-picker').datepicker();
+  //  $(document).ready(function () {
+       
+    // $(function () {
+
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-20:+10"
+    });
+            //$('.date-picker').datepicker({
+            //    dateFormat: 'dd-mm-yyyy',
+            //    changeMonth :true,
+            //    changeYear: true,
+            //    autoclose: true
+            //});
+            //var date = new Date();
+
+            //var day = date.getDate();
+            //var month = date.getMonth() + 1;
+            //var year = date.getFullYear();
+
+            //if (month < 10) month = "0" + month;
+            //if (day < 10) day = "0" + day;
+
+            //var today = day + "-" + month + "-" + year;
+            //$('.date-picker').attr("value", today);
+    // });
+    //check Checkbox property
+  //         $("#chk1").click(function(){
+  //var BG = true;
+  //          if ($('#chk1').prop('checked')) {
+  //              BG: true;
+  //              alert("BG: true;")
+  //          }
+  //          else {
+  //              BG: false;
+  //              alert("BG: false;")
+  //          }
+  //          })
+          
+
+
+        //Edit Delivery Control
+        $("#CustomerLists").change(function () {
+            $.ajax({
+                url: "@Url.Action("EditLimit", "DeliveryControl")",
+                data: { custID: $('#CustomerLists').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //window.location.reload();
+
+                //var dt = data.IsBGurated;
+                //if (dt == true)
+                //{
+                    //var td = (new Date(parseInt(data.IsRcvlEDate.substr(6))));
+                    //alert(td.format("dd-mm-yyyy"))
+                    $("#chk1").attr('checked', data.IsBGurated);
+                    $("#bg").val(data.IsBGurated);
+                    $("#rcamLimit").val(data.RcvlAmnt);
+                    $("#bDate1").val(new Date(parseInt(data.IsRcvlBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate1").val(new Date(parseInt(data.IsRcvlEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk2").attr('checked', data.IsRcvl);
+                    $("#outsdaysLimit").val(data.OutsDays);
+                    $("#bDate2").val(new Date(parseInt(data.IsODaysBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate2").val(new Date(parseInt(data.IsODaysEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk3").attr('checked', data.IsODays);
+                    $("#tamntLimit").val(data.TransitAmnt);
+                    $("#bDate3").val(new Date(parseInt(data.IsTrAmntBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate3").val(new Date(parseInt(data.IsTrAmntEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk4").attr('checked', data.IsTrAmnt);
+                    $("#tcaseLimit").val(data.TransitCase);
+                    $("#bDate4").val(new Date(parseInt(data.IsTrCaseBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate4").val(new Date(parseInt(data.IsTrCaseEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk5").attr('checked', data.IsTrCase);
+                    $("#tdaysLimit").val(data.TransitDays);
+                    $("#bDate5").val(new Date(parseInt(data.IsTrDaysBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate5").val(new Date(parseInt(data.IsTrDaysEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk6").attr('checked', data.IsTrDays);
+                    $("#bcreditamntLimit").val(data.BCAmnt);
+                    $("#bDate6").val(new Date(parseInt(data.IsBCAmntBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate6").val(new Date(parseInt(data.IsBCAmntEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk7").attr('checked', data.IsBCAmnt);
+                    $("#tOutsLimit").val(data.TotalOutstanding);
+                    $("#bDate7").val(new Date(parseInt(data.IsTotalOutstandingBDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#eDate7").val(new Date(parseInt(data.IsTotalOutstandingEDate.substr(6))).format("dd-mm-yyyy"));
+                    $("#chk8").attr('checked', data.IsTotalOutstanding);
+                    $("#remarks").val(data.Remarks);
+                    $("#chk9").attr('checked', data.IsActive);
+
+
+                //window.location.reload();
+            },
+            error: function () {
+                alert("Please first set Credit Limit then come to Edit!");
+            }
+        });
+        })
+    $("#updateButton").click(function () {
+        var BG = true;
+        if ($('#chk1').prop('checked')) {
+            BG= true;
+        }
+        else {
+            BG=false;
+        }
+            var data = {
+                CustomerID: $("#CustomerLists").val(), RcvlAmnt: $("#rcamLimit").val(),
+                IsRcvlEDate: $("#eDate1").val(),
+                Remarks: $("#remarks").val(),
+                IsBGurated:BG,
+                //IsActive: $("#chk8").val()
+            }
+            var answer = confirm('Are you sure you want to Update this?');
+            if (answer) {
+                $.ajax({
+                    url: '/DeliveryControl/UpdateLimit',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (a) {
+
+                        if (a.status == true) {
+
+                            alert('Successfully Updated...');
+                           window.location.reload();
+                        }
+                        else {
+                            alert('Failed');
+                        }
+                        $('#create').val('Create');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#create').val('Create');
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        })
+
+        $("#saveButton").click(function () {
+            alert('No need to set here, it will done during New Customer Creation..')
+        })
+   // });
+</script>
+
+

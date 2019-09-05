@@ -1,0 +1,133 @@
+﻿@model MyPepsi.ViewModel.CustomerBGInfoVM
+@{
+    ViewBag.Title = "Bank Guarantee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bank Guarantee</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <label>Customer ID</label>
+                @Html.DropDownList("CustomerID", null, "Select One", new { @class = "form-control" })
+                <label style="color:red">BG No</label>
+                @Html.TextBox("BGRefNo", null, new { @class = "form-control" })
+                <label>Bank Name</label>
+                 @Html.TextBox("BankName", null, new { placeholder = "Bank Name",@class = "form-control" })
+                <label style="color:red">Bank Br. Name</label>
+                @Html.DropDownList("BankBrName", null, "Select One", new { @class = "form-control" })
+                @*@Html.TextBox("BankBrName", null, new { @class = "form-control" })*@
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <label>Issue Date</label>
+                @Html.TextBox("IssueDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+                <label>Expiry Date</label>
+                @Html.TextBox("ExpiryDate", null, new { placeholder = "DD/MM/YYYY", @class = "form-control" })
+                <label>Actual BG Amount</label>
+                @Html.TextBox("ActualBGAmt", null, new { @class = "form-control" })
+                <label>Given Amount</label>
+                @Html.TextBox("BGAmount", null, new { @class = "form-control" })
+                @*<label>Machine IP</label>
+                    @Html.TextBox("MachineIP", null, new { @class = "form-control" })*@
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <input id="btnReset" type="button" class="btn btn-primary" value="Clear" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" onClick="savedata();" />
+
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Scripts/date.format.js"></script>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true
+    });
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+    $('.date-picker').attr("value", today);
+    $('#IssueDate').datepicker();
+    $('#ExpiryDate').datepicker();
+   var status = true;
+    function savedata() {
+    var data = {
+        CustomerID: $('#CustomerID').val().trim(),
+        BGRefNo: $('#BGRefNo').val().trim(),
+        BankName: $('#BankName').val().trim(),
+        BankBrName: $('#BankBrName').val().trim(),
+        IssueDate: $('#IssueDate').val().trim(),
+        ExpiryDate: $('#ExpiryDate').val().trim(),
+        BGAmount: $('#BGAmount').val().trim(),
+        ActualBGAmt: $('#ActualBGAmt').val().trim()
+
+    }
+   // console.log(status);
+    //console.log(data);
+
+        var answer = confirm('Are you sure, you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+       // debugger;
+       // console.log(data);
+        $.ajax({
+            url: '/BankGuarantee/SaveBGData',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully done...BG No : ' + a.v);
+                    window.location.reload();
+
+                }
+                else {
+                    alert('Failed, Please Check...');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+              //  $('#create').val('Create');
+            }
+        });
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+
+</script>
+

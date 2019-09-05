@@ -1,0 +1,2183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PEPSIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="AreaID" />
+    </Key>
+    <Property Name="AreaID" Type="int" Nullable="false" />
+    <Property Name="AreaDescription" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Bank">
+    <Key>
+      <PropertyRef Name="BankBranchID" />
+    </Key>
+    <Property Name="BankBranchID" Type="int" Nullable="false" />
+    <Property Name="BankID" Type="int" />
+    <Property Name="BranchID" Type="int" />
+    <Property Name="SubZoneID" Type="int" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="100" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="BankName">
+    <Key>
+      <PropertyRef Name="BankID" />
+    </Key>
+    <Property Name="BankID" Type="int" Nullable="false" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Branch">
+    <Key>
+      <PropertyRef Name="BranchID" />
+    </Key>
+    <Property Name="BranchID" Type="int" Nullable="false" />
+    <Property Name="BranchName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="BusinessUnit">
+    <Key>
+      <PropertyRef Name="BusinessUnitID" />
+    </Key>
+    <Property Name="BusinessUnitID" Type="int" Nullable="false" />
+    <Property Name="BusinessUnitDescription" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="CashSettlement">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="CashSettlementID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CashSettlementID" Type="int" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" />
+    <Property Name="CashSettlementDate" Type="datetime" />
+    <Property Name="SalesPersonID" Type="int" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="DeliveryChallanDate" Type="date" />
+    <Property Name="DeliveryChallanNumbers" Type="int" />
+    <Property Name="PassCodeChallan" Type="int" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalSpecialCharges" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReceivedAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CheckedByShipping" Type="nvarchar" MaxLength="3" />
+    <Property Name="CheckedBy" Type="int" />
+    <Property Name="RebateWillBeGivenWithOrder" Type="nvarchar" MaxLength="3" />
+    <Property Name="SpecialInstruction" Type="nvarchar" MaxLength="300" />
+    <Property Name="CashMemo" Type="int" />
+    <Property Name="SpecialNoteFromOrder" Type="nvarchar" MaxLength="300" />
+    <Property Name="OrderTypeID" Type="int" />
+    <Property Name="ProductRateID" Type="int" />
+    <Property Name="DayendFinished" Type="nvarchar" MaxLength="3" />
+    <Property Name="DayendDay" Type="datetime" />
+    <Property Name="CustomerExecutiveID" Type="int" />
+    <Property Name="DriverID" Type="int" />
+    <Property Name="ReceiveRefundMemo" Type="nvarchar" MaxLength="50" />
+    <Property Name="DrinksAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="DrinksAmountPaid" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SecurityAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SecurityAmountPaid" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="IsBottleCreditGiven" Type="nvarchar" MaxLength="3" />
+    <Property Name="Promotional" Type="nvarchar" MaxLength="3" />
+    <Property Name="BurstRefund" Type="nvarchar" MaxLength="3" />
+    <Property Name="BurstNote" Type="nvarchar" MaxLength="150" />
+    <Property Name="CanceledChallan" Type="nvarchar" MaxLength="3" />
+    <Property Name="CancelReason" Type="nvarchar" MaxLength="150" />
+    <Property Name="InvoiceFromVATInvoiceNumber" Type="nvarchar" MaxLength="3" />
+    <Property Name="VATRateId" Type="int" />
+    <Property Name="VATChallanRequired" Type="nvarchar" MaxLength="3" />
+    <Property Name="FinishGoodsUnloadCharge" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="EmptyReturnLoadCharge" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReturnFGCharge" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CraeteDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="CashSettlementDetail">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CashSettlementID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="SchemeID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CashSettlementID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="AlternateQuantity" Type="int" Nullable="false" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PlasticBoxQuantity" Type="int" Nullable="false" />
+    <Property Name="RebateQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateRebateQuantity" Type="int" Nullable="false" />
+    <Property Name="GrossSalesAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AlternateGrossSalesAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="RebateAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AlternateRebateAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AlternateAgencyCommission" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReturnedQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateReturnedQuantity" Type="int" Nullable="false" />
+    <Property Name="ReturnedPlasticBoxQuantity" Type="int" Nullable="false" />
+    <Property Name="ReturnedBurstQuantity" Type="int" Nullable="false" />
+    <Property Name="ReturnedBreakageQuantity" Type="int" Nullable="false" />
+    <Property Name="ReturnedFilledQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateReturnedFilledQuantity" Type="int" Nullable="false" />
+    <Property Name="SecurityDeposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AlternateSecurityDeposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PlasticBoxSecurity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReturnedRebateQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateReturnedRebateQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateReturnedBurstQuantity" Type="int" Nullable="false" />
+    <Property Name="AlternateReturnedBreakageQuantity" Type="int" Nullable="false" />
+    <Property Name="ShowInList" Type="bit" />
+    <Property Name="VATPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="VATAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReturnedSecurityDeposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReturnedAlternateSecurityDeposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReturnedPlasticBoxSecurity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="MRPRate" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="ClaimApprovement">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ApprovedID" Type="int" Nullable="false" />
+    <Property Name="ApproveDate" Type="datetime2" Precision="0" />
+    <Property Name="SchemeID" Type="tinyint" />
+    <Property Name="CustomerID" Type="int" />
+    <Property Name="ProductID" Type="int" />
+    <Property Name="ApproveQuantity" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="ApproveAmount" Type="money" />
+    <Property Name="EneteredBy" Type="varchar" MaxLength="50" />
+    <Property Name="EntryDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CustomerShortName" Type="nvarchar" MaxLength="30" />
+    <Property Name="ProprietorsName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ContactPersonsName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CustomerAddress1" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="CustomerAddress2" Type="nvarchar" MaxLength="150" />
+    <Property Name="CustomerAddress3" Type="nvarchar" MaxLength="150" />
+    <Property Name="CustomerAddress4" Type="nvarchar" MaxLength="150" />
+    <Property Name="CustomerPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerFax" Type="nvarchar" MaxLength="25" />
+    <Property Name="CustomerMobilePhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreditLimit" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="CreditPeriodInDays" Type="int" Nullable="false" />
+    <Property Name="ProductRateID" Type="int" Nullable="false" />
+    <Property Name="OutstandingAmount" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="SalesPersonID" Type="int" Nullable="false" />
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="HelperID" Type="int" Nullable="false" />
+    <Property Name="CustomerExecutiveID" Type="int" Nullable="false" />
+    <Property Name="RegionID" Type="int" Nullable="false" />
+    <Property Name="NoOfVisiCoolers" Type="int" Nullable="false" />
+    <Property Name="NoOfPMX" Type="tinyint" Nullable="false" />
+    <Property Name="CustomerTypeID" Type="int" />
+    <Property Name="CustomerStartingDate" Type="date" />
+    <Property Name="CustomerEndingDate" Type="date" />
+    <Property Name="Security" Type="decimal" Precision="12" Scale="2" />
+    <Property Name="VATRegistrationNumber" Type="nvarchar" MaxLength="25" />
+    <Property Name="VatChallanRequired" Type="int" />
+    <Property Name="VATRateId" Type="int" Nullable="false" />
+    <Property Name="ClusterName" Type="nvarchar" MaxLength="200" />
+    <Property Name="AllowanceRateID" Type="int" />
+    <Property Name="AllowanceType" Type="nvarchar" MaxLength="50" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="ActiveStatus" Type="nchar" MaxLength="1" />
+    <Property Name="OldCustID" Type="int" />
+    <Property Name="CreateDate" Type="date" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="CustomerBGInfo">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="BankGuaranteeNo" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="BankGuaranteeNo" Type="int" Nullable="false" />
+    <Property Name="BGRefNo" Type="nchar" MaxLength="100" />
+    <Property Name="BankName" Type="nchar" MaxLength="100" />
+    <Property Name="BankBrName" Type="nchar" MaxLength="100" />
+    <Property Name="IssueDate" Type="date" />
+    <Property Name="ExpiryDate" Type="date" />
+    <Property Name="AmendmentExiryDate" Type="date" />
+    <Property Name="BGAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ActualBGAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AmendmentBGAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Status" Type="nchar" MaxLength="3" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="50" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="CustomerCreditLimit">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="CLRefNo" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CLRefNo" Type="int" Nullable="false" />
+    <Property Name="CLNo" Type="nchar" MaxLength="100" />
+    <Property Name="ApproveBy" Type="nchar" MaxLength="100" />
+    <Property Name="ApproveDate" Type="date" />
+    <Property Name="IssueDate" Type="date" />
+    <Property Name="ActivateDate" Type="date" />
+    <Property Name="ExpiryDate" Type="date" />
+    <Property Name="AmendmentExiryDate" Type="date" />
+    <Property Name="CLAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AmendmentCLAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Status" Type="nchar" MaxLength="3" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="50" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="CustomerExecutive">
+    <Key>
+      <PropertyRef Name="CustomerExecutiveID" />
+    </Key>
+    <Property Name="CustomerExecutiveID" Type="int" Nullable="false" />
+    <Property Name="CustomerExecutiveName" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="TeritoryDevelopmentManagerID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerLedgerDetail">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="TransactionNo" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="TransactionTypeID" Type="int" />
+    <Property Name="TransactionNo" Type="nchar" MaxLength="12" Nullable="false" />
+    <Property Name="TransactionDate" Type="date" />
+    <Property Name="DrAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CrAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="DebitCredit" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="ReverseFlag" Type="nchar" MaxLength="1" />
+    <Property Name="RefNumber1" Type="nvarchar" MaxLength="50" />
+    <Property Name="RefNumber" Type="int" />
+    <Property Name="Narration" Type="nchar" MaxLength="250" />
+    <Property Name="AdjustmentFlag" Type="nchar" MaxLength="1" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerLedgerMaster">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CurrentBalance" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreditAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReturnAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReplacementPayable" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PaymentAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="InvoiceAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalSequrityAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BookedAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BlockedAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BankGuranteeAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OpeningBalance" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OutstandingAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CustomerStatus" Type="nchar" MaxLength="3" />
+    <Property Name="CheckingFlag" Type="nchar" MaxLength="3" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="SequrityReceive" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SequrityRefund" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LoadUnloadCharge" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="WarehouseID" Type="int" />
+  </EntityType>
+  <EntityType Name="CustomerType">
+    <Key>
+      <PropertyRef Name="CustomerTypeID" />
+    </Key>
+    <Property Name="CustomerTypeID" Type="int" Nullable="false" />
+    <Property Name="CustomerTypeDescription" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="DatabaseObject">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DBObjectName" Type="nvarchar" MaxLength="100" />
+    <Property Name="Note" Type="nvarchar" MaxLength="500" />
+    <Property Name="Type" Type="char" MaxLength="1" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DBTarget">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TargetID" Type="varchar" MaxLength="50" />
+    <Property Name="TargetDescription" Type="varchar" MaxLength="250" />
+    <Property Name="StartDate" Type="date" />
+    <Property Name="EndDate" Type="date" />
+    <Property Name="DBID" Type="int" />
+    <Property Name="SKUID" Type="int" />
+    <Property Name="TargetQty" Type="int" />
+    <Property Name="TargetTypeID" Type="int" />
+    <Property Name="UploadedDate" Type="date" />
+    <Property Name="EnteredBy" Type="int" />
+    <Property Name="EntryDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="DBTargetType">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TargetTypeID" Type="int" />
+    <Property Name="TargetType" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="DeliveryControl">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="RcvlAmnt" Type="float" Nullable="false" />
+    <Property Name="IsRcvl" Type="bit" Nullable="false" />
+    <Property Name="IsRcvlBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsRcvlEDate" Type="datetime" Nullable="false" />
+    <Property Name="OutsDays" Type="int" Nullable="false" />
+    <Property Name="IsODays" Type="bit" Nullable="false" />
+    <Property Name="IsODaysBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsODaysEDate" Type="datetime" Nullable="false" />
+    <Property Name="TransitAmnt" Type="float" Nullable="false" />
+    <Property Name="IsTrAmnt" Type="bit" Nullable="false" />
+    <Property Name="IsTrAmntBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsTrAmntEDate" Type="datetime" Nullable="false" />
+    <Property Name="TransitCase" Type="float" Nullable="false" />
+    <Property Name="IsTrCase" Type="bit" Nullable="false" />
+    <Property Name="IsTrCaseBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsTrCaseEDate" Type="datetime" Nullable="false" />
+    <Property Name="TransitDays" Type="int" Nullable="false" />
+    <Property Name="IsTrDays" Type="bit" Nullable="false" />
+    <Property Name="IsTrDaysBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsTrDaysEDate" Type="datetime" Nullable="false" />
+    <Property Name="BCAmnt" Type="float" Nullable="false" />
+    <Property Name="IsBCAmnt" Type="bit" Nullable="false" />
+    <Property Name="IsBCAmntBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsBCAmntEDate" Type="datetime" Nullable="false" />
+    <Property Name="TotalOutstanding" Type="float" Nullable="false" />
+    <Property Name="IsTotalOutstanding" Type="bit" Nullable="false" />
+    <Property Name="IsTotalOutstandingBDate" Type="datetime" Nullable="false" />
+    <Property Name="IsTotalOutstandingEDate" Type="datetime" Nullable="false" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsBGurated" Type="bit" Nullable="false" />
+    <Property Name="Remarks" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="DepositedByPeopleName">
+    <Key>
+      <PropertyRef Name="DepositedByID" />
+    </Key>
+    <Property Name="DepositedByID" Type="int" Nullable="false" />
+    <Property Name="DepositedByName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Driver">
+    <Key>
+      <PropertyRef Name="DriverID" />
+    </Key>
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="DriverName" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="WorkStation" Type="int" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="EmptyFareSetup">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="EmptyFixAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PerCaseAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SpecialRatePerCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Status" Type="varchar" MaxLength="1" />
+    <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="EmptyMoveDetail">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="TransactionNo" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="QuantityCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Boxes" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="20" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="EmptyMoveMaster">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="TransactionNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="TransactionDate" Type="date" />
+    <Property Name="TotalEmpty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalBox" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TransactionType" Type="int" />
+    <Property Name="ToWarehouse" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="DriverID" Type="int" />
+    <Property Name="VehicleNo" Type="nchar" MaxLength="50" />
+    <Property Name="LocationID" Type="varchar" MaxLength="50" />
+    <Property Name="BinNo" Type="varchar" MaxLength="50" />
+    <Property Name="ReferenceNo" Type="varchar" MaxLength="50" />
+    <Property Name="ConversionFactor" Type="int" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="20" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="varchar" MaxLength="20" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="Remarks" Type="varchar" MaxLength="500" />
+    <Property Name="FromWarehouse" Type="int" />
+    <Property Name="ReturnID" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PEPSI.dbo.FixedDataTable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="FixedDataTable">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="TypeCodeID" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeCodeID" Type="int" Nullable="false" />
+    <Property Name="TypeDescription" Type="nvarchar" MaxLength="500" />
+    <Property Name="Value" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Helper">
+    <Key>
+      <PropertyRef Name="HelperID" />
+    </Key>
+    <Property Name="HelperID" Type="int" Nullable="false" />
+    <Property Name="HelperName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="WorkStation" Type="int" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="InvoiceHelper">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderID" Type="int" />
+    <Property Name="HelperID1" Type="int" />
+    <Property Name="HelperID2" Type="int" />
+    <Property Name="HelperID3" Type="int" />
+    <Property Name="HelperID4" Type="int" />
+    <Property Name="DriverID1" Type="int" />
+    <Property Name="DriverID2" Type="int" />
+  </EntityType>
+  <EntityType Name="MainProductGroup">
+    <Key>
+      <PropertyRef Name="MainProductGroupID" />
+    </Key>
+    <Property Name="MainProductGroupID" Type="int" Nullable="false" />
+    <Property Name="MainProductGroupDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="BusinessUnitID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MenuList">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" Nullable="false" />
+    <Property Name="MenuName" Type="nvarchar" MaxLength="300" />
+    <Property Name="ControllerName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ActionName" Type="nvarchar" MaxLength="100" />
+    <Property Name="Status" Type="nvarchar" MaxLength="10" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="300" />
+    <Property Name="MainMenuID" Type="int" />
+    <Property Name="TypeCode" Type="int" />
+  </EntityType>
+  <EntityType Name="MenuMain">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MainMenuID" Type="nvarchar" MaxLength="50" />
+    <Property Name="MainMenu" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MenuRoles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleID" Type="int" />
+    <Property Name="Roles" Type="nchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="MenuSub">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="MenuCode" />
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="MenuCode" Type="int" Nullable="false" />
+    <Property Name="SubMenu" Type="nvarchar" MaxLength="50" />
+    <Property Name="Controller" Type="nvarchar" MaxLength="50" />
+    <Property Name="Action" Type="nvarchar" MaxLength="50" />
+    <Property Name="MainMenuId" Type="int" />
+    <Property Name="RoleId" Type="int" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="OrderApprove">
+    <Key>
+      <PropertyRef Name="ApprovedID" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ApprovedID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="ApproveBy" Type="nchar" MaxLength="10" />
+    <Property Name="ApproveDate" Type="date" />
+    <Property Name="Approve2nd" Type="nchar" MaxLength="10" />
+    <Property Name="Approve2ndDate" Type="date" />
+  </EntityType>
+  <EntityType Name="OrderBankDetails">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SalesOrderNO" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBox" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="OrderBankSummary">
+    <Key>
+      <PropertyRef Name="SalesOrderNO" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="SalesOrderNO" Type="int" Nullable="false" />
+    <Property Name="SalesOrderDate" Type="date" Nullable="false" />
+    <Property Name="RefOrderNO" Type="nvarchar" MaxLength="25" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="OrderCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OrderBox" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="EmptyBottleCase" Type="int" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+    <Property Name="Delivered" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="PartialDelivered" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="TotalOrderAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ExpectDeliverDate" Type="date" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="SchemeID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="AlternateQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="RebateQuantity" Type="int" />
+    <Property Name="AlternateRebateQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBoxQuantity" Type="int" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReturnedEmptyQuantity" Type="int" />
+    <Property Name="AlternateReturnedEmptyQuantity" Type="int" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateAgencyCommission" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SecurityDeposit" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateSecurityDeposit" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBoxSecurity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="VATPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="VATAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BatchNo" Type="int" />
+    <Property Name="MfgDate" Type="date" />
+    <Property Name="ExpDate" Type="date" />
+    <Property Name="MRPRate" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="SalesOrderNo" Type="int" />
+    <Property Name="Trip" Type="int" />
+    <Property Name="OrderDate" Type="date" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="VehicleID" Type="int" Nullable="false" />
+    <Property Name="SalesPersonID" Type="int" Nullable="false" />
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="ChallanNumber" Type="int" />
+    <Property Name="ChallanCancel" Type="nvarchar" MaxLength="30" />
+    <Property Name="DeliveryChallanDate" Type="date" />
+    <Property Name="Delivered" Type="nvarchar" MaxLength="30" />
+    <Property Name="SalesAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="SecurityAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="RebateAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ProductRateID" Type="int" Nullable="false" />
+    <Property Name="SpecialCharge1Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="SpecialCharge2Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="SpecialCharge3Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="SpecialCharge1Type" Type="int" Nullable="false" />
+    <Property Name="SpecialCharge2Type" Type="int" Nullable="false" />
+    <Property Name="SpecialCharge3Type" Type="int" Nullable="false" />
+    <Property Name="SpecialNote" Type="varchar" MaxLength="8000" />
+    <Property Name="LoadSheetRemarks" Type="varchar" MaxLength="8000" />
+    <Property Name="Cash" Type="nvarchar" MaxLength="30" />
+    <Property Name="IsCashSettlementPrepared" Type="nvarchar" MaxLength="30" />
+    <Property Name="DeliveredBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="CashSettlementID" Type="int" />
+    <Property Name="CashSettlementPreparedBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="ReadyForDelivery" Type="nvarchar" MaxLength="30" />
+    <Property Name="ReadyForDeliveryOptionGivenBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="RebateWillBeGivenWithOrder" Type="nvarchar" MaxLength="30" />
+    <Property Name="OrderTypeID" Type="int" Nullable="false" />
+    <Property Name="Transit" Type="nvarchar" MaxLength="30" />
+    <Property Name="CustomerExecutiveID" Type="int" />
+    <Property Name="Promotional" Type="nvarchar" MaxLength="30" />
+    <Property Name="Replacement" Type="nvarchar" MaxLength="30" />
+    <Property Name="InvoiceFromVATInvoiceNumber" Type="nvarchar" MaxLength="30" />
+    <Property Name="VATRateId" Type="int" Nullable="false" />
+    <Property Name="VATChallanRequired" Type="nvarchar" MaxLength="30" />
+    <Property Name="FinishGoodsUnloadCharge" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="UpdateDate" Type="datetime" />
+    <Property Name="AdvanceOrder" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="OrderSchemeDetail">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="SchemeID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="MoneyReceiptNo" />
+    </Key>
+    <Property Name="PaymentTransactionType" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+    <Property Name="PaymentReceived" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="PaymentModeID" Type="nvarchar" MaxLength="1" Nullable="false" />
+    <Property Name="ActualPaymentEntryDate" Type="datetime2" Precision="0" Nullable="false" />
+    <Property Name="PaymentNote" Type="nvarchar" MaxLength="200" />
+    <Property Name="MoneyReceiptNo" Type="int" Nullable="false" />
+    <Property Name="BankBranchID" Type="int" />
+    <Property Name="ChequeDDNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="ChequeDate" Type="datetime" />
+    <Property Name="LocalBankBranchID" Type="int" />
+    <Property Name="DepositedByID" Type="int" />
+    <Property Name="AdvanceAdjustment" Type="bit" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="ChallanNo" Type="nvarchar" MaxLength="200" />
+    <Property Name="BankID" Type="int" />
+    <Property Name="BranchID" Type="int" />
+    <Property Name="LocalBranchID" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PaymentDetail">
+    <Key>
+      <PropertyRef Name="CashSettlementID" />
+      <PropertyRef Name="MoneyReceiptNo" />
+    </Key>
+    <Property Name="CashSettlementID" Type="int" Nullable="false" />
+    <Property Name="MoneyReceiptNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="CashSettlementDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaymentMode">
+    <Key>
+      <PropertyRef Name="PaymentModeID" />
+    </Key>
+    <Property Name="PaymentModeID" Type="nvarchar" MaxLength="1" Nullable="false" />
+    <Property Name="PaymentModeDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaymentTransactionType">
+    <Key>
+      <PropertyRef Name="PaymentTransactionType" />
+    </Key>
+    <Property Name="PaymentTransactionType" Type="int" Nullable="false" />
+    <Property Name="PaymentTransactionName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="POSMIssue">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="POSMChallanNo" Type="int" />
+    <Property Name="FromWarehouse" Type="int" />
+    <Property Name="IssuingDate" Type="date" />
+    <Property Name="IssueTypeID" Type="int" />
+    <Property Name="DistributorID" Type="int" />
+    <Property Name="RefDChallan" Type="int" />
+    <Property Name="WareHousID" Type="int" />
+    <Property Name="TransferNote" Type="nvarchar" MaxLength="250" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="DriverID" Type="int" />
+    <Property Name="POSItemID" Type="int" />
+    <Property Name="SchemeID" Type="int" />
+    <Property Name="IssuedQty" Type="int" />
+    <Property Name="IssuingUnitPrice" Type="money" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="IssuedBy" Type="nchar" MaxLength="50" />
+    <Property Name="EntryDate" Type="datetime" />
+    <Property Name="IssueReceivedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="POSMIssueType">
+    <Key>
+      <PropertyRef Name="IssueTypeID" />
+    </Key>
+    <Property Name="IssueTypeID" Type="int" Nullable="false" />
+    <Property Name="TypeDescription" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="POSMItem">
+    <Key>
+      <PropertyRef Name="PosmID" />
+    </Key>
+    <Property Name="PosmID" Type="int" Nullable="false" />
+    <Property Name="PosmName" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="POSMItemDestroy">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="DestroyedDate" Type="datetime2" Precision="0" />
+    <Property Name="POSMDestroyedItemID" Type="int" />
+    <Property Name="DestroyedFrom" Type="nvarchar" MaxLength="50" />
+    <Property Name="DQty" Type="int" />
+    <Property Name="DestroyedBy" Type="int" />
+    <Property Name="EntryDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="POSMItemReturn">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="DistributorID" Type="int" />
+    <Property Name="ReturnDate" Type="datetime2" Precision="0" />
+    <Property Name="ReturnProductType" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReturnItemID" Type="int" />
+    <Property Name="ReturnQty" Type="float" />
+    <Property Name="ReturnBy" Type="int" />
+    <Property Name="EntryDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="POSMReceive">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GRNO" Type="int" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="ReceivingDate" Type="date" Nullable="false" />
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="SupplierID" Type="int" />
+    <Property Name="SuppRefNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="SupplierRefDate" Type="date" />
+    <Property Name="POSItem" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="ReceivedQty" Type="int" />
+    <Property Name="UnitPrice" Type="money" />
+    <Property Name="WarrentyPeriod" Type="nvarchar" MaxLength="50" />
+    <Property Name="WarrentyType" Type="nvarchar" MaxLength="100" />
+    <Property Name="RcvBy" Type="nchar" MaxLength="50" />
+    <Property Name="EntryDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="POSMRecIss">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GRChNo" Type="int" />
+    <Property Name="SupplierID" Type="int" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="Date" Type="date" />
+    <Property Name="ItemID" Type="int" />
+    <Property Name="SchemeID" Type="int" />
+    <Property Name="ReceivedQty" Type="int" />
+    <Property Name="RcvRate" Type="money" />
+    <Property Name="IssuedQty" Type="int" />
+    <Property Name="IssuRate" Type="money" />
+    <Property Name="FreshProductReturn" Type="int" />
+    <Property Name="DefectiveProductReturn" Type="int" />
+    <Property Name="DestroyedProduct" Type="int" />
+    <Property Name="EnteredBy" Type="nchar" MaxLength="10" />
+    <Property Name="EntryDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="POSMScheme">
+    <Key>
+      <PropertyRef Name="SchemeID" />
+    </Key>
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="SchemeDescription" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="POSMStock">
+    <Key>
+      <PropertyRef Name="SL" />
+    </Key>
+    <Property Name="SL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseId" Type="int" />
+    <Property Name="POSMItemID" Type="int" Nullable="false" />
+    <Property Name="OpeningQty" Type="int" />
+    <Property Name="OnHandQty" Type="int" />
+    <Property Name="ReceivedQty" Type="int" />
+    <Property Name="IssuedQty" Type="int" />
+    <Property Name="ReturnedFreshQty" Type="int" />
+    <Property Name="ReturnedDefectedQty" Type="int" />
+    <Property Name="DestroyedQty" Type="int" />
+  </EntityType>
+  <EntityType Name="POSMTemp">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Name="ItemID" Type="int" Nullable="false" />
+    <Property Name="WarehouseId" Type="int" />
+    <Property Name="OpeningBalenece" Type="int" />
+    <Property Name="TotalReceive" Type="int" />
+    <Property Name="TotalIssue" Type="int" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ProductDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProductShortName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UnitMeasurement" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="AlternateUnitMeasurement" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="ConversionFactor" Type="int" Nullable="false" />
+    <Property Name="PMXConversionFactor" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="UnitPrice" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="ProductGroupID" Type="int" />
+    <Property Name="SecurityDeposit" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AlternateSecurityDeposit" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="BottleReturnable" Type="int" Nullable="false" />
+    <Property Name="PlasticBoxSecurity" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="BottleSize" Type="nvarchar" MaxLength="10" />
+    <Property Name="PETOrGRB" Type="int" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="Expirydays" Type="int" />
+    <Property Name="OzConversion" Type="decimal" Precision="12" Scale="8" />
+    <Property Name="ShowInList" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductBalance">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="OnHandQuantity" Type="int" Nullable="false" />
+    <Property Name="BurstBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="BreakageBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="PlasticBoxQuantity" Type="int" Nullable="false" />
+    <Property Name="EmptyBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="BookedQuantity" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductGroup">
+    <Key>
+      <PropertyRef Name="ProductGroupID" />
+    </Key>
+    <Property Name="ProductGroupID" Type="int" Nullable="false" />
+    <Property Name="ProductGroupDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProductSubGroupID" Type="int" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="ProductRate">
+    <Key>
+      <PropertyRef Name="ProductRateID" />
+    </Key>
+    <Property Name="ProductRateID" Type="int" Nullable="false" />
+    <Property Name="ProductRateDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductRateDetail">
+    <Key>
+      <PropertyRef Name="ProductRateID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductRateID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="UnitPrice" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AlternateAgencyCommission" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="SecurityDeposit" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="AlternateSecurityDeposit" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="PlasticBoxSecurity" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="MRPRate" Type="decimal" Precision="12" Scale="2" />
+    <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ProductSubGroup">
+    <Key>
+      <PropertyRef Name="ProductSubGroupID" />
+    </Key>
+    <Property Name="ProductSubGroupID" Type="int" Nullable="false" />
+    <Property Name="ProductSubGroupDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="MainProductGroupID" Type="int" Nullable="false" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="ProductTransaction">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="TransactionTypeID" Type="int" Nullable="false" />
+    <Property Name="FromWarehouse" Type="int" />
+    <Property Name="ToWarehouse" Type="int" />
+    <Property Name="TransactionDate" Type="date" Nullable="false" />
+    <Property Name="ReferenceNo" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="300" />
+    <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="30" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="StoreLocation" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="ProductTransactionDetail">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="PlantNo" Type="int" />
+    <Property Name="LineNoPlant" Type="int" />
+    <Property Name="BatchNo" Type="int" />
+    <Property Name="ManufactureDate" Type="datetime" />
+    <Property Name="ExpiryDate" Type="datetime" />
+    <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="EmptyBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="PlasticBoxQuantity" Type="int" Nullable="false" />
+    <Property Name="BurstBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="BreakageBottleQuantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductTransferNote">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="TransactionNo" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="DriverID" Type="int" />
+    <Property Name="Remarks" Type="varchar" MaxLength="500" />
+    <Property Name="SLNo" Type="int" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="RebateScheme">
+    <Key>
+      <PropertyRef Name="SchemeID" />
+    </Key>
+    <Property Name="SchemeID" Type="int" Nullable="false" />
+    <Property Name="SchemeDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="IssueDate" Type="datetime" />
+    <Property Name="EffectiveDate" Type="datetime" />
+    <Property Name="ExiparyDate" Type="datetime" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="RegionID" />
+    </Key>
+    <Property Name="RegionID" Type="int" Nullable="false" />
+    <Property Name="RegionDescription" Type="varchar" MaxLength="200" />
+    <Property Name="SubZoneID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RegionalSalesManager">
+    <Key>
+      <PropertyRef Name="RSMID" />
+    </Key>
+    <Property Name="RSMID" Type="int" Nullable="false" />
+    <Property Name="RSMDescripton" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="ReplaceDetail">
+    <Key>
+      <PropertyRef Name="ReplacementNo" />
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="ReturnID" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReplacementNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ReturnID" Type="int" Nullable="false" />
+    <Property Name="AlternateQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBoxQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SubTotAmount" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="ReplaceDisburseDetail">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ReplaceDisburseID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ReplaceDisburseID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="CaseQty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BoxQty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BatchNo" Type="int" />
+    <Property Name="ManufactureDate" Type="date" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SchemeID" Type="int" />
+    <Property Name="TotAmount" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="ReplaceDisburseMaster">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ReplaceDisburseID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ReplaceDisburseID" Type="int" Nullable="false" />
+    <Property Name="ReplaceRefNo" Type="int" />
+    <Property Name="LoadSheetNo" Type="int" />
+    <Property Name="TransactionDate" Type="date" />
+    <Property Name="TotCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotBox" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotDisburseAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="RemainingAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AdjustAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="DriverID" Type="int" />
+    <Property Name="VehicleID" Type="nchar" MaxLength="500" />
+    <Property Name="Remarks" Type="nchar" MaxLength="500" />
+    <Property Name="CreateBy" Type="varchar" MaxLength="20" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ReplaceManual">
+    <Key>
+      <PropertyRef Name="ReplaceID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ReplaceID" Type="int" Nullable="false" />
+    <Property Name="MonthName" Type="int" />
+    <Property Name="NoLevel" Type="int" />
+    <Property Name="NoCrown" Type="int" />
+    <Property Name="NoCan" Type="int" />
+    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PayableAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="GivenMethod" Type="int" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="100" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Status" Type="nchar" MaxLength="1" />
+    <Property Name="Remarks" Type="varchar" MaxLength="500" />
+    <Property Name="UpdateBy" Type="varchar" MaxLength="20" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ReplaceMaster">
+    <Key>
+      <PropertyRef Name="ReplaceNo" />
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="ReplaceNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="TransactionDate" Type="date" />
+    <Property Name="ProcessfromDate" Type="date" />
+    <Property Name="ProcessToDate" Type="date" />
+    <Property Name="ReferenceNo" Type="varchar" MaxLength="50" />
+    <Property Name="Remarks" Type="varchar" MaxLength="150" />
+    <Property Name="TotReturnAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotSalesAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotPayableAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CalculationID" Type="int" />
+    <Property Name="Status" Type="varchar" MaxLength="1" />
+    <Property Name="AdjustAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+    <Property Name="updateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Returnment">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="ReturnmentID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" />
+    <Property Name="ReturnmentID" Type="int" Nullable="false" />
+    <Property Name="ReturnGoodsQty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="InAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ReturnDate" Type="date" />
+    <Property Name="Reasons" Type="nchar" MaxLength="200" />
+    <Property Name="RefNumber" Type="int" />
+    <Property Name="ReturnTypeID" Type="int" />
+    <Property Name="AdjustedAmt" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ApprovalFlag" Type="nchar" MaxLength="10" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="ApprovedDate" Type="date" />
+    <Property Name="ApproveBy" Type="nchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ReturnmentDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+    <Property Name="ProductID" Type="int" />
+    <Property Name="ReturnmentID" Type="int" />
+    <Property Name="ReturnQty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Packsize" Type="int" />
+    <Property Name="BatchNo" Type="int" />
+    <Property Name="Reason" Type="nchar" MaxLength="150" />
+    <Property Name="RebateQty" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="RebatePlastic" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="SchemeID" Type="int" />
+  </EntityType>
+  <EntityType Name="SalesPerson">
+    <Key>
+      <PropertyRef Name="SalesPersonID" />
+    </Key>
+    <Property Name="SalesPersonID" Type="int" Nullable="false" />
+    <Property Name="SalesPersonName" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Suspended" Type="int" />
+    <Property Name="CreateBy" Type="varchar" MaxLength="30" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="updateBy" Type="varchar" MaxLength="30" />
+    <Property Name="Updateddate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="StockBatch">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="BatchNo" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="BatchRefNo" Type="int" />
+    <Property Name="ManufacturDate" Type="datetime" Nullable="false" />
+    <Property Name="ExpiryDate" Type="datetime" Nullable="false" />
+    <Property Name="PlantNo" Type="int" />
+    <Property Name="PlantLineNo" Type="int" Nullable="false" />
+    <Property Name="IssueQuantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReceivedQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="SalesQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="MarketReturnQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ReplaceQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="BurstQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="BreakageQty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="AdjustQty" Type="int" Nullable="false" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="WarehouseLocationCode" Type="varchar" MaxLength="10" />
+    <Property Name="BinNo" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="StockBatchDetail">
+    <Key>
+      <PropertyRef Name="SLNo" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransactionNo" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="BatchNo" Type="int" />
+    <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="EmptyBottleQuantity" Type="int" />
+    <Property Name="PlasticBoxQuantity" Type="int" />
+    <Property Name="BurstBottleQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="BreakageBottleQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TransactionType" Type="varchar" MaxLength="50" />
+    <Property Name="TransactionDate" Type="date" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PEPSI.dbo.StockMovementAudit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="StockMovementAudit">
+    <Key>
+      <PropertyRef Name="SLNo" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="OnHandQuantity" />
+      <PropertyRef Name="BurstBottleQuantity" />
+      <PropertyRef Name="BreakageBottleQuantity" />
+      <PropertyRef Name="PlasticBoxQuantity" />
+      <PropertyRef Name="EmptyBottleQuantity" />
+    </Key>
+    <Property Name="SLNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="OnHandQuantity" Type="int" Nullable="false" />
+    <Property Name="BurstBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="BreakageBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="PlasticBoxQuantity" Type="int" Nullable="false" />
+    <Property Name="EmptyBottleQuantity" Type="int" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="StorageLocation">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+      <PropertyRef Name="WarehouseLocationCode" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="WarehouseLocationCode" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="LocationDescription" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="ShortDescription" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Capacity" Type="int" />
+    <Property Name="StorageType" Type="nchar" MaxLength="20" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="SubZone">
+    <Key>
+      <PropertyRef Name="SubZoneID" />
+    </Key>
+    <Property Name="SubZoneID" Type="int" Nullable="false" />
+    <Property Name="SubZoneDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ZoneID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="int" Nullable="false" />
+    <Property Name="SupplierName" Type="nvarchar" MaxLength="200" />
+    <Property Name="Address" Type="nvarchar" MaxLength="250" />
+    <Property Name="PhoneNo" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TerritoryDevelopmentManager">
+    <Key>
+      <PropertyRef Name="TerritoryDevelopmentManagerID" />
+    </Key>
+    <Property Name="TerritoryDevelopmentManagerID" Type="int" Nullable="false" />
+    <Property Name="TerritoryDevelopmentManagerName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="RSMID" Type="int" />
+  </EntityType>
+  <EntityType Name="TransactionType">
+    <Key>
+      <PropertyRef Name="TransactionTypeID" />
+    </Key>
+    <Property Name="TransactionTypeID" Type="int" Nullable="false" />
+    <Property Name="TransactionTypeName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ShortCode" Type="char" MaxLength="3" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="UsedType" Type="char" MaxLength="1" />
+    <Property Name="CalcualteValue" Type="int" />
+  </EntityType>
+  <EntityType Name="TransportAgencyandFareSetup">
+    <Key>
+      <PropertyRef Name="Sl" />
+    </Key>
+    <Property Name="Sl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="ChallanNumber" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="150" />
+    <Property Name="Address" Type="varchar" MaxLength="500" />
+    <Property Name="ChallanDate" Type="date" />
+    <Property Name="TAID" Type="int" Nullable="false" />
+    <Property Name="VechileNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FareAmnt" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="ExtraAmount" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="TotalCases" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="AcknowledgementDate" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="5" />
+    <Property Name="EnteredBy" Type="varchar" MaxLength="50" />
+    <Property Name="Remarks" Type="varchar" MaxLength="500" />
+    <Property Name="ActualAcknowledgementDate" Type="datetime" />
+    <Property Name="EnteredDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="EmptyReturn" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="TransportAgencySetup">
+    <Key>
+      <PropertyRef Name="SlNo" />
+    </Key>
+    <Property Name="SlNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TAID" Type="int" Nullable="false" />
+    <Property Name="TAName" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="TAAdress" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="TAMblNo" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TAEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="VATRegistrationInfo" Type="varchar" MaxLength="200" />
+    <Property Name="EligibleForCarringGoods" Type="int" />
+    <Property Name="Remarks" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="TransportCapacityCases">
+    <Key>
+      <PropertyRef Name="SlNo" />
+    </Key>
+    <Property Name="SlNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CapacityCases" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TransportFareSetup">
+    <Key>
+      <PropertyRef Name="SlNo" />
+    </Key>
+    <Property Name="SlNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="200" />
+    <Property Name="Address" Type="nvarchar" MaxLength="250" />
+    <Property Name="Rate1" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Rate2" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Rate3" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="IsActive" Type="int" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+  </EntityType>
+  <EntityType Name="TransportQRData">
+    <Key>
+      <PropertyRef Name="SLNO" />
+    </Key>
+    <Property Name="SLNO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WareHouseID" Type="int" />
+    <Property Name="Type" Type="varchar" MaxLength="50" />
+    <Property Name="VehicleType" Type="varchar" MaxLength="50" />
+    <Property Name="QRSLNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="SLCount" Type="int" Nullable="false" />
+    <Property Name="QRGeneratingDate" Type="datetime" Nullable="false" />
+    <Property Name="AgencyID" Type="int" Nullable="false" />
+    <Property Name="VehicleNumber" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="DriverName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DriverMobileNumber" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="TruckCapacity" Type="int" Nullable="false" />
+    <Property Name="EntryDateTime" Type="datetime" Nullable="false" />
+    <Property Name="LoadingDateTime" Type="datetime" />
+    <Property Name="InvoiceDateTime" Type="datetime" />
+    <Property Name="CheckoutDateTime" Type="datetime" />
+    <Property Name="QRImageIn" Type="image" />
+    <Property Name="ORImageChallanTime" Type="image" />
+    <Property Name="FromWhere" Type="varchar" MaxLength="500" />
+    <Property Name="DeliveryChallanNumber" Type="int" />
+    <Property Name="SalesOrderNo" Type="int" />
+    <Property Name="EnteredBy" Type="varchar" MaxLength="50" />
+    <Property Name="ExitInfoEnteredBy" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserLogin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="RoleId" Type="int" />
+    <Property Name="MobileNo" Type="nvarchar" MaxLength="15" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="WorkStationID" Type="int" />
+    <Property Name="MachineIP" Type="nchar" MaxLength="100" />
+    <Property Name="LoginType" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="LoginTypeID" Type="int" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="VehicleID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="VehicleID" Type="int" Nullable="false" />
+    <Property Name="VehicleDescription" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="VehicleRegistrationNo" Type="nvarchar" MaxLength="25" Nullable="false" />
+    <Property Name="VehicleCapacity" Type="nvarchar" MaxLength="30" />
+    <Property Name="RegistrationRenewalDate" Type="date" />
+    <Property Name="TaxTokenRenwalDate" Type="date" />
+    <Property Name="InsurancePremiumPaymentDate" Type="date" />
+    <Property Name="NextServicingDate" Type="date" />
+    <Property Name="OwnVehicle" Type="char" MaxLength="1" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Warehouse">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="WarehouseCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="WarehouseDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="PlantFlag" Type="nvarchar" MaxLength="1" Nullable="false" />
+    <Property Name="WarehouseAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="FaxNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="PlantNo" Type="int" />
+    <Property Name="VATRegNo" Type="nchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Zone">
+    <Key>
+      <PropertyRef Name="ZoneID" />
+    </Key>
+    <Property Name="ZoneID" Type="int" Nullable="false" />
+    <Property Name="ZoneDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="AreaID" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PEPSI.dbo.BankBranchSubZoneQuery' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="BankBranchSubZoneQuery">
+    <Key>
+      <PropertyRef Name="BankBranchID" />
+      <PropertyRef Name="BranchID" />
+      <PropertyRef Name="SubZoneID" />
+      <PropertyRef Name="SubZoneDescription" />
+    </Key>
+    <Property Name="BankBranchID" Type="int" Nullable="false" />
+    <Property Name="BankID" Type="int" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="100" />
+    <Property Name="BranchID" Type="int" Nullable="false" />
+    <Property Name="BranchName" Type="nvarchar" MaxLength="100" />
+    <Property Name="SubZoneID" Type="int" Nullable="false" />
+    <Property Name="SubZoneDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PEPSI.dbo.DelV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DelV">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="SalesOrderNo" Type="int" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="AlternateQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBoxQuantity" Type="int" />
+    <Property Name="Delivered" Type="nvarchar" MaxLength="30" />
+    <Property Name="OrderDate" Type="date" />
+    <Property Name="ChallanNumber" Type="int" />
+    <Property Name="DeliveryChallanDate" Type="date" />
+    <Property Name="WarehouseID" Type="int" Nullable="false" />
+    <Property Name="RebateQuantity" Type="int" />
+    <Property Name="AlternateRebateQuantity" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateUnitPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AgencyCommission" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="AlternateAgencyCommission" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PEPSI.dbo.OrderV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="OrderV">
+    <Key>
+      <PropertyRef Name="SalesOrderNO" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="SalesOrderDate" />
+    </Key>
+    <Property Name="SalesOrderNO" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderCase" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PlasticBox" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SalesOrderDate" Type="date" Nullable="false" />
+    <Property Name="WarehouseID" Type="int" />
+  </EntityType>
+  <Association Name="FK_MainMenu_Id">
+    <End Role="MenuMain" Type="Self.MenuMain" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="MenuSub" Type="Self.MenuSub" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MenuMain">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MenuSub">
+        <PropertyRef Name="MainMenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_MainProductGroup_BusinessUnitID">
+    <End Role="BusinessUnit" Type="Self.BusinessUnit" Multiplicity="1" />
+    <End Role="MainProductGroup" Type="Self.MainProductGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessUnit">
+        <PropertyRef Name="BusinessUnitID" />
+      </Principal>
+      <Dependent Role="MainProductGroup">
+        <PropertyRef Name="BusinessUnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_MainProductGroupID">
+    <End Role="MainProductGroup" Type="Self.MainProductGroup" Multiplicity="1" />
+    <End Role="ProductSubGroup" Type="Self.ProductSubGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MainProductGroup">
+        <PropertyRef Name="MainProductGroupID" />
+      </Principal>
+      <Dependent Role="ProductSubGroup">
+        <PropertyRef Name="MainProductGroupID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MenuRole_Id">
+    <End Role="MenuRoles" Type="Self.MenuRoles" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="MenuSub" Type="Self.MenuSub" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MenuRoles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MenuSub">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_SubGroupProductGroup">
+    <End Role="ProductSubGroup" Type="Self.ProductSubGroup" Multiplicity="0..1" />
+    <End Role="ProductGroup" Type="Self.ProductGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductSubGroup">
+        <PropertyRef Name="ProductSubGroupID" />
+      </Principal>
+      <Dependent Role="ProductGroup">
+        <PropertyRef Name="ProductSubGroupID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserLogin_UserLogin">
+    <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="1" />
+    <End Role="UserLogin1" Type="Self.UserLogin" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserLogin">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserLogin1">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="ffngetActualBatchNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="BatchNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ffngetWarehouseDescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="LoadSheetCR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="OrderId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spCustomerBalanceUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PCustomerID" Type="int" Mode="In" />
+    <Parameter Name="PDrCr" Type="varchar" Mode="In" />
+    <Parameter Name="PAmount" Type="decimal" Mode="In" />
+  </Function>
+  <Function Name="spEmptyTransferDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inWarehouse" Type="int" Mode="In" />
+    <Parameter Name="inTransactionNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spEmptyTransferInformation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inWarehouse" Type="int" Mode="In" />
+    <Parameter Name="inTransactionNo" Type="int" Mode="In" />
+    <Parameter Name="inTr" Type="varchar" Mode="In" />
+    <Parameter Name="inUser" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spGetCustomerOutstanding" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PCustomerID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetCustomerSalesAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pCustomer" Type="int" Mode="In" />
+    <Parameter Name="pFromdate" Type="date" Mode="In" />
+    <Parameter Name="pTodate" Type="date" Mode="In" />
+    <Parameter Name="pProcessFlag" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spGetDBOrderDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SalesOrderNO" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetDBProductTransactionProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inWarehouse" Type="int" Mode="In" />
+    <Parameter Name="inTransactionNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetOrderDataGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="OrderID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetOrderInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetOrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="OrderID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetPOSMIssueChallan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CHNO" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetRemainingCsQtyForSalesOrderNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="CustomerID" Type="int" Mode="In" />
+    <Parameter Name="SalesOrderNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetReturnProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pWarehouse" Type="int" Mode="In" />
+    <Parameter Name="pCustomer" Type="int" Mode="In" />
+    <Parameter Name="pFromdate" Type="date" Mode="In" />
+    <Parameter Name="pTodate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spGetSalesOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="insalesorderno" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetSalesOrderNewProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="insalesorderno" Type="int" Mode="In" />
+    <Parameter Name="inproductid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetSalesOrderSum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="insalesorderno" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetTransportFareSetupChallanInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ChallanNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spInsertHireTruckFare" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="ChallanNumber" Type="int" Mode="In" />
+    <Parameter Name="TAID" Type="int" Mode="In" />
+    <Parameter Name="ChallanDate" Type="date" Mode="In" />
+    <Parameter Name="CustomerName" Type="varchar" Mode="In" />
+    <Parameter Name="Address" Type="varchar" Mode="In" />
+    <Parameter Name="VechileNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="FareAmnt" Type="money" Mode="In" />
+    <Parameter Name="ExtraAmount" Type="money" Mode="In" />
+    <Parameter Name="TotalCases" Type="decimal" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+    <Parameter Name="EnteredBy" Type="varchar" Mode="In" />
+    <Parameter Name="EnteredDate" Type="datetime" Mode="In" />
+    <Parameter Name="Remarks" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spLoginUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userID" Type="int" Mode="In" />
+    <Parameter Name="password" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spLoginUserWorkStation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userID" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spOrderBankSumUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="insalesorderno" Type="int" Mode="In" />
+    <Parameter Name="inwarehouseID" Type="int" Mode="In" />
+    <Parameter Name="instatus" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spOrderUpdateAfterInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="OrderID" Type="int" Mode="In" />
+    <Parameter Name="Delivered" Type="nvarchar" Mode="In" />
+    <Parameter Name="DeliveryChallanDate" Type="date" Mode="In" />
+    <Parameter Name="SalesAmount" Type="decimal" Mode="In" />
+    <Parameter Name="SecurityAmount" Type="decimal" Mode="In" />
+    <Parameter Name="RebateAmount" Type="decimal" Mode="In" />
+    <Parameter Name="AgencyCommission" Type="decimal" Mode="In" />
+    <Parameter Name="ChallanNumber" Type="int" Mode="In" />
+    <Parameter Name="DeliveredBy" Type="nvarchar" Mode="In" />
+    <Parameter Name="CashSettlementID" Type="int" Mode="In" />
+    <Parameter Name="ReadyForDelivery" Type="nvarchar" Mode="In" />
+    <Parameter Name="FinishGoodsUnloadCharge" Type="decimal" Mode="In" />
+    <Parameter Name="UpdateBy" Type="varchar" Mode="In" />
+    <Parameter Name="UpdateDate" Type="datetime" Mode="In" />
+    <Parameter Name="AdvanceOrder" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spProductBalanceDecrease" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="OnHandQuantity" Type="int" Mode="In" />
+    <Parameter Name="BurstBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="BreakageBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="PlasticBoxQuantity" Type="int" Mode="In" />
+    <Parameter Name="EmptyBottleQuantity" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spProductBalanceUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="OnHandQuantity" Type="int" Mode="In" />
+    <Parameter Name="BurstBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="BreakageBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="PlasticBoxQuantity" Type="int" Mode="In" />
+    <Parameter Name="EmptyBottleQuantity" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spProductTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TransactionNo" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="TransactionTypeID" Type="int" Mode="In" />
+    <Parameter Name="TransactionDate" Type="date" Mode="In" />
+    <Parameter Name="ReferenceNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="Remarks" Type="nvarchar" Mode="In" />
+    <Parameter Name="ToWarehouse" Type="int" Mode="In" />
+    <Parameter Name="FromWarehouse" Type="int" Mode="In" />
+    <Parameter Name="CreatedBy" Type="nvarchar" Mode="In" />
+    <Parameter Name="CreatedDate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="spQRCodeInfoEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="rType" Type="varchar" Mode="In" />
+    <Parameter Name="rVehicleType" Type="varchar" Mode="In" />
+    <Parameter Name="rAgencyID" Type="int" Mode="In" />
+    <Parameter Name="rVehicleNumber" Type="varchar" Mode="In" />
+    <Parameter Name="rDriverName" Type="varchar" Mode="In" />
+    <Parameter Name="rDriverMobileNumber" Type="varchar" Mode="In" />
+    <Parameter Name="rTruckCapacity" Type="int" Mode="In" />
+    <Parameter Name="rSLNO" Type="int" Mode="InOut" />
+    <Parameter Name="rQRSLNO" Type="varchar" Mode="InOut" />
+  </Function>
+  <Function Name="spRelaceDataUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inReplaceNo" Type="int" Mode="In" />
+    <Parameter Name="inWarehouseID" Type="int" Mode="In" />
+    <Parameter Name="inStatus" Type="nvarchar" Mode="In" />
+    <Parameter Name="inCustomerID" Type="int" Mode="In" />
+    <Parameter Name="inCode" Type="nvarchar" Mode="In" />
+    <Parameter Name="inUpdateBy" Type="nvarchar" Mode="In" />
+    <Parameter Name="inUpdatedate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="spREmptyStock" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spREmptyStockAsOnDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spREmptyTransfer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TransactionNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spReturnmentInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ReturnmentID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerCurrentLedger" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="CustID" Type="int" Mode="In" />
+    <Parameter Name="CType" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerCurrentLedgerAsOnDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="CustID" Type="int" Mode="In" />
+    <Parameter Name="TrDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerCurrentLedgerDetailAsOnDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="CustID" Type="int" Mode="In" />
+    <Parameter Name="TrDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerSKUWiseWarehouseWiseSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CType" Type="int" Mode="In" />
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerWarehouseWiseSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="CustomerId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerWarehouseWiseSales43" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spRPTCustomerWiseReturnDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="CustomerID" Type="int" Mode="In" />
+    <Parameter Name="TypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTEmptyMovement" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="TransactionType" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTHreTruckFare" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="AgencyId" Type="int" Mode="In" />
+    <Parameter Name="Stat" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spRPTHreTruckFareAcknowledgementWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="AgencyId" Type="int" Mode="In" />
+    <Parameter Name="Stat" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spRPTInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="InvoiceNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sprptMoneyreceiptCR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="MoneyReceiptNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTOrderFromCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTOrderVsDelivery" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPaymentStatusWithMoneyReceiptNormalCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spRPTPaymentStatusWithMoneyReceiptNormalCustomer_PaymentModeWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="PaymentMode" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spRPTPaymentStatusWithMoneyReceiptNormalCustomer_WarehouseWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPaymentStatusWithMoneyReceiptNormalCustomerWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="Customer" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPMXCustomerSKUWiseWarehouseWiseSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPOSMReceiveIsuueDateWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPOSMRInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="InvoiceNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTPOSMStockOnHand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTProductBalance_WarehouseWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTProductRateWiseDailySales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTProductTransaction_WarehouseWise" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="TrType" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTProductTransferNote" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TransactionNo" Type="int" Mode="In" />
+    <Parameter Name="TransactionTypeID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTQRReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SLNO" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTReplaceInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="DisburseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTReplacementDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="CustomerID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTruckMovementQR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="AgencyId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTSalesSummaryWithAllInfo_76" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BeginingDate" Type="date" Mode="In" />
+    <Parameter Name="EndingDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRPTStockAsOnDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrDate" Type="date" Mode="In" />
+    <Parameter Name="WarehouseId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spStockBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchNo" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="PlantLineNo" Type="int" Mode="In" />
+    <Parameter Name="ManufacturDate" Type="date" Mode="In" />
+    <Parameter Name="ExpiryDate" Type="date" Mode="In" />
+    <Parameter Name="IssueQuantity" Type="int" Mode="In" />
+    <Parameter Name="SalesQty" Type="int" Mode="In" />
+    <Parameter Name="BurstQty" Type="int" Mode="In" />
+    <Parameter Name="BreakageQty" Type="int" Mode="In" />
+    <Parameter Name="ReceivedQty" Type="int" Mode="In" />
+    <Parameter Name="ReplaceQty" Type="int" Mode="In" />
+    <Parameter Name="AdjustQty" Type="int" Mode="In" />
+    <Parameter Name="MarketReturnQty" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spStockBookedandBookedFree" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="int" Mode="In" />
+    <Parameter Name="inQuantity" Type="int" Mode="In" />
+    <Parameter Name="inFlag" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spStockUpdated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProductID" Type="int" Mode="In" />
+    <Parameter Name="WarehouseID" Type="tinyint" Mode="In" />
+    <Parameter Name="OnHandQuantity" Type="int" Mode="In" />
+    <Parameter Name="BurstBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="BreakageBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="PlasticBoxQuantity" Type="int" Mode="In" />
+    <Parameter Name="EmptyBottleQuantity" Type="int" Mode="In" />
+    <Parameter Name="BatchNo" Type="int" Mode="In" />
+    <Parameter Name="PlantNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spUpdateDBsInvoiceValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PCustomerID" Type="int" Mode="In" />
+    <Parameter Name="PFlag" Type="varchar" Mode="In" />
+    <Parameter Name="PCurrBal" Type="decimal" Mode="In" />
+    <Parameter Name="POutstandingAmt" Type="decimal" Mode="In" />
+    <Parameter Name="PInvoiceAmt" Type="decimal" Mode="In" />
+    <Parameter Name="PBookedAmt" Type="decimal" Mode="In" />
+    <Parameter Name="PSequrityReceive" Type="decimal" Mode="In" />
+    <Parameter Name="PChargeAmount" Type="decimal" Mode="In" />
+    <Parameter Name="PFareAmount" Type="decimal" Mode="In" />
+    <Parameter Name="pRebateAmt" Type="decimal" Mode="In" />
+    <Parameter Name="PInvoiceNo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spUserInformation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="PEPSIModelStoreContainer">
+    <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BankName" EntityType="Self.BankName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BusinessUnit" EntityType="Self.BusinessUnit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CashSettlement" EntityType="Self.CashSettlement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CashSettlementDetail" EntityType="Self.CashSettlementDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClaimApprovement" EntityType="Self.ClaimApprovement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerBGInfo" EntityType="Self.CustomerBGInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerCreditLimit" EntityType="Self.CustomerCreditLimit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerExecutive" EntityType="Self.CustomerExecutive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerLedgerDetail" EntityType="Self.CustomerLedgerDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerLedgerMaster" EntityType="Self.CustomerLedgerMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DatabaseObject" EntityType="Self.DatabaseObject" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DBTarget" EntityType="Self.DBTarget" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DBTargetType" EntityType="Self.DBTargetType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DeliveryControl" EntityType="Self.DeliveryControl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DepositedByPeopleName" EntityType="Self.DepositedByPeopleName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmptyFareSetup" EntityType="Self.EmptyFareSetup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmptyMoveDetail" EntityType="Self.EmptyMoveDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmptyMoveMaster" EntityType="Self.EmptyMoveMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Helper" EntityType="Self.Helper" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InvoiceHelper" EntityType="Self.InvoiceHelper" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MainProductGroup" EntityType="Self.MainProductGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MenuList" EntityType="Self.MenuList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MenuMain" EntityType="Self.MenuMain" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MenuRoles" EntityType="Self.MenuRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MenuSub" EntityType="Self.MenuSub" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderApprove" EntityType="Self.OrderApprove" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderBankDetails" EntityType="Self.OrderBankDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderBankSummary" EntityType="Self.OrderBankSummary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderSchemeDetail" EntityType="Self.OrderSchemeDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentDetail" EntityType="Self.PaymentDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentMode" EntityType="Self.PaymentMode" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentTransactionType" EntityType="Self.PaymentTransactionType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMIssue" EntityType="Self.POSMIssue" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMIssueType" EntityType="Self.POSMIssueType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMItem" EntityType="Self.POSMItem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMItemDestroy" EntityType="Self.POSMItemDestroy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMItemReturn" EntityType="Self.POSMItemReturn" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMReceive" EntityType="Self.POSMReceive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMRecIss" EntityType="Self.POSMRecIss" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMScheme" EntityType="Self.POSMScheme" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMStock" EntityType="Self.POSMStock" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="POSMTemp" EntityType="Self.POSMTemp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductBalance" EntityType="Self.ProductBalance" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductGroup" EntityType="Self.ProductGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductRate" EntityType="Self.ProductRate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductRateDetail" EntityType="Self.ProductRateDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductSubGroup" EntityType="Self.ProductSubGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTransaction" EntityType="Self.ProductTransaction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTransactionDetail" EntityType="Self.ProductTransactionDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTransferNote" EntityType="Self.ProductTransferNote" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RebateScheme" EntityType="Self.RebateScheme" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RegionalSalesManager" EntityType="Self.RegionalSalesManager" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReplaceDetail" EntityType="Self.ReplaceDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReplaceDisburseDetail" EntityType="Self.ReplaceDisburseDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReplaceDisburseMaster" EntityType="Self.ReplaceDisburseMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReplaceManual" EntityType="Self.ReplaceManual" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReplaceMaster" EntityType="Self.ReplaceMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Returnment" EntityType="Self.Returnment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReturnmentDetail" EntityType="Self.ReturnmentDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SalesPerson" EntityType="Self.SalesPerson" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockBatch" EntityType="Self.StockBatch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockBatchDetail" EntityType="Self.StockBatchDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StorageLocation" EntityType="Self.StorageLocation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubZone" EntityType="Self.SubZone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TerritoryDevelopmentManager" EntityType="Self.TerritoryDevelopmentManager" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransactionType" EntityType="Self.TransactionType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransportAgencyandFareSetup" EntityType="Self.TransportAgencyandFareSetup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransportAgencySetup" EntityType="Self.TransportAgencySetup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransportCapacityCases" EntityType="Self.TransportCapacityCases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransportFareSetup" EntityType="Self.TransportFareSetup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransportQRData" EntityType="Self.TransportQRData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Warehouse" EntityType="Self.Warehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Zone" EntityType="Self.Zone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FixedDataTable" EntityType="Self.FixedDataTable" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [FixedDataTable].[Id] AS [Id], 
+    [FixedDataTable].[TypeCodeID] AS [TypeCodeID], 
+    [FixedDataTable].[TypeDescription] AS [TypeDescription], 
+    [FixedDataTable].[Value] AS [Value], 
+    [FixedDataTable].[Status] AS [Status]
+    FROM [dbo].[FixedDataTable] AS [FixedDataTable]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="StockMovementAudit" EntityType="Self.StockMovementAudit" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [StockMovementAudit].[SLNo] AS [SLNo], 
+    [StockMovementAudit].[ProductID] AS [ProductID], 
+    [StockMovementAudit].[WarehouseID] AS [WarehouseID], 
+    [StockMovementAudit].[OnHandQuantity] AS [OnHandQuantity], 
+    [StockMovementAudit].[BurstBottleQuantity] AS [BurstBottleQuantity], 
+    [StockMovementAudit].[BreakageBottleQuantity] AS [BreakageBottleQuantity], 
+    [StockMovementAudit].[PlasticBoxQuantity] AS [PlasticBoxQuantity], 
+    [StockMovementAudit].[EmptyBottleQuantity] AS [EmptyBottleQuantity], 
+    [StockMovementAudit].[UpdateBy] AS [UpdateBy], 
+    [StockMovementAudit].[UpdateDate] AS [UpdateDate]
+    FROM [dbo].[StockMovementAudit] AS [StockMovementAudit]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="BankBranchSubZoneQuery" EntityType="Self.BankBranchSubZoneQuery" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [BankBranchSubZoneQuery].[BankBranchID] AS [BankBranchID], 
+    [BankBranchSubZoneQuery].[BankID] AS [BankID], 
+    [BankBranchSubZoneQuery].[BankName] AS [BankName], 
+    [BankBranchSubZoneQuery].[BranchID] AS [BranchID], 
+    [BankBranchSubZoneQuery].[BranchName] AS [BranchName], 
+    [BankBranchSubZoneQuery].[SubZoneID] AS [SubZoneID], 
+    [BankBranchSubZoneQuery].[SubZoneDescription] AS [SubZoneDescription]
+    FROM [dbo].[BankBranchSubZoneQuery] AS [BankBranchSubZoneQuery]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DelV" EntityType="Self.DelV" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DelV].[SalesOrderNo] AS [SalesOrderNo], 
+    [DelV].[CustomerID] AS [CustomerID], 
+    [DelV].[ProductID] AS [ProductID], 
+    [DelV].[Quantity] AS [Quantity], 
+    [DelV].[AlternateQuantity] AS [AlternateQuantity], 
+    [DelV].[PlasticBoxQuantity] AS [PlasticBoxQuantity], 
+    [DelV].[Delivered] AS [Delivered], 
+    [DelV].[OrderDate] AS [OrderDate], 
+    [DelV].[ChallanNumber] AS [ChallanNumber], 
+    [DelV].[DeliveryChallanDate] AS [DeliveryChallanDate], 
+    [DelV].[WarehouseID] AS [WarehouseID], 
+    [DelV].[RebateQuantity] AS [RebateQuantity], 
+    [DelV].[AlternateRebateQuantity] AS [AlternateRebateQuantity], 
+    [DelV].[UnitPrice] AS [UnitPrice], 
+    [DelV].[AlternateUnitPrice] AS [AlternateUnitPrice], 
+    [DelV].[AgencyCommission] AS [AgencyCommission], 
+    [DelV].[AlternateAgencyCommission] AS [AlternateAgencyCommission]
+    FROM [dbo].[DelV] AS [DelV]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="OrderV" EntityType="Self.OrderV" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [OrderV].[SalesOrderNO] AS [SalesOrderNO], 
+    [OrderV].[CustomerID] AS [CustomerID], 
+    [OrderV].[ProductID] AS [ProductID], 
+    [OrderV].[OrderCase] AS [OrderCase], 
+    [OrderV].[PlasticBox] AS [PlasticBox], 
+    [OrderV].[SalesOrderDate] AS [SalesOrderDate], 
+    [OrderV].[WarehouseID] AS [WarehouseID]
+    FROM [dbo].[OrderV] AS [OrderV]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_MainMenu_Id" Association="Self.FK_MainMenu_Id">
+      <End Role="MenuMain" EntitySet="MenuMain" />
+      <End Role="MenuSub" EntitySet="MenuSub" />
+    </AssociationSet>
+    <AssociationSet Name="fk_MainProductGroup_BusinessUnitID" Association="Self.fk_MainProductGroup_BusinessUnitID">
+      <End Role="BusinessUnit" EntitySet="BusinessUnit" />
+      <End Role="MainProductGroup" EntitySet="MainProductGroup" />
+    </AssociationSet>
+    <AssociationSet Name="fk_MainProductGroupID" Association="Self.fk_MainProductGroupID">
+      <End Role="MainProductGroup" EntitySet="MainProductGroup" />
+      <End Role="ProductSubGroup" EntitySet="ProductSubGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MenuRole_Id" Association="Self.FK_MenuRole_Id">
+      <End Role="MenuRoles" EntitySet="MenuRoles" />
+      <End Role="MenuSub" EntitySet="MenuSub" />
+    </AssociationSet>
+    <AssociationSet Name="fk_SubGroupProductGroup" Association="Self.fk_SubGroupProductGroup">
+      <End Role="ProductSubGroup" EntitySet="ProductSubGroup" />
+      <End Role="ProductGroup" EntitySet="ProductGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserLogin_UserLogin" Association="Self.FK_UserLogin_UserLogin">
+      <End Role="UserLogin" EntitySet="UserLogin" />
+      <End Role="UserLogin1" EntitySet="UserLogin" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

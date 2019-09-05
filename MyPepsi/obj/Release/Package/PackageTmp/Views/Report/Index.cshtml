@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "For Report Viewing";
+}
+<br />
+<h1>Collection Report</h1>
+<input type="radio" name="nm" id="r1" value="1">National Collection</>
+<input type="radio" name="nm" id="r2" value="2">Depotwise Collection </>
+<input type="radio" name="nm" id="r3" value="3">Mode wise Collection </>
+<input type="radio" name="nm" id="r4" value="4">Customer wise Collection </><br />
+<h2>Please choose report parameter from Below:</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Enter Begining Date:</label>
+            @Html.TextBox("BeginingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <label>Enter Ending Date:</label>
+            @Html.TextBox("EndingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <br />
+            <input type="button" id="showReport" value="Preview" class="form-control btn-primary" />
+        </div>
+    </div>
+    <div>
+        <label>Select Warehouse:</label>
+        @Html.DropDownList("Warehouse", null, "Select Warehouse", new { @class = "form-control" })
+        <label>Select Collection Mode:</label>
+        @Html.DropDownList("PaymentMode", null, "Select Collection Mode", new { @class = "form-control" })
+        <label>Select Customer:</label>
+        @Html.DropDownList("CustomerLists", null, "Select Customer", new { @class = "form-control" })
+
+    </div>
+</div>
+<br />
+<div id="tabledata"></div>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-1:+0"
+    });
+    $(document).ready(function () {
+        $("#BeginingDate").prop('disabled', true);
+        $("#EndingDate").prop('disabled', true);
+        $("#Warehouse").prop('disabled', true);
+        $("#PaymentMode").prop('disabled', true);
+        $("#CustomerLists").prop('disabled', true);
+
+        $("#r1").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', true);
+            $("#PaymentMode").prop('disabled', true);
+            $("#CustomerLists").prop('disabled', true);
+        });
+        $("#r2").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#PaymentMode").prop('disabled', true);
+            $("#CustomerLists").prop('disabled', true);
+        });
+        $("#r3").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#PaymentMode").prop('disabled', false);
+            $("#CustomerLists").prop('disabled', true);
+        });
+        $("#r4").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', true);
+            $("#PaymentMode").prop('disabled', true);
+            $("#CustomerLists").prop('disabled', false);
+        });
+
+        $('#showReport').click(function () {
+            var radioValue = $('input:radio[name=nm]:checked').val();
+
+            if (radioValue == 1) {
+                $.ajax({
+                    url: "@Url.Action("PaymentStatusForNormalCustomer", "Report")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val() },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+            else if (radioValue == 2) {
+                $.ajax({
+                    url: "@Url.Action("PaymentStatusForNormalCustomerWarehouseWise", "Report")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), warehouseId: $("#Warehouse").val() },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+            else if (radioValue == 3) {
+                $.ajax({
+                    url: "@Url.Action("PaymentStatusForNormalCustomerPModeWise", "Report")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), warehouseId: $("#Warehouse").val(), paymentModeId: $("#PaymentMode").val() },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    url: "@Url.Action("PaymentStatusForNormalCustomerWise", "Report")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), customerId: $("#CustomerLists").val()},
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+
+        });
+
+    })
+</script>

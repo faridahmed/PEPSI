@@ -1,0 +1,10 @@
+﻿
+@using ReportViewerForMvc
+
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "yes", width = "120%", height = "150%" })
+
+<style>
+    iframe {
+        border: 0px;
+    }
+</style>

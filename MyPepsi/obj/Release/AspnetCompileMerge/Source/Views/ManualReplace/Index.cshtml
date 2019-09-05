@@ -1,0 +1,115 @@
+﻿@model MyPepsi.ViewModel.ReplaceManualVM
+@{
+    ViewBag.Title = "Manual Replace Rrocess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Manual Replacement Payable Creation</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <Label style="color:blue">Warehouse ID & Name</Label>
+                @Html.TextBox("WarehouseID", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })
+                @Html.TextBox("WarehouseIDLogin", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseIDLogin, @readonly = "readonly" })
+                <Label style="color:red">Customer ID</Label>
+                @Html.DropDownList("CustomerID", (IEnumerable<SelectListItem>)ViewBag.CustomerID, "Select Customer", new { @class = "form-control" })
+                <label style="color:red">Month Name</label>
+                @*@Html.TextBox("WarehouseIDN", null, htmlAttributes: new { @class = "form-control", @Value = ViewBag.WarehouseID, @readonly = "readonly" })*@
+                @Html.DropDownList("MonthName", null, "Select One", new { @class = "form-control" })
+                <label style="color:red">Method</label>
+                @Html.DropDownList("GivenMethod", null, "Select One", new { @class = "form-control" })
+                <label>Remarks/Note</label>
+                @Html.TextBox("Remarks", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <label>No of Level(Pcs)</label>
+                @Html.TextBox("NoLevel", null, new { @class = "form-control" })
+                <label>No of Crown(Pcs)</label>
+                @Html.TextBox("NoCrown", null, new { @class = "form-control" })
+                <label>No of Cane(Pcs)</label>
+                @Html.TextBox("NoCan", null, new { @class = "form-control" })
+                <label>Total Amount(Total Label Crown Amt.)</label>
+                @Html.TextBox("TotalAmount", null, new { @class = "form-control" })
+                <label style="color:red">Replace Payable Amount</label>
+                @Html.TextBox("PayableAmount", null, new { @class = "form-control" })
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <input id="btnReset" type="button" class="btn btn-primary" value="Reset" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" onClick="savedata();" />
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+    var status = true;
+    function savedata() {
+        var data = {
+            CustomerID: $('#CustomerID').val().trim(),
+            //WarehouseID: $('#WarehouseID').val().trim(),
+            MonthName: $('#MonthName').val().trim(),
+            GivenMethod: $('#GivenMethod').val().trim(),
+            NoLevel: $('#NoLevel').val().trim(),
+            NoCrown: $('#NoCrown').val().trim(),
+            NoCan: $('#NoCan').val().trim(),
+            TotalAmount: $('#TotalAmount').val().trim(),
+            PayableAmount: $('#PayableAmount').val().trim(),
+            Remarks: $('#Remarks').val().trim()
+
+        }
+
+        var answer = confirm('Are you sure, you want to save this customer?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        $.ajax({
+            url: '/ManualReplace/DataSave',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                   // $('#CustomerID').val(a.v);
+                    alert('Successfully done and Replace Process No:' + a.v);
+                    $("#btnSave").prop('disabled', true);
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed, Please Check...');
+                }
+
+            },
+            error: function () {
+                alert('Error. Please try again.');
+
+            }
+        });
+    };
+    function PageReLoad() {
+        alert("Are you sure Reset form ...?")
+        location.reload();
+    }
+
+</script>
+

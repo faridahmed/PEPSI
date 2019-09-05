@@ -1,0 +1,133 @@
+﻿@model MyPepsi.ViewModel.POSMVM
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>POSM Supplier Info</h2>
+@Html.DropDownList("SupplierLists", null, "Select Supplier", new { @class = "form-control" })
+<label>Supplier ID:</label>
+<input type="text" id="SupplierID" class="form-control" readonly />
+<label>Supplier Name:</label>
+<input type="text" id="SupplierName" class="form-control" />
+<label>Supplier Address:</label>
+<input type="text" id="Address" class="form-control" />
+<label>Contact Info:</label>
+<input type="text" id="PhoneNo" class="form-control" /><br />
+
+<input type="button" id="addButton" value="Add New" class="btn-primary" />
+<input type="button" id="saveButton" value="Save" class="btn-primary" />
+<input type="button" id="updateButton" value="Update" class="btn-primary" />
+
+
+
+<script>
+    $(document).ready(function () {
+        //To get Supplier Next ID
+        $("#addButton").click(function () {
+            $.ajax({
+                url: "@Url.Action("GetSupplierID", "Supplier")",
+                //data: { csID: $("#csID").val() },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $("#SupplierID").val(data);
+                },
+                error: function () {
+                    alert("Failed!");
+                }
+            });
+        })
+        //Edit
+        $("#SupplierLists").change(function () {
+            $.ajax({
+                url: "@Url.Action("GetAllInfoSupplier", "Supplier")",
+                data: { suppID: $("#SupplierLists").val() },
+                type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#SupplierID").val(data.SupplierID);
+                $("#SupplierName").val(data.SupplierName);
+                $("#Address").val(data.Address);
+                $("#PhoneNo").val(data.PhoneNo);
+                //window.location.reload();
+            },
+            error: function () {
+                alert("Failed!");
+            }
+        });
+    })
+        //To Save New Supplier
+        $("#saveButton").click(function () {
+            var data = {
+                SupplierID: $("#SupplierID").val(),
+                SupplierName: $("#SupplierName").val(),
+                Address: $("#Address").val(),
+                PhoneNo: $("#PhoneNo").val()
+            }
+            $.ajax({
+                url: '/Supplier/SaveSupplier',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+
+                        //$("#SupplierID").val('');
+                        //$("#SupplierName").val('');
+                        //$("#Address").val('');
+                        //$("#PhoneNo").val('');
+                        alert('Successfully Added to Database.');
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+        //To Update Supplier Field Name
+        $("#updateButton").click(function () {
+            var data = {
+                SupplierID: $("#SupplierID").val(),
+                SupplierName: $("#SupplierName").val(),
+                Address: $("#Address").val(),
+                PhoneNo: $("#PhoneNo").val()
+            }
+            $.ajax({
+                url: '/Supplier/UpdatePOSMSupplier',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (a) {
+
+                    if (a.status == true) {
+
+
+                        //$("#SupplierID").val('');
+                        //$("#SupplierName").val('');
+                        //$("#Address").val('');
+                        //$("#PhoneNo").val('');
+                        alert('Successfully Updated...');
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+
+        });
+    })
+</script>
+

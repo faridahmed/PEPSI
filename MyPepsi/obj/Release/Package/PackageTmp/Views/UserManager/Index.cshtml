@@ -1,0 +1,199 @@
+﻿@model MyPepsi.ViewModel.UserCreateVM
+@{
+    ViewBag.Title = "User Creation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User Creation</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <label>User ID</label>
+                @Html.TextBox("UserID", null, new { @class = "form-control", @Value = ViewBag.UserID, @readonly = "readonly" })
+                <label style="color:red">User Name</label>
+                @Html.TextBox("UserName", null, new { @class = "form-control" })
+                <label style="color:red">User Password</label>
+                @Html.Password("Password", null, new { @class = "form-control" })
+                <label style="color:red">Confirm Password</label>
+                @Html.Password("ConfirmPassword", null, new { @class = "form-control" })
+                <label>Email</label>
+                @Html.TextBox("Email", null, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <label>Mobile No</label>
+                @Html.TextBox("MobileNo", null, new { @class = "form-control" })
+                <label style="color:red">Work Place</label>
+                @Html.DropDownList("WorkStationID", null, "Select Work Place", new { @class = "form-control" })               
+                <label  style="color:red" >User Role</label>
+                @Html.DropDownList("RoleId", null,"Select Role", new { @class = "form-control" })
+                <label>Machine IP</label>
+                @Html.TextBox("MachineIP", null, new { @class = "form-control" })
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <input id="btnReset" type="button" class="btn btn-primary" value="Clear" onClick="PageReLoad();" />
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" onClick="savedata();" />
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+   var status = true;
+    function savedata() {
+    var data = {
+        UserID: $('#UserID').val().trim(),
+        UserName: $('#UserName').val().trim(),
+        Password: $('#Password').val().trim(),
+        Email: $('#Email').val().trim(),
+        MobileNo: $('#MobileNo').val().trim(),
+        WorkStationID: $('#WorkStationID').val().trim(),
+        RoleId: $('#RoleId').val().trim(),
+        MachineIP: $('#MachineIP').val().trim()
+ 
+    }
+   // console.log(status);
+        // console.log(data);
+    var passc = $('#Password').val()
+    if (passc == null) {
+        alert('Password is null..Please check');
+        location.reload();
+   }
+   
+        var answer = confirm('Are you sure, you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        debugger;
+        console.log(data);
+        $.ajax({
+            url: '/UserManager/CreateUser',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    $('#UserID').val(a.v);
+                    //will send status from server side
+                    alert('Successfully done...and User ID:' + a.v);
+                    $(SMSsend);
+                   //$(sendMail);
+                }
+                else {
+                    alert('Failed, Please Check...');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+              //  $('#create').val('Create');
+            }
+        });
+    };
+    $('#ConfirmPassword').blur(function (a) {
+        var pass = $("#Password").val();
+        var conpass = $("#ConfirmPassword").val();
+        if (pass != conpass) {
+            alert('Password and Confirm Password is not same...Please check..');
+            $("#ConfirmPassword").val('');
+            $('#Password').focus();
+        };
+    });
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+    function SMSsend() {
+        //To Save New Item
+        var Consms = "Dear Mr/s, " + $("#UserName").val() + ", Your User ID:" + $("#UserID").val() +
+            " Password:" + $("#Password").val() + "  Domain Name:  www.tblpssbd.com Thanks TBL IT";
+        //500 Cases Product sending to you. Invoice No:610000234. Driver:Md. XX, Mobile:01712155018 
+
+        var data = {
+            phoneno: $("#MobileNo").val(),
+            sms: Consms
+        }
+        console.log(Consms);
+        $.ajax({
+            url: '/UserManager/SendSMStoDB',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+
+                if (a.status == true) {
+
+                    alert('Successfully Send SMS to User ...');
+
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                // alert('SMS not send to Customer..');
+            }
+        });
+
+    };
+    function sendMail() {
+        //To Save New Item
+        var Consms = "Dear Mr/s, " + $("#UserName").val() + ", Your User ID:" + $("#UserID").val() +
+            " Password:" + $("#Password").val() + "  Domain Name:  www.tblpssbd.com Thanking you by TBL IT";
+        //500 Cases Product sending to you. Invoice No:610000234. Driver:Md. XX, Mobile:01712155018
+        var sub = "User Created";
+
+        var data = {
+            receiver: $("#Email").val(),
+            subject: sub,
+            message: Consms
+        }
+        // console.log(Consms);
+        $.ajax({
+            url: '/UserManager/SendEmail',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+
+                if (a.status == true) {
+
+                    alert('Successfully Send Email to User ...');
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                // alert('SMS not send to Customer..');
+            }
+        });
+
+    };
+   
+</script>
+

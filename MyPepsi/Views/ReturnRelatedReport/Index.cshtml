@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h1>Empty Related Reports</h1>
+<input type="radio" name="nm" id="r1" value="1" class="radio radio-inline"> Empty Bottle Movement</>
+<input type="radio" name="nm" id="r2" value="2" class="radio radio-inline"> Stock as on Date</>
+
+<h2>Please choose report parameter from Below:</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Enter Begining Date:</label>
+            @Html.TextBox("BeginingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <label>Enter Ending Date:</label>
+            @Html.TextBox("EndingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <br />
+            <input type="button" id="showReport" value="Preview" class="form-control btn-primary" />
+        </div>
+    </div>
+    <div>
+        <label>Select Warehouse:</label>
+        @Html.DropDownList("Warehouse", null, "All", new { @class = "form-control" })
+        <label>Select Return Type:</label>
+        @Html.DropDownList("movementType", null, "All", new { @class = "form-control" })
+    </div>
+</div>
+<br />
+<div id="tabledata"></div>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-0:+0"
+    });
+
+    $("#BeginingDate").prop('disabled', true);
+    $("#EndingDate").prop('disabled', true);
+    $("#Warehouse").prop('disabled', true);
+    $("#movementType").prop('disabled', true);
+
+    $(document).ready(function () {
+        $("#r1").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#movementType").prop('disabled', false);
+        });
+        $("#r2").change(function () {            
+            $("#EndingDate").prop('disabled', true);
+            $("#movementType").prop('disabled', true);
+            $("#Warehouse").prop('disabled', false);
+            $("#BeginingDate").prop('disabled', false);
+
+        });
+      
+        $('#showReport').click(function () {
+            $("#ajax_load").show();
+            var wValue = $("#Warehouse").val();
+            if (wValue == "") {
+                wValue = 0;
+            } else {
+                wValue;
+            }
+            console.log(wValue);
+            var radioValue = $('input:radio[name=nm]:checked').val();
+            if (radioValue == 1) {
+                $.ajax({
+                    url: "@Url.Action("EmptyBottleMOvement", "ReturnRelatedReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { wId: wValue, bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), TrID: $("#movementType").val() },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+
+            else if (radioValue == 2) {
+                $.ajax({
+                    url: "@Url.Action("EmptyStock", "ReturnRelatedReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { trDate: $("#BeginingDate").val(), wId: wValue },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+        })
+    })
+</script>

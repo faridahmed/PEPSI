@@ -1,0 +1,226 @@
+﻿@model MyPepsi.ViewModel.MenuSubVM
+@{
+    ViewBag.Title = "User Menu Rights Control";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User Menu Rights Control</h2>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <label style="color:red">Select User ID</label>
+                @*@Html.TextBox("UserID", null, new { @class = "form-control", @Value = ViewBag.UserID, @readonly = "readonly" })*@
+                @Html.DropDownList("UserID", null, "Select User", new { @class = "form-control" })
+                <label>User Name</label>
+                @Html.TextBox("UserName", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>Email</label>
+                @Html.TextBox("Email", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>Mobile No</label>
+                @Html.TextBox("MobileNo", null, new { @class = "form-control", @readonly = "readonly" })
+                <label style="color:red">Select Type</label>
+                @Html.DropDownList("TypeCode", null, "Select Type", new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                 <label>Work Place ID</label>
+                @Html.TextBox("WorkStationID", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>Work Place Name</label>
+                @Html.TextBox("WarehouseName", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>User Role</label>
+                @*@Html.DropDownList("RoleId", null, "Select Role", new { @class = "form-control" })*@
+                @Html.TextBox("RoleId", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>User Role Name</label>
+                @*@Html.DropDownList("RoleId", null, "Select Role", new { @class = "form-control" })*@
+                @Html.TextBox("Roles", null, new { @class = "form-control", @readonly = "readonly" })
+                <label>Machine IP</label>
+                @Html.TextBox("MachineIP", null, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-9">
+            <button type="button" id="btnsearch" class="btn btn-xs btn-primary" onclick="datasearch()">Show Menu</button>
+            <button type="button" id="btnReset" class="btn btn-xs btn-primary" onclick="PageReLoad()">Reset</button>
+            <button id="btnSave" type="button" class="btn btn-xs btn-primary"   onClick="ffnsave();" >Save</button>
+            <div style="height: 300px; overflow: auto;">
+                <table id="MenuList" class="table table-striped table-bordered">
+                    <tr>
+                        <th>SL</th>
+                        <th>Menu SLNo</th>
+                        <th>Description</th>
+                        <th>Controller Name</th>
+                        <th>View Page</th>
+                        <th>Main Menu ID</th>
+                        <th>Select</th>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script>
+    $("#btnSave").prop('disabled', true);
+
+    document.getElementById("btnsearch");
+    function datasearch() {
+        $.ajax({
+            url: "@Url.Action("GetMenuList", "UserManager")",
+            data: { inType: $('#TypeCode').val() },
+            type: "GET",
+            dataType: "JSON",
+           success: function (data) {
+             console.log(data);
+            $.each(data, function (i, menulist) {
+               // $("#MobileNo").val(menulist.MenuName);
+                var table = document.getElementById("MenuList");
+                var rowcount = i + 1;
+                var tblRow = '<tr id="row' + rowcount + '">' +
+                   '<td>' +
+                       '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+               '</td>' +
+               '<td> <input type="text"  readonly id="tSlNo' + rowcount + '" value="' + menulist.SLNo + '"size ="4" /></td>' +
+               '<td><input type="text"   readonly id="tDescription' + rowcount + '" value="' + menulist.MenuName + '"size ="29" /></td>' +
+               '<td><input type="text"  readonly id="tController' + rowcount + '" value="' + menulist.ControllerName + '"size ="15"' + '" style="text-align:left;"" /></td>' +
+               '<td><input type"text"   readonly id="tAction' + rowcount + '" value="' + menulist.ActionName + '"size ="15"' + '" style="text-align:left;"" /></td>' +
+               '<td><input type"text"   readonly id="tMenuId' + rowcount + '" value="' + menulist.MainMenuID + '"size ="2"' + '" style="text-align:left;"" /></td>' +
+               '<td><input type="checkbox" id="myCheck' + rowcount + '" value="1" size ="1"   /></td>' +
+               '</tr>'
+                $("#MenuList").append(tblRow);
+            })
+           // $(sum);
+          //  $(init);          
+
+        },
+        error: function () {
+            alert("Failed! to found menu lists....Please check");
+        }
+        });
+        $("#btnsearch").prop('disabled', true);
+        $("#btnSave").prop('disabled', false);
+    };
+    var isAllValid = true;
+    function ffnsave() {
+        var answer = confirm('Are you sure, you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        rightsall = [];
+        //console.log(order);
+        var id = $('#MenuList tr:last').index()
+        $('#MenuList tr').each(function (row, tr) {
+            if ((row > 0) && (row <= id)) {
+               // debugger;
+                var Selected = 0;
+                if ($('#myCheck' + row).is(":checked")) {
+                    Selected = 1;
+                }
+               // alert($('#tSlNo' + row).val().trim() + "-" + Selected);
+                rightsall.push({
+                    MenuCode: $('#tSlNo' + row).val().trim(),
+                    SubMenu: $('#tDescription' + row).val().trim(),
+                    Controller: $('#tController' + row).val().trim(),
+                    Action: $('#tAction' + row).val().trim(),
+                    MainMenuId: $('#tMenuId' + row).val().trim(),
+                    IsSelected: Selected
+                });
+            }
+        });
+
+        $('#create').html('Please wait...');
+        console.log(rightsall);
+
+        console.log(isAllValid);
+        if (isAllValid) {
+            var data = {
+                UserID: $('#UserID').val().trim(),
+                RoleId: $('#RoleId').val().trim(),
+                WarehouseID: $('#WorkStationID').val().trim(),
+                menudetail: rightsall
+            }
+        }
+         console.log(data);
+        $.ajax({
+            url: '/UserManager/Rights',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                var status = true;
+                if (a.status == true) {
+                    //will send status from server side
+                    alert('Successfully Done... to Create Menu for the User..');
+                    alert('UserID : ' + a.v);
+                    $('#UserID').val(a.v);
+                    //clear form array
+                    menudetail = [];
+
+                }
+                else {
+                    alert('Failed,to Create User Menu and rights. Please Check...');
+                }
+                // $('#create').val('Create');
+            },
+            error: function () {
+                alert('Error. Please try again.');
+                $('#create').val('Create');
+            }
+        });
+    };
+    $('input[type=checkbox]').change(function () {
+        var vales = $("#myCheck").val();
+        var vals = $('input[class=chkbx]:checked').map(function () {
+            return $(this).val();
+        }).get().join(',');
+        if (vals == true) {
+            $('#Email').val('1');
+        }
+        else {
+            $('#Email').val('2');
+        }
+    });
+
+    $("#UserID").change(function () {
+        $.ajax({
+            url: "@Url.Action("GetUserInfo", "UserManager")",
+            data: { pUserID: $("#UserID").val()},
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#UserName").val(data[0].UserName);
+                $("#Email").val(data[0].Email);
+                $("#MobileNo").val(data[0].MobileNo);
+                $("#WorkStationID").val(data[0].WorkStationID);
+                $("#WarehouseName").val(data[0].WarehouseDescription);
+                $("#RoleId").val(data[0].RoleId);
+                $("#Roles").val(data[0].Roles);
+                $("#MachineIP").val(data[0].MachineIP);
+            },
+            error: function () {
+                alert("Failed! for the user..");
+            }
+        });
+    });
+    function PageReLoad() {
+        alert("Are you sure Reset ...?")
+        location.reload();
+    }
+</script>

@@ -1,0 +1,315 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h1>Order, Delivery, Sales related reports</h1>
+<input type="radio" name="nm" id="r1" value="1" class="radio radio-inline"> Customer Order Detail</>
+<input type="radio" name="nm" id="r2" value="2" class="radio radio-inline"> Order VS Delvery</>
+<input type="radio" name="nm" id="r3" value="3" class="radio radio-inline"> Customer Wise Sales</>
+<input type="radio" name="nm" id="r4" value="4" class="radio radio-inline"> Customer Wise Return</>
+<input type="radio" name="nm" id="r5" value="5" class="radio radio-inline"> Customer SKU Wise Sales-142</>
+<input type="radio" name="nm" id="r6" value="6" class="radio radio-inline"> Rate Wise SKU Wise Sales-138</>
+<input type="radio" name="nm" id="r7" value="7" class="radio radio-inline"> POST Mix Sales-51</>
+<input type="radio" name="nm" id="r9" value="9" class="radio radio-inline"> ASM Wise Sales - 43</>
+
+<h2>Please choose report parameter from Below:</h2>
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <label>Enter Begining Date:</label>
+            @Html.TextBox("BeginingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <label>Enter Ending Date:</label>
+            @Html.TextBox("EndingDate", DateTime.Now.ToString("dd-MMM-yyyy"), new { @class = "form-control date-picker" })
+            <label>Select  Customer Type:</label>
+            @Html.DropDownList("CustomerType", null, "All", new { @class = "form-control" })
+            <br />
+            <input type="button" id="showReport" value="Preview" class="form-control btn-primary" />
+        </div>
+    </div>
+    <div>
+        <label>Select Warehouse:</label>
+        @Html.DropDownList("Warehouse", null, "All", new { @class = "form-control" })
+        <label>Select Customer:</label>
+        @Html.DropDownList("custLits", null, "All", new { @class = "form-control" })
+        <label>Select Return Type:</label>
+        @Html.DropDownList("returnType", null, "All", new { @class = "form-control" })
+    </div>
+</div>
+<br />
+<div id="tabledata"></div>
+<script>
+    $('.date-picker').datepicker({
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-1:+1"
+    });
+
+    $("#BeginingDate").prop('disabled', true);
+    $("#EndingDate").prop('disabled', true);
+    $("#Warehouse").prop('disabled', true);
+    $("#custLits").prop('disabled', true);
+    $("#returnType").prop('disabled', true); 
+    $("#CustomerType").prop('disabled', true);
+
+    $(document).ready(function () {
+        $("#r1").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r2").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r3").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', false);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r4").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', false);
+            $("#returnType").prop('disabled', false);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r5").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', false);
+        });
+        $("#r6").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r7").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r8").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+        $("#r9").change(function () {
+            $("#BeginingDate").prop('disabled', false);
+            $("#EndingDate").prop('disabled', false);
+            $("#Warehouse").prop('disabled', false);
+            $("#custLits").prop('disabled', true);
+            $("#returnType").prop('disabled', true);
+            $("#CustomerType").prop('disabled', true);
+        });
+
+        $("#Warehouse").change(function () {
+            $("#Customer").empty();
+            // $("#Customer").append('<option>All</option>');
+            $.ajax({
+                url: "@Url.Action("GetCustomerListsWareHouseWise", "OrderReport")",
+                data: { wId: $('#Warehouse').val() },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#custLits").html('');
+                var options = '<option>All</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].CustomerID + '">' + data[i].CustomerName + '</option>';
+                }
+                //  $("#TrBatchNo").val(options);
+
+                $("#custLits").html(options);
+            },
+            error: function () {
+                var all;
+                all='<option>All</option>'
+                $("#custLits").html(all);
+                // alert("Failed! can't load Customer");
+            }
+        });
+
+    });
+
+
+        $('#showReport').click(function () {
+            $("#ajax_load").show();
+            var wValue = $("#Warehouse").val();
+            if (wValue == "") {
+                wValue = 0;
+            } else {
+                wValue;
+            }
+            var custValue = $("#custLits").val();
+            if (custValue == "") {
+                custValue = 0;
+            } else {
+                custValue;
+            }
+            var CTypeValue = $("#CustomerType").val();
+            if (CTypeValue == "") {
+                CTypeValue = 0;
+            } else {
+                CTypeValue;
+            }
+            var radioValue = $('input:radio[name=nm]:checked').val();
+            if (radioValue == 1) {
+                $.ajax({
+                    url: "@Url.Action("DBOrderDetails", "OrderReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }
+            else if (radioValue == 2) {
+                $.ajax({
+                    url: "@Url.Action("OrderVSDelivery", "OrderReport")",
+                dataType: "HTML",
+            type: "POST",
+            data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue },
+            cache: false,
+            async: true,
+            success: function(data) {
+                $("#tabledata").html(data);
+            }
+        });
+            }
+            else if (radioValue == 3) {
+                $.ajax({
+                    url: "@Url.Action("CustomerWarehouseWiseSales", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue, custID: custValue },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+            else if(radioValue == 4){
+                $.ajax({
+                    url: "@Url.Action("CustomerWiseReturn", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue, custID: custValue, returnType: $("#returnType").val() },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+            else if (radioValue == 5) {
+                $.ajax({
+                    url: "@Url.Action("CustomerSKUWiseSales", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue, cType: CTypeValue },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+            else if (radioValue == 6) {
+                $.ajax({
+                    url: "@Url.Action("RateWiseSKUWiseSales", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+        }
+            else if (radioValue == 7) {
+                $.ajax({
+                    url: "@Url.Action("PMXCustomerSKUSales", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+
+            else if (radioValue == 8) {
+                $.ajax({
+                    url: "@Url.Action("SalesSUmmary76", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: { bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val(), wId: wValue },
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+            }
+            else if (radioValue == 9) {
+                $.ajax({
+                    url: "@Url.Action("ASMWiseSales38", "OrderReport")",
+                    dataType: "HTML",
+                type: "POST",
+                data: {  wId: wValue, bDate: $("#BeginingDate").val(), eDate: $("#EndingDate").val()},
+                cache: false,
+                async: true,
+                success: function(data) {
+                    $("#tabledata").html(data);
+                }
+            });
+        }
+
+            @*else {
+                $.ajax({
+                    url: "@Url.Action("ProductTransferNote", "StockReport")",
+                    dataType: "HTML",
+                    type: "POST",
+                    data: { trNo: 100009,trId:2 },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        $("#tabledata").html(data);
+                    }
+                });
+            }*@
+        })
+    })
+</script>

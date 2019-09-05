@@ -1,0 +1,244 @@
+﻿
+@{
+    ViewBag.Title = "Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Approval</h2>
+
+<div class="panel-body">
+    <div class="col-md-6">
+        <div>
+            <Label style="color:red">Choose Warehouse ID</Label>
+            @Html.DropDownList("WarehouseID", (IEnumerable<SelectListItem>)ViewBag.WarehouseID, "Select Warehouse", new { @class = "form-control" })
+            <Label style="color:red">Customer ID</Label>
+            @Html.DropDownList("CustomerID", (IEnumerable<SelectListItem>)ViewBag.CustomerID, "Select Customer", new { @class = "form-control" })
+            <Label>Sales Order NO</Label>
+            @*@Html.DropDownList("OrderID", (IEnumerable<SelectListItem>)ViewBag.OrderID, "Select Order ID", new { @class = "form-control" })*@
+            @*@Html.DropDownList("SalesOrderNO", new SelectList(" "), "--Select order--", new { @class = "form-control" })*@
+            @Html.DropDownList("SalesOrderNO", new SelectList(string.Empty, "Value", "Text"), "--Select order--", new { @class = "form-control"@*style = "width:200px"*@ })
+            
+            <label style="color:blue">Outstanding Amt.</label>
+            <input type="text" class="form-control" id="currentOutstanding" style="text-align:right" placeholder="Current Outstanding" readonly />
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div>
+            <label style="color:blue">Ordered Amt.</label>
+            <input type="text" class="form-control" id="orderedAmt" style="text-align:right" placeholder="Current Outstanding" readonly />
+            <label>Approved ID</label>
+            @Html.TextBox("ApprovedID", null, new { @class = "form-control", @Value = ViewBag.ApprovedID, @readonly = "readonly" })
+        </div>
+    </div>
+
+
+    </div>
+<div class="col-md-offset-7 col-md-5">
+    <input type="button" id="cancel" value="Cancel Order" class="btn btn-primary" onclick="Cancelation()"; />
+    <input type="button" id="create" value="Approve" class="btn btn-primary" onclick="Approved();" />
+</div>
+<div>
+    <div class="row">
+        <div>
+            <h4>Product Information </h4>
+        </div>
+        <div class="col-md-9">
+            <table id="tblProduct"  class="table table-striped table-bordered">
+                <tr>
+                    <th>SL</th>
+                    <th>Product Id</th>
+                    <th>Product Description</th>
+                    <th>Order Case</th>
+                    <th>Plastic Box</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#WarehouseID").change(function () {
+            $("#CustomerID").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCustomerList")',
+
+                dataType: 'json',
+                data: { pWarehouse: $("#WarehouseID").val() },
+                success: function (CustomerIDS) {
+                    $.each(CustomerIDS, function (i, CustomerID) {
+                        $("#CustomerID").append('<option value="' + CustomerID.Value + '">' +
+                             CustomerID.Text + '</option>');
+
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve SalesOrderNO.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+
+
+    $(document).ready(function () {
+        $("#CustomerID").change(function () {
+            $("#SalesOrderNO").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetOrderList")',
+                dataType: 'json',
+                data: { pCust: $("#CustomerID").val() },
+                success: function (SalesOrderNOs) {
+                    $.each(SalesOrderNOs, function (i, SalesOrderNO) {
+                        $("#SalesOrderNO").append('<option value="' + SalesOrderNO.Value + '">' +
+                             SalesOrderNO.Text + '</option>');
+
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve SalesOrderNO.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+    var isAllValid = true;
+    var status = true;
+    function Approved() {
+        var answer = confirm('Are you sure you want to save this?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+       
+        if (isAllValid) {
+            var data = {
+                CustomerID: $('#CustomerID').val().trim(),
+                OrderID: $('#SalesOrderNO').val().trim(),
+                WarehouseID: $('#WarehouseID').val().trim(),
+               // Remarks: $('#Remarks').val().trim()
+              //  OrderBox: $('#TotalPlasticBox').val().trim(),
+               // OrderCase: $('#TotalOrderCase').val().trim(),
+               // oderCustomer: ProductItems
+            }
+        }
+        console.log(data);
+        $.ajax({
+            url: '/OrderEntry/ApproveSave',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                //var status = true;
+                if (a.status == true) {
+                    alert('Successfully done...');
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                alert('Error. Please try again.');
+
+            }
+        });
+    }
+
+
+    $('#SalesOrderNO').change(function () {
+        $.ajax({
+            url: "@Url.Action("GetProductDetail", "OrderEntry")",
+            //url: '/LoadSheet/GetProductDetail',
+            data: { psalesorderno: $('#SalesOrderNO').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            // console.log(data);
+            $.each(data, function (i, prDetails) {
+                $("#CustomerID").val(prDetails.CustomerID);
+               // $("#CustName").val(prDetails.CustomerName);
+               // $("#CustAdd").val(prDetails.CustomerAddress1);
+                $("#totalPlasticBox").val(prDetails.TotOrderBox);
+             //   $("#remarks").val(prDetails.Remarks);
+                $("#totalOrderCase").val(prDetails.TotOrderCase);
+                //  $("#OrderDate").val(prDetails.SalesOrderDate);
+                // $("#totsale").val(prDetails.AlternateUnitPrice*prDetails.OrderCase);
+
+                var table = document.getElementById("tblProduct");
+                var rowcount = i + 1;
+                var tblRow = '<tr id="row' + rowcount + '">' +
+                   '<td>' +
+                       '<label id="lblID' + rowcount + '">' + rowcount + '</label>' +
+               '</td>' +
+               '<td> <input type="text"  readonly id="tProductID' + rowcount + '" value="' + prDetails.ProductID + '"size ="7" /></td>' +
+               '<td><input type="text"   readonly id="tProductDescription' + rowcount + '" value="' + prDetails.ProductDescription + '"size ="20" /></td>' +              
+               '<td><input type="text"   id="txtSales' + rowcount + '" value="' + prDetails.OrderCase + '"size ="10"' + '" style="text-align:center;"" /></td>' +          
+               '<td><input type="text"   id="txtPlasticBox' + rowcount + '" value="' + prDetails.PlasticBox + '"size ="8"' + '" style="text-align:center;"" /></td>' +                             
+               '</tr>'
+                $("#tblProduct").append(tblRow);
+            })
+    
+
+        },
+        error: function () {
+            alert("Failed! to found Customer Id for this SalesorderNo.Please Check....");
+        }
+    });
+    });
+    var isAllValid = true;
+    var status = true;
+    function Cancelation() {
+        var answer = confirm('Are you sure you want to Cancel order..?');
+        if (answer) {
+            //  return;
+            //return status;
+        }
+        else {
+            return false;
+        }
+        if (isAllValid) {
+            var data = {
+                CustomerID: $('#CustomerID').val().trim(),
+                OrderID: $('#SalesOrderNO').val().trim(),
+                WarehouseID: $('#WarehouseID').val().trim(),
+                // Remarks: $('#Remarks').val().trim()
+                //  OrderBox: $('#TotalPlasticBox').val().trim(),
+                // OrderCase: $('#TotalOrderCase').val().trim(),
+                // oderCustomer: ProductItems
+            }
+        }
+        console.log(data);
+
+            $.ajax({
+            url: '/OrderEntry/CancelData',
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            contentType: "application/json",
+            success: function (a) {
+                //check is successfully save to database
+                //var status = true;
+                if (a.status == true) {
+                    alert('Successfully done...');
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed');
+                }
+            },
+            error: function () {
+                alert('Error. Please try again.');
+
+            }
+        });
+    }
+
+</script>
